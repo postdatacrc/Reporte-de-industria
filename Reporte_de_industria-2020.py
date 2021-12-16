@@ -145,9 +145,11 @@ if select_seccion == 'INTRODUCCIÓN':
        
 if select_seccion =='RESUMEN EJECUTIVO':
     st.title("Resumen ejecutivo")
-    select_secResumenEj = st.selectbox('Seleccione el resumen ejecutivo del sector a consultar',['PANORAMA MACROECONOMICO Y EL SECTOR TIC',
+    select_secResumenEj = st.sidebar.selectbox('Seleccione el resumen ejecutivo del sector a consultar',['PANORAMA MACROECONOMICO Y EL SECTOR TIC',
     'SERVICIOS MÓVILES EN COLOMBIA','SERVICIOS FIJOS EN COLOMBIA','SERVICIOS POSTALES EN COLOMBIA'])
     if select_secResumenEj == 'PANORAMA MACROECONOMICO Y EL SECTOR TIC':
+        st.markdown(r"""<header><h3>Panorama macroeconómico y el sector TIC</h3></header>""",unsafe_allow_html=True)
+        st.write("")
         col1, col2= st.columns(2)
         with col1:
             st.markdown(r"""<ul><li><div style="text-align: justify">
@@ -216,6 +218,8 @@ un leve incremento del <b>1,7%</b> con un ingreso de
             </ul>""", unsafe_allow_html=True)
 
     if select_secResumenEj=='SERVICIOS MÓVILES EN COLOMBIA':
+        st.markdown(r"""<header><h3>Servicios móviles</h3></header>""",unsafe_allow_html=True)
+        st.write("")
         col1, col2= st.columns(2)
         with col1:
             st.markdown(r"""<ul><li><div style="text-align: justify">
@@ -285,6 +289,8 @@ Nacional.</div></li>
             </ul>""", unsafe_allow_html=True)
 
     if select_secResumenEj=='SERVICIOS FIJOS EN COLOMBIA':
+        st.markdown(r"""<header><h3>Servicios fijos</h3></header>""",unsafe_allow_html=True)
+        st.write("")
         col1, col2= st.columns(2)
         with col1:
             st.markdown(r"""<ul><li><div style="text-align: justify">
@@ -344,6 +350,8 @@ comunitarias.  </div></li>
             </ul>""", unsafe_allow_html=True)
 
     if select_secResumenEj=='SERVICIOS POSTALES EN COLOMBIA':
+        st.markdown(r"""<header><h3>Servicios postales</h3></header>""",unsafe_allow_html=True)
+        st.write("")
         col1, col2= st.columns(2)
         with col1:
             st.markdown(r"""<ul><li><div style="text-align: justify">
@@ -407,7 +415,7 @@ if select_seccion =='ENTORNO MACROECONÓMICO':
     
 if select_seccion =='DINÁMICA DEL SECTOR TIC':
     st.title("Dinámica del sector TIC")
-    select_secResumenDinTic = st.selectbox('Seleccione el el sector a consultar',['Información general',
+    select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
     'Servicios móviles','Servicios fijos','Servicio de Televisión','Servicios OTT','Radio'])
     if select_secResumenDinTic == 'Información general':
         st.markdown(r"""<header><h3>Información general</h3></header>""",unsafe_allow_html=True)
