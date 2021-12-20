@@ -363,12 +363,14 @@ st.markdown("""<style type="text/css">
     background: #fffdf7;
     padding: 10px;
     color: black;}
+    .css-m70y {display:none} 
     .imagen-flotar{float:left;}
     @media (max-width:1230px){
         .barra-superior{height:160px;} 
         .main, .css-1lcbmhc > div{margin-top:215px;}
         .imagen-flotar{float:none}
         h1{top:160px;}
+        
     }    
     </style>""", unsafe_allow_html=True)  
 st.markdown("""
