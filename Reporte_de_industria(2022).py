@@ -147,6 +147,7 @@ st.markdown(
     }
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
         width: 300px;
+        top:100px;
         margin-left: -300px;
     }
     </style>
@@ -161,7 +162,7 @@ st.markdown("""<style type="text/css">
         color: white;
         position:fixed;
         width:100%;
-        z-index:9999;
+        z-index:9999999;
         top:80px;
         left:0;
     }
@@ -178,7 +179,10 @@ st.markdown("""<style type="text/css">
         font-size: 36px;
         font-weight: 700;
     }
-    .main, .css-1lcbmhc > div{margin-top:135px;}
+    .main, .css-1k0ckh2 > div{
+        margin-top:135px;
+        
+    }
     .css-y3whyl, .css-xqnn38 {background-color:#ccc}
     .e8zbici0 {display:none}
     .e8zbici2 {display:none}
@@ -207,7 +211,7 @@ st.markdown("""<style type="text/css">
     .imagen-flotar{float:left;}
     @media (max-width:1230px){
         .barra-superior{height:160px;} 
-        .main, .css-1lcbmhc > div{margin-top:215px;}
+        .main, .css-1k0ckh2 > div{margin-top:215px;}
         .imagen-flotar{float:none}
         h1{top:160px;}}       
     </style>""", unsafe_allow_html=True)  
