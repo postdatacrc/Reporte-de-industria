@@ -181,12 +181,18 @@ st.markdown("""<style type="text/css">
     }
     .main, .css-1k0ckh2 > div{
         margin-top:135px;
-        
     }
+    .e16nr0p31 {display:none}
     .css-y3whyl, .css-xqnn38 {background-color:#ccc}
     .e8zbici0 {display:none}
     .e8zbici2 {display:none}
     .css-1uvyptr:hover,.css-1uvyptr {background: #ccc}
+    .e1fqkh3o2{
+        padding-top:2.5rem;   
+    }
+    .css-52bwht{
+        gap:0.01rem;
+    }
     .block-container {padding-top:0;}
     h2{
         background: #fffdf7;
@@ -200,6 +206,8 @@ st.markdown("""<style type="text/css">
       background: #fffdf7;
       display: flex;
       color: #4c83f3;
+      font-size:25px;
+      padding:10px;
     }
     header:before,
     header:after {
@@ -208,6 +216,21 @@ st.markdown("""<style type="text/css">
       border-bottom: solid 3px;
       flex: 1;
     }   
+    .e1tzin5v0{
+      text-align:center;  
+    }
+    .css-1cpxqw2:hover {
+      color:rgb(255,255,255);
+      border-color:rgb(255,75,75);
+    }
+    .css-1cpxqw2 {
+      font-weight: 600;
+      background-color: rgb(122, 68, 242);
+      border: 2px solid rgba(0, 0, 0, 1); 
+      color:white;
+      padding: 0.6rem 0.6rem;
+      font-size: 18px;
+    }
     .imagen-flotar{float:left;}
     @media (max-width:1230px){
         .barra-superior{height:160px;} 
@@ -230,7 +253,8 @@ st.markdown("""
 
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
-
+st.sidebar.markdown(r"""<b style="font-size: 26px"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
+st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
@@ -286,12 +310,25 @@ Claro aumentó su participación, pasando de 37,7% en
         st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/EvolucionPartNusuarios.PNG")
     if select_secResumenDinTic == 'Servicios móviles':
         st.markdown(r"""<header><h3>Servicios móviles</h3></header>""",unsafe_allow_html=True)
-        col1,col2,col3 = st.columns(3)
-        
-        select_subsectSerMov=st.radio("Subsección",['Telefonía móvil','Mensajería','Internet móvil'],horizontal=True)
+        st.markdown("Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información")
 
-        if select_subsectSerMov=='Internet móvil':
-            st.markdown(r"""<ul><li><h4>Internet móvil</h4></li></ul>""",unsafe_allow_html=True)        
+        col1,col2,col3 = st.columns(3)
+        with col1:
+            BotonTelMovil=st.button("Telefonía móvil")
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)
+         
+        with col2:
+            BotonIntMovil=st.button("Internet móvil")
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)
+        with col3:
+            BotonSMSMovil=st.button("Mensajería móvil")
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true",width=170)
+         
+        st.markdown(r"""<header><h3> </h3></header>""",unsafe_allow_html=True) 
+        #select_subsectSerMov=st.radio("Subsección",['Telefonía móvil','Mensajería','Internet móvil'],horizontal=True)
+
+        if BotonIntMovil:
+            st.markdown(r"""<center><h4>Internet móvil</h4></center>""",unsafe_allow_html=True)        
             Trafico=ReadApiIMTraf()
             Ingresos=ReadApiIMIng()
             Accesos=ReadApiIMAccesos()
@@ -303,25 +340,17 @@ Claro aumentó su participación, pasando de 37,7% en
             Ingresos.insert(0,'periodo',Ingresos['anno']+'-T'+Ingresos['trimestre'])
             Accesos.insert(0,'periodo',Accesos['anno']+'-T'+Accesos['trimestre'])   
             
-            col1,col2,col3,col4 =st.columns(([1.15,1.05,1,10]))
-            with col1: 
-                BotonAccesos=st.button('Accesos') 
-            with col2:        
-                BotonTrafico=st.button('Trafico')
-            with col3:    
-                BotonIngresos=st.button('Ingresos')
-  
-                
-            
-            if BotonAccesos:
+            ServiciosIntMovil=st.selectbox('Escoja el servicio',['Accesos','Tráfico','Ingresos'])
+                            
+            if ServiciosIntMovil=='Accesos':
                 Accnac=Accesos.groupby(['periodo','empresa','id_empresa'])['accesos'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Accnac,'accesos'), use_container_width=True)
                 AgGrid(Accnac)
-            if BotonTrafico:
+            if ServiciosIntMovil=='Tráfico':
                 Trafnac=Trafico.groupby(['periodo','empresa','id_empresa'])['trafico'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Trafnac,'trafico'), use_container_width=True)
                 AgGrid(Trafnac)
-            if BotonIngresos:
+            if ServiciosIntMovil=='Ingresos':
                 Ingnac=Ingresos.groupby(['periodo','empresa','id_empresa'])['ingresos'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Ingnac,'ingresos'), use_container_width=True)
                 AgGrid(Ingnac)    
