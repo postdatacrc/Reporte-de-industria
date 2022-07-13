@@ -219,11 +219,11 @@ st.markdown("""<style type="text/css">
     .e1tzin5v0{
       text-align:center;  
     }
-    .css-1cpxqw2:hover {
+    .edgvbvh9:hover {
       color:rgb(255,255,255);
       border-color:rgb(255,75,75);
     }
-    .css-1cpxqw2 {
+    .edgvbvh9 {
       font-weight: 600;
       background-color: rgb(122, 68, 242);
       border: 2px solid rgba(0, 0, 0, 1); 
