@@ -262,7 +262,7 @@ st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
-AgGrid(ReadApiTelMovilAbonados())       
+     
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
     
