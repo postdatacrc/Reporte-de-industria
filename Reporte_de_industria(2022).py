@@ -179,9 +179,11 @@ st.markdown("""<style type="text/css">
         font-size: 36px;
         font-weight: 700;
     }
-    .main, .css-1k0ckh2 > div{
+    .css-1wrcr25{
         margin-top:135px;
     }
+    
+
     .e16nr0p31 {display:none}
     .css-y3whyl, .css-xqnn38 {background-color:#ccc}
     .e8zbici0 {display:none}
@@ -202,23 +204,21 @@ st.markdown("""<style type="text/css">
         text-decoration-style: double;
         color: #27348b;
     }    
-    header {
+    .titulo {
       background: #fffdf7;
       display: flex;
       color: #4c83f3;
       font-size:25px;
       padding:10px;
     }
-    header:before,
-    header:after {
+    .titulo:before,
+    .titulo:after {
       content: '';
       margin: auto 1em;
       border-bottom: solid 3px;
       flex: 1;
     }   
-    .e1tzin5v0{
-      text-align:center;  
-    }
+
     .edgvbvh9:hover {
       color:rgb(255,255,255);
       border-color:rgb(255,75,75);
@@ -231,10 +231,13 @@ st.markdown("""<style type="text/css">
       padding: 0.6rem 0.6rem;
       font-size: 18px;
     }
+    .st-ed{
+        gap:8rem;
+    }
     .imagen-flotar{float:left;}
     @media (max-width:1230px){
         .barra-superior{height:160px;} 
-        .main, .css-1k0ckh2 > div{margin-top:215px;}
+        .main, .e1fqkh3o9 > div{margin-top:215px;}
         .imagen-flotar{float:none}
         h1{top:160px;}}       
     </style>""", unsafe_allow_html=True)  
@@ -253,7 +256,7 @@ st.markdown("""
 
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
-st.sidebar.markdown(r"""<b style="font-size: 26px"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
+st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
@@ -268,7 +271,7 @@ if select_seccion =='Dinámica telecomunicaciones':
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
     'Servicios móviles','Servicios fijos','Contenidos audiovisuales','Radio'])
     if select_secResumenDinTic == 'Información general':
-        st.markdown(r"""<header><h3>Información general</h3></header>""",unsafe_allow_html=True)
+        st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
         st.write("")
         col1, col2, = st.columns([4,6])
         with col1:
@@ -308,27 +311,22 @@ Claro aumentó su participación, pasando de 37,7% en
             st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/DinamicaIndustriaTic.PNG")   
         st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/EvolucionPartServOp.PNG")    
         st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/EvolucionPartNusuarios.PNG")
+        
     if select_secResumenDinTic == 'Servicios móviles':
-        st.markdown(r"""<header><h3>Servicios móviles</h3></header>""",unsafe_allow_html=True)
+        bla="https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true"
+        st.markdown(r"""<div class="titulo"><h3>Servicios móviles</h3></div>""",unsafe_allow_html=True)
         st.markdown("Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información")
 
-        col1,col2,col3 = st.columns(3)
-        with col1:
-            BotonTelMovil=st.button("Telefonía móvil")
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)
-         
-        with col2:
-            BotonIntMovil=st.button("Internet móvil")
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)
-        with col3:
-            BotonSMSMovil=st.button("Mensajería móvil")
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true",width=170)
-         
-        st.markdown(r"""<header><h3> </h3></header>""",unsafe_allow_html=True) 
-        #select_subsectSerMov=st.radio("Subsección",['Telefonía móvil','Mensajería','Internet móvil'],horizontal=True)
-
-        if BotonIntMovil:
-            st.markdown(r"""<center><h4>Internet móvil</h4></center>""",unsafe_allow_html=True)        
+        ServiciosMóviles=st.radio('Servicios',['Telefonía móvil','Internet móvil','Mensajería móvil'],horizontal=True)
+            
+        st.markdown(r"""<hr>""",unsafe_allow_html=True)    
+            
+            
+        if ServiciosMóviles=='Telefonía móvil':
+            st.markdown("<h4 style=text-align:left;>Telefonía móvil</h4>",unsafe_allow_html=True)   
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)            
+        
+        if ServiciosMóviles=='Internet móvil':
             Trafico=ReadApiIMTraf()
             Ingresos=ReadApiIMIng()
             Accesos=ReadApiIMAccesos()
@@ -340,7 +338,12 @@ Claro aumentó su participación, pasando de 37,7% en
             Ingresos.insert(0,'periodo',Ingresos['anno']+'-T'+Ingresos['trimestre'])
             Accesos.insert(0,'periodo',Accesos['anno']+'-T'+Accesos['trimestre'])   
             
-            ServiciosIntMovil=st.selectbox('Escoja el servicio',['Accesos','Tráfico','Ingresos'])
+            col1,col2 = st.columns(2)
+            #with col1:
+            st.markdown("<h4 style=text-align:center;>Internet móvil</h4>",unsafe_allow_html=True) 
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)        
+            #with col2:
+            ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
                             
             if ServiciosIntMovil=='Accesos':
                 Accnac=Accesos.groupby(['periodo','empresa','id_empresa'])['accesos'].sum().reset_index()              
@@ -354,7 +357,10 @@ Claro aumentó su participación, pasando de 37,7% en
                 Ingnac=Ingresos.groupby(['periodo','empresa','id_empresa'])['ingresos'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Ingnac,'ingresos'), use_container_width=True)
                 AgGrid(Ingnac)    
-        
+ 
+        if ServiciosMóviles=='Mensajería móvil':
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true",width=170)
+ 
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector Postal")
     st.markdown("En el año 2020")    
