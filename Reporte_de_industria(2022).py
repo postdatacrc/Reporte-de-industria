@@ -106,8 +106,7 @@ def ReadApiIMAccesos():
     IM_ACCESOS.drop(columns=['sum_cantidad_suscriptores','sum_cantidad_abonados'], inplace=True)
     return IM_ACCESOS
 
-AbonadosTelMovil=libreriasAPIS()[0]
-AgGrid(AbonadosTelMovil)
+
 
 def PColoresEmpINTMovil(id_empresa):
     if id_empresa == '800153993':
@@ -269,10 +268,11 @@ st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
-     
+
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
-    
+    AbonadosTelMovil=libreriasAPIS()[0]
+    AgGrid(AbonadosTelMovil)    
     
 if select_seccion =='Dinámica telecomunicaciones':
     st.title("Dinámica del sector de telecomunicaciones")
