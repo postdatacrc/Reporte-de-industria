@@ -13,99 +13,9 @@ from st_aggrid import AgGrid
 import geopandas as gpd
 import folium
 
-st.cache()
-def libreriasAPIS():
-    from APIs import AbonadosTelMovil,TraficoTelMovil
-    return AbonadosTelMovil,TraficoTelMovil
-
+    
 LogoComision="data:image/png;base64,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"
 LogoComision2="https://www.postdata.gov.co/sites/all/themes/nuboot_radix/logo-crc-blanco.png"
-
-#API 
-consulta_anno = '2017,2018,2019,2020,2021,2022,2023,2024,2025'
-## INTERNET MÓVIL
-    #TRAFICO 
-@st.cache(allow_output_mutation=True)      
-def ReadApiIMTraf():
-    resourceid_cf = 'd40c5e75-db56-4ec1-a441-0314c47bd71d'
-    consulta_cf='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_cf + ''\
-                '&filters[anno]=' + consulta_anno + ''\
-                '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                '&group_by=anno,trimestre,id_empresa,empresa'\
-                '&sum=trafico' 
-    response_base_cf = urlopen(consulta_cf + '&limit=10000000') 
-    json_base_cf = json.loads(response_base_cf.read())
-    IMCF_TRAF = pd.DataFrame(json_base_cf['result']['records'])
-    IMCF_TRAF.sum_trafico = IMCF_TRAF.sum_trafico.astype('int64')
-    resourceid_dda = 'c0be7034-29f8-4400-be54-c4aafe5df606'
-    consulta_dda='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_dda + ''\
-                '&filters[anno]=' + consulta_anno + ''\
-                '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                '&group_by=anno,trimestre,id_empresa,empresa'\
-                '&sum=trafico' 
-    response_base_dda = urlopen(consulta_dda + '&limit=10000000') 
-    json_base_dda = json.loads(response_base_dda.read())
-    IMDDA_TRAF = pd.DataFrame(json_base_dda['result']['records'])
-    IMDDA_TRAF.sum_trafico = IMDDA_TRAF.sum_trafico.astype('int64')
-    IM_TRAF=IMDDA_TRAF.merge(IMCF_TRAF, on=['anno','trimestre','id_empresa','empresa'])
-    IM_TRAF['trafico']=IM_TRAF['sum_trafico_y'].fillna(0)+IM_TRAF['sum_trafico_x']
-    IM_TRAF.drop(columns=['sum_trafico_y','sum_trafico_x'], inplace=True)
-    return IM_TRAF
-    #INGRESOS
-@st.cache(allow_output_mutation=True) 
-def ReadApiIMIng():
-    resourceid_cf = '8366e39c-6a14-483a-80f4-7278ceb39f88'
-    consulta_cf='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_cf + ''\
-                '&filters[anno]=' + consulta_anno + ''\
-                '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                '&group_by=anno,trimestre,id_empresa,empresa'\
-                '&sum=ingresos' 
-    response_base_cf = urlopen(consulta_cf + '&limit=10000000') 
-    json_base_cf = json.loads(response_base_cf.read())
-    IMCF_ING = pd.DataFrame(json_base_cf['result']['records'])
-    IMCF_ING.sum_ingresos = IMCF_ING.sum_ingresos.astype('int64')
-    resourceid_dda = '60a55889-ba71-45ff-b68f-33b503da36f2'
-    consulta_dda='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_dda + ''\
-                '&filters[anno]=' + consulta_anno + ''\
-                '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                '&group_by=anno,trimestre,id_empresa,empresa'\
-                '&sum=ingresos' 
-    response_base_dda = urlopen(consulta_dda + '&limit=10000000') 
-    json_base_dda = json.loads(response_base_dda.read())
-    IMDDA_ING = pd.DataFrame(json_base_dda['result']['records'])
-    IMDDA_ING.sum_ingresos = IMDDA_ING.sum_ingresos.astype('int64')
-    IM_ING=IMDDA_ING.merge(IMCF_ING, on=['anno','trimestre','id_empresa','empresa'])
-    IM_ING['ingresos']=IM_ING['sum_ingresos_y'].fillna(0)+IM_ING['sum_ingresos_x']
-    IM_ING.drop(columns=['sum_ingresos_y','sum_ingresos_x'], inplace=True)
-    return IM_ING
-    #ACCESOS
-@st.cache(allow_output_mutation=True) 
-def ReadApiIMAccesos():
-    resourceid_cf = '47d07e20-b257-4aaf-9309-1501c75a826c'
-    consulta_cf='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_cf + ''\
-                '&filters[anno]=' + consulta_anno + ''\
-                '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                '&group_by=anno,trimestre,id_empresa,empresa'\
-                '&sum=cantidad_suscriptores' 
-    response_base_cf = urlopen(consulta_cf + '&limit=10000000') 
-    json_base_cf = json.loads(response_base_cf.read())
-    IMCF_SUS = pd.DataFrame(json_base_cf['result']['records'])
-    IMCF_SUS.sum_cantidad_suscriptores = IMCF_SUS.sum_cantidad_suscriptores.astype('int64')
-    resourceid_dda = '3df620f6-deec-42a0-a6af-44ca23c2b73c'
-    consulta_dda='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_dda + ''\
-                '&filters[anno]=' + consulta_anno + ''\
-                '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                '&group_by=anno,trimestre,id_empresa,empresa'\
-                '&sum=cantidad_abonados' 
-    response_base_dda = urlopen(consulta_dda + '&limit=10000000') 
-    json_base_dda = json.loads(response_base_dda.read())
-    IMDDA_ABO = pd.DataFrame(json_base_dda['result']['records'])
-    IMDDA_ABO.sum_cantidad_abonados = IMDDA_ABO.sum_cantidad_abonados.astype('int64')
-    IM_ACCESOS=IMDDA_ABO.merge(IMCF_SUS, on=['anno','trimestre','id_empresa','empresa'])
-    IM_ACCESOS['accesos']=IM_ACCESOS['sum_cantidad_suscriptores'].fillna(0)+IM_ACCESOS['sum_cantidad_abonados']
-    IM_ACCESOS.drop(columns=['sum_cantidad_suscriptores','sum_cantidad_abonados'], inplace=True)
-    return IM_ACCESOS
-
 
 
 def PColoresEmpINTMovil(id_empresa):
@@ -260,7 +170,19 @@ st.markdown("""
     </div>
 </div>""",unsafe_allow_html=True)
 
-
+########################################### APIs
+## Telefonía móvil
+@st.cache()
+def APISTelMovil():
+    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
+    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
+AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
+## Internet móvil
+@st.cache()
+def APISIntMovil():
+    from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
+    return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
+AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
@@ -268,11 +190,10 @@ st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
-
+       
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
-    AbonadosTelMovil=libreriasAPIS()[0]
-    AgGrid(AbonadosTelMovil)    
+    
     
 if select_seccion =='Dinámica telecomunicaciones':
     st.title("Dinámica del sector de telecomunicaciones")
@@ -333,18 +254,16 @@ Claro aumentó su participación, pasando de 37,7% en
         if ServiciosMóviles=='Telefonía móvil':
             st.markdown("<h4 style=text-align:left;>Telefonía móvil</h4>",unsafe_allow_html=True)   
             st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)            
-        
-        if ServiciosMóviles=='Internet móvil':
-            Trafico=ReadApiIMTraf()
-            Ingresos=ReadApiIMIng()
-            Accesos=ReadApiIMAccesos()
 
-            Trafico=Trafico[Trafico['trafico']>0]
-            Ingresos=Ingresos[Ingresos['ingresos']>0]
-            Accesos=Accesos[Accesos['accesos']>0]
-            Trafico.insert(0,'periodo',Trafico['anno']+'-T'+Trafico['trimestre'])
-            Ingresos.insert(0,'periodo',Ingresos['anno']+'-T'+Ingresos['trimestre'])
-            Accesos.insert(0,'periodo',Accesos['anno']+'-T'+Accesos['trimestre'])   
+        if ServiciosMóviles=='Internet móvil':
+
+            TraficoInternetMovil=TraficoInternetMovil[TraficoInternetMovil['trafico']>0]
+            IngresosInternetmovil=IngresosInternetmovil[IngresosInternetmovil['ingresos']>0]
+            AccesosInternetmovil=AccesosInternetmovil[AccesosInternetmovil['accesos']>0]
+            
+            TraficoInternetMovil.insert(0,'periodo',TraficoInternetMovil['anno']+'-T'+TraficoInternetMovil['trimestre'])
+            IngresosInternetmovil.insert(0,'periodo',IngresosInternetmovil['anno']+'-T'+IngresosInternetmovil['trimestre'])
+            AccesosInternetmovil.insert(0,'periodo',AccesosInternetmovil['anno']+'-T'+AccesosInternetmovil['trimestre'])   
             
             col1,col2 = st.columns(2)
             #with col1:
@@ -354,15 +273,15 @@ Claro aumentó su participación, pasando de 37,7% en
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
                             
             if ServiciosIntMovil=='Accesos':
-                Accnac=Accesos.groupby(['periodo','empresa','id_empresa'])['accesos'].sum().reset_index()              
+                Accnac=AccesosInternetmovil.groupby(['periodo','empresa','id_empresa'])['accesos'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Accnac,'accesos'), use_container_width=True)
                 AgGrid(Accnac)
             if ServiciosIntMovil=='Tráfico':
-                Trafnac=Trafico.groupby(['periodo','empresa','id_empresa'])['trafico'].sum().reset_index()              
+                Trafnac=TraficoInternetMovil.groupby(['periodo','empresa','id_empresa'])['trafico'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Trafnac,'trafico'), use_container_width=True)
                 AgGrid(Trafnac)
             if ServiciosIntMovil=='Ingresos':
-                Ingnac=Ingresos.groupby(['periodo','empresa','id_empresa'])['ingresos'].sum().reset_index()              
+                Ingnac=IngresosInternetmovil.groupby(['periodo','empresa','id_empresa'])['ingresos'].sum().reset_index()              
                 st.plotly_chart(Plotlylineatiempo(Ingnac,'ingresos'), use_container_width=True)
                 AgGrid(Ingnac)    
  
