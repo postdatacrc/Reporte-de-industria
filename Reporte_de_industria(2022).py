@@ -165,11 +165,11 @@ st.markdown("""<style type="text/css">
     }
     .edgvbvh9 {
       font-weight: 600;
-      background-color: rgb(122, 68, 242);
-      border: 2px solid rgba(0, 0, 0, 1); 
-      color:white;
+      background-color: rgb(163,196,251);
+      border: 0px solid rgba(0, 0, 0, 1); 
+      color:black;
       padding: 0.6rem 0.6rem;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .imagen-flotar{float:left;}
