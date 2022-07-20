@@ -21,8 +21,12 @@ LogoComision2="https://www.postdata.gov.co/sites/all/themes/nuboot_radix/logo-cr
 def PColoresEmpINTMovil(id_empresa):
     if id_empresa == '800153993':
         return 'red'
-    if id_empresa == '800153993':
-        return 'red'
+    elif id_empresa == '830114921':
+        return 'rgb(0,102,204)'
+    elif id_empresa == '830122566':
+        return 'rgb(102,204,0)'
+    elif id_empresa=='899999115':
+        return 'rgb(0,204,204)'
     else:
         pass    
 
@@ -32,21 +36,41 @@ def Plotlylineatiempo(df,column):
     for elem in empresasdf:
         fig.add_trace(go.Scatter(x=df[df['id_empresa']==elem]['periodo'],
         y=df[df['id_empresa']==elem][column],text=df[df['id_empresa']==elem]['empresa'],
-        mode='lines+markers',line = dict(width=0.8,color=PColoresEmpINTMovil(elem)),name='',hovertemplate =
+        mode='lines+markers',line = dict(width=0.8,color=PColoresEmpINTMovil(elem)),name=df[df['id_empresa']==elem]['empresa'].unique().tolist()[0],hovertemplate =
         '<br><b>Empresa</b>:<br>'+'%{text}'+
         '<br><b>Periodo</b>: %{x}<br>'+                         
-        column+': %{y:.4f}<br>'))   
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Helvetica', color='black', size=12),title_text=None,row=1, col=1)
-    fig.update_yaxes(tickfont=dict(family='Helvetica', color='black', size=14),titlefont_size=14, title_text=column, row=1, col=1)
-    fig.update_layout(height=550,title=column.capitalize() +" por periodo y por empresa",title_x=0.5,legend_title=None,font=dict(family="Helvetica",color=" black"))
-    fig.update_layout(showlegend=False,paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
-    fig.update_xaxes(tickangle=-90,showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+        column+': %{y:.0f}<br>'))   
+    fig.update_xaxes(tickangle=-90, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,ticks="outside", tickwidth=1, tickcolor='black', ticklen=5,
+    zeroline=True,linecolor = "#000000",zerolinewidth=2,  # Sets color of X-axis line
+    showgrid = True, 
+    showline = True,
+    gridwidth=1,       
+    gridcolor='lightpink',
+    showticklabels=True)
+    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=column, row=1, col=1,ticks="outside", tickwidth=1, tickcolor='black', ticklen=5,
+    zeroline=True,linecolor = "#000000",zerolinewidth=2,  # Sets color of X-axis line
+    showgrid = True, 
+    showline = True,
+    gridwidth=1,       
+    gridcolor='lightpink',
+    showticklabels=True)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text': column.capitalize() +" por periodo y por empresa",
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",y=1.1,x=0.02),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     return fig
 
 
 st.set_page_config(
-    page_title="Reporte de industria 2020", page_icon=LogoComision,layout="wide",initial_sidebar_state="expanded")
+    page_title="Reporte de industria 2021", page_icon=LogoComision,layout="wide",initial_sidebar_state="expanded")
 
 page_bg_img = '''
 <style>
@@ -99,8 +123,7 @@ st.markdown("""<style type="text/css">
     .css-1wrcr25{
         margin-top:135px;
     }
-    
-
+    .css-ocqkz7 {text-align:center}
     .e16nr0p31 {display:none}
     .css-y3whyl, .css-xqnn38 {background-color:#ccc}
     .e8zbici0 {display:none}
@@ -148,9 +171,7 @@ st.markdown("""<style type="text/css">
       padding: 0.6rem 0.6rem;
       font-size: 18px;
     }
-    .st-ed{
-        gap:8rem;
-    }
+
     .imagen-flotar{float:left;}
     @media (max-width:1230px){
         .barra-superior{height:160px;} 
@@ -252,8 +273,36 @@ Claro aumentó su participación, pasando de 37,7% en
             
             
         if ServiciosMóviles=='Telefonía móvil':
+            EmpresasTelMovil=['830122566','800153993','830114921','899999115']
             st.markdown("<h4 style=text-align:left;>Telefonía móvil</h4>",unsafe_allow_html=True)   
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)            
+            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)          
+            AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['abonados']>0]
+            AbonadosTelMovil.insert(0,'periodo',AbonadosTelMovil['anno']+'-T'+AbonadosTelMovil['trimestre'])
+            #
+            TraficoTelMovil=TraficoTelMovil[TraficoTelMovil['trafico']>0]
+            TraficoTelMovil.insert(0,'periodo',TraficoTelMovil['anno']+'-T'+TraficoTelMovil['trimestre'])    
+            #        
+            IngresosTelMovil=IngresosTelMovil[IngresosTelMovil['ingresos_totales']>0]
+            IngresosTelMovil.insert(0,'periodo',IngresosTelMovil['anno']+'-T'+IngresosTelMovil['trimestre'])
+            #
+            TraficoSMSTelMovil=TraficoSMSTelMovil[TraficoSMSTelMovil['cantidad']>0]
+            TraficoSMSTelMovil.insert(0,'periodo',TraficoSMSTelMovil['anno']+'-T'+TraficoSMSTelMovil['trimestre'])
+            #
+            IngresosSMSTelMovil=IngresosSMSTelMovil[IngresosSMSTelMovil['ingresos']>0]
+            IngresosSMSTelMovil.insert(0,'periodo',IngresosSMSTelMovil['anno']+'-T'+IngresosSMSTelMovil['trimestre'])
+
+            ServiciosTelMovil=st.selectbox('Escoja el servicio de Telefonía móvil',['Abonados','Tráfico','Ingresos','Tráfico SMS','Ingresos SMS'])
+
+            if ServiciosTelMovil=='Abonados':
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoAbonadosTelmovil=st.button('Línea de tiempo')
+                with col2:
+                    BarrasAbonadosTelmovil=st.button('Diagrama de barras')
+                if LineaTiempoAbonadosTelmovil:    
+                    AbonacTelMovil=AbonadosTelMovil.groupby(['periodo','empresa','id_empresa'])['abonados'].sum().reset_index()
+                    AbonacTelMovil=AbonacTelMovil[AbonacTelMovil['id_empresa'].isin(EmpresasTelMovil)]
+                    st.plotly_chart(Plotlylineatiempo(AbonacTelMovil,'abonados'), use_container_width=True)
 
         if ServiciosMóviles=='Internet móvil':
 
