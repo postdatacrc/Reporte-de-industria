@@ -179,7 +179,6 @@ st.markdown("""<style type="text/css">
         text-decoration-style: double;
         color: #27348b;
     }    
-    
     .titulo {
       background: #fffdf7;
       display: flex;
@@ -194,7 +193,7 @@ st.markdown("""<style type="text/css">
       border-bottom: solid 3px;
       flex: 1;
     }   
-    h4{text-align:center;}
+
     .edgvbvh9:hover {
       color:rgb(255,255,255);
       border-color:rgb(255,75,75);
@@ -215,12 +214,13 @@ st.markdown("""<style type="text/css">
         h1{top:160px;}}       
     .IconoTitulo img {
         margin-right:10px;
+    }
+    .IconoTitulo{
         text-align:center;
     }
     .IconoTitulo h4, .IconoTitulo img {
         display:inline-block;
         vertical-align:middle;
-        text-align:center;
     }    
     </style>""", unsafe_allow_html=True)  
 st.markdown("""
