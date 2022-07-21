@@ -37,7 +37,7 @@ def Plotlylineatiempo(df,column):
         fig.add_trace(go.Scatter(x=df[df['id_empresa']==elem]['periodo'],
         y=df[df['id_empresa']==elem][column],text=df[df['id_empresa']==elem]['empresa'],
         mode='lines+markers',line = dict(width=0.8,color=PColoresEmpINTMovil(elem)),name=df[df['id_empresa']==elem]['empresa'].unique().tolist()[0],hovertemplate =
-        '<br><b>Empresa</b>:<br>'+'%{text}'+
+        '<br><b>Empresa</b>:<br><extra></extra>'+'%{text}'+
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column+': %{y:.0f}<br>'))   
     fig.update_xaxes(tickangle=-90, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,ticks="outside", tickwidth=1, tickcolor='black', ticklen=5,
@@ -68,6 +68,41 @@ def Plotlylineatiempo(df,column):
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     return fig
 
+def PlotlyBarras(df,column):   
+    fig = make_subplots(rows=1, cols=1) 
+    for empresa in df['empresa'].unique().tolist():
+        fig.add_trace(go.Bar(x=df[df['empresa']==empresa]['anno'].values.tolist(),y=df[df['empresa']==empresa][column].values.tolist()
+                             ,marker_color=PColoresEmpINTMovil(df[df['empresa']==empresa]['id_empresa'].unique()[0]),
+                            name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
+        column+': %{y:.0f}<br>'))
+    fig.update_layout(barmode='group')
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,ticks="outside", tickwidth=1, tickcolor='black', ticklen=5,
+    zeroline=True,linecolor = "#000000",zerolinewidth=2,  # Sets color of X-axis line
+    showgrid = True, 
+    showline = True,
+    gridwidth=1,       
+    gridcolor='lightpink',
+    showticklabels=True)
+    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=column, row=1, col=1,ticks="outside", tickwidth=1, tickcolor='black', ticklen=5,
+    zeroline=True,linecolor = "#000000",zerolinewidth=2,  # Sets color of X-axis line
+    showgrid = True, 
+    showline = True,
+    gridwidth=1,       
+    gridcolor='lightpink',
+    showticklabels=True)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text': column.capitalize() +" de forma anual por empresa",
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",y=1.1,x=0.02),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+    return fig
 
 st.set_page_config(
     page_title="Reporte de industria 2021", page_icon=LogoComision,layout="wide",initial_sidebar_state="expanded")
@@ -171,13 +206,19 @@ st.markdown("""<style type="text/css">
       padding: 0.6rem 0.6rem;
       font-size: 16px;
     }
-
     .imagen-flotar{float:left;}
     @media (max-width:1230px){
         .barra-superior{height:160px;} 
         .main, .e1fqkh3o9 > div{margin-top:215px;}
         .imagen-flotar{float:none}
         h1{top:160px;}}       
+    .IconoTitulo img {
+        margin-right:10px;
+    }
+    .IconoTitulo h4, .IconoTitulo img {
+        display:inline-block;
+        vertical-align:middle;
+    }    
     </style>""", unsafe_allow_html=True)  
 st.markdown("""
 <div class="barra-superior">
@@ -190,6 +231,7 @@ st.markdown("""
         </a>
     </div>
 </div>""",unsafe_allow_html=True)
+
 
 ########################################### APIs
 ## Telefonía móvil
@@ -265,7 +307,7 @@ Claro aumentó su participación, pasando de 37,7% en
     if select_secResumenDinTic == 'Servicios móviles':
         bla="https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true"
         st.markdown(r"""<div class="titulo"><h3>Servicios móviles</h3></div>""",unsafe_allow_html=True)
-        st.markdown("Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información")
+        st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
 
         ServiciosMóviles=st.radio('Servicios',['Telefonía móvil','Internet móvil','Mensajería móvil'],horizontal=True)
             
@@ -274,8 +316,8 @@ Claro aumentó su participación, pasando de 37,7% en
             
         if ServiciosMóviles=='Telefonía móvil':
             EmpresasTelMovil=['830122566','800153993','830114921','899999115']
-            st.markdown("<h4 style=text-align:left;>Telefonía móvil</h4>",unsafe_allow_html=True)   
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)          
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4>Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+            #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)          
             AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['abonados']>0]
             AbonadosTelMovil.insert(0,'periodo',AbonadosTelMovil['anno']+'-T'+AbonadosTelMovil['trimestre'])
             #
@@ -300,10 +342,31 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col2:
                     BarrasAbonadosTelmovil=st.button('Diagrama de barras')
                 if LineaTiempoAbonadosTelmovil:    
-                    AbonacTelMovil=AbonadosTelMovil.groupby(['periodo','empresa','id_empresa'])['abonados'].sum().reset_index()
-                    AbonacTelMovil=AbonacTelMovil[AbonacTelMovil['id_empresa'].isin(EmpresasTelMovil)]
-                    st.plotly_chart(Plotlylineatiempo(AbonacTelMovil,'abonados'), use_container_width=True)
-
+                    AboTrimTelMovil=AbonadosTelMovil.groupby(['periodo','empresa','id_empresa'])['abonados'].sum().reset_index()
+                    AboTrimTelMovil=AboTrimTelMovil[AboTrimTelMovil['id_empresa'].isin(EmpresasTelMovil)]
+                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovil,'abonados'), use_container_width=True)
+                if BarrasAbonadosTelmovil:
+                    AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()
+                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['id_empresa'].isin(['830122566','800153993','830114921']))&(AboAnualTelMovl['anno'].isin(['2020','2021']))]
+                    st.plotly_chart(PlotlyBarras(AboAnualTelMovl,'abonados'),use_container_width=True)
+            
+            if ServiciosTelMovil=='Tráfico':
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoTraficoTelmovil=st.button('Línea de tiempo')
+                with col2:
+                    BarrasTraficoTelmovil=st.button('Diagrama de barras')
+                if LineaTiempoTraficoTelmovil:    
+                    TrafTrimTelMovil=TraficoTelMovil.groupby(['periodo','empresa','id_empresa'])['trafico'].sum().reset_index()
+                    TrafTrimTelMovil=TrafTrimTelMovil[TrafTrimTelMovil['id_empresa'].isin(EmpresasTelMovil)]
+                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovil,'trafico'), use_container_width=True)
+                if BarrasTraficoTelmovil:
+                    TrafAnualTelMovl=TraficoTelMovil.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
+                    TrafAnualTelMovl=TrafAnualTelMovl[(TrafAnualTelMovl['id_empresa'].isin(['830122566','800153993','830114921']))&(TrafAnualTelMovl['anno'].isin(['2020','2021']))]
+                    st.plotly_chart(PlotlyBarras(TrafAnualTelMovl,'trafico'),use_container_width=True)  
+ 
+                    
+                    
         if ServiciosMóviles=='Internet móvil':
 
             TraficoInternetMovil=TraficoInternetMovil[TraficoInternetMovil['trafico']>0]
@@ -316,8 +379,8 @@ Claro aumentó su participación, pasando de 37,7% en
             
             col1,col2 = st.columns(2)
             #with col1:
-            st.markdown("<h4 style=text-align:center;>Internet móvil</h4>",unsafe_allow_html=True) 
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)        
+            st.markdown(r"""<div class='IconoTitulo'><img height="60px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
+            #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)        
             #with col2:
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
                             
@@ -335,7 +398,8 @@ Claro aumentó su participación, pasando de 37,7% en
                 AgGrid(Ingnac)    
  
         if ServiciosMóviles=='Mensajería móvil':
-            st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true",width=170)
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
+            #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true",width=170)
  
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector Postal")
