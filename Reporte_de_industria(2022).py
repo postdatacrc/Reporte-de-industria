@@ -219,6 +219,7 @@ st.markdown("""<style type="text/css">
     .IconoTitulo h4, .IconoTitulo img {
         display:inline-block;
         vertical-align:middle;
+        text-align:center;
     }    
     </style>""", unsafe_allow_html=True)  
 st.markdown("""
