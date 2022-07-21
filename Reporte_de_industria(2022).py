@@ -179,6 +179,7 @@ st.markdown("""<style type="text/css">
         text-decoration-style: double;
         color: #27348b;
     }    
+    
     .titulo {
       background: #fffdf7;
       display: flex;
@@ -193,7 +194,7 @@ st.markdown("""<style type="text/css">
       border-bottom: solid 3px;
       flex: 1;
     }   
-
+    h4{text-align:center;}
     .edgvbvh9:hover {
       color:rgb(255,255,255);
       border-color:rgb(255,75,75);
