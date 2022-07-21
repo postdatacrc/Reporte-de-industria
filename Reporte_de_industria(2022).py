@@ -214,6 +214,7 @@ st.markdown("""<style type="text/css">
         h1{top:160px;}}       
     .IconoTitulo img {
         margin-right:10px;
+        text-align:center;
     }
     .IconoTitulo h4, .IconoTitulo img {
         display:inline-block;
@@ -316,7 +317,7 @@ Claro aumentó su participación, pasando de 37,7% en
             
         if ServiciosMóviles=='Telefonía móvil':
             EmpresasTelMovil=['830122566','800153993','830114921','899999115']
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4>Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
             #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)          
             AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['abonados']>0]
             AbonadosTelMovil.insert(0,'periodo',AbonadosTelMovil['anno']+'-T'+AbonadosTelMovil['trimestre'])
