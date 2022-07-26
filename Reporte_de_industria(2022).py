@@ -246,13 +246,13 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-@st.cache(ttl=24*3600)
+#@st.cache(ttl=24*3600)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-@st.cache(ttl=24*3600)
+#@st.cache(ttl=24*3600)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
@@ -530,8 +530,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','(COP/Min)',1,'Ingresos/Tráfico (SMS) anual por empresa'),use_container_width=True)  
 
                     
-                    
-                    
+                                       
                     
         if ServiciosMóviles=='Internet móvil':
 
@@ -565,7 +564,6 @@ Claro aumentó su participación, pasando de 37,7% en
  
         if ServiciosMóviles=='Mensajería móvil':
             st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
-            #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true",width=170)
  
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector Postal")
