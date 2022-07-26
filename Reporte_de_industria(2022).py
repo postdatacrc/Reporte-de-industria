@@ -412,19 +412,33 @@ Claro aumentó su participación, pasando de 37,7% en
                     IngresosTelMovil2=IngresosTelMovil2[IngresosTelMovil2['ingresos']>0]
                     IngresosTelMovil2Agg=IngresosTelMovil2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
                     IngresosTelMovil2Agg['periodo_formato']=IngresosTelMovil2Agg['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','(Miles de Millones)',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
-
-                    ##
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','(Miles de Millones de COP)',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    ## Limpieza Abonados
                     AbonadosTelMovilB2=AbonadosTelMovil.groupby(['periodo','anno','trimestre','empresa','id_empresa'])['abonados'].sum().reset_index()
                     AbonadosTelMovilB2['modalidad']='TOTAL'
                     AbonadosTelMovilTOTAL2=pd.concat([AbonadosTelMovil,AbonadosTelMovilB2])
-                    ##
+                    ## Ingresos por Abonado
                     IngresosPorAbonadoTelMovil=IngresosTelMovil2.merge(AbonadosTelMovilTOTAL2,left_on=['periodo','id_empresa','modalidad'],right_on=['periodo','id_empresa','modalidad'])
                     IngresosPorAbonadoTelMovil['Ingresos/Abonado']=round(IngresosPorAbonadoTelMovil['ingresos']/IngresosPorAbonadoTelMovil['abonados'],1)
                     IngresosPorAbonadoTelMovil2=IngresosPorAbonadoTelMovil.groupby(['periodo','modalidad'])['Ingresos/Abonado'].sum().reset_index()
                     IngresosPorAbonadoTelMovil2['periodo_formato']=IngresosPorAbonadoTelMovil2['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
-
+                    ## Limpieza tráfico
+                    TraficoTelMovil=TraficoTelMovil.rename(columns={'tipo_trafico':'modalidad'})
+                    TraficoTelMovil['modalidad']=TraficoTelMovil['modalidad'].replace({'Tráfico pospago':'POSPAGO','Tráfico prepago':'PREPAGO'})
+                    TraficoTelMovilB2=TraficoTelMovil.groupby(['periodo','anno','trimestre','empresa','id_empresa'])['trafico'].sum().reset_index()
+                    TraficoTelMovilB2['modalidad']='TOTAL'
+                    TraficoTelMovilTOTAL2=pd.concat([TraficoTelMovil,TraficoTelMovilB2])
+                    ##Ingresos por Tráfico
+                    IngresosPorTraficoTelMovil=IngresosTelMovil2.merge(TraficoTelMovilTOTAL2,left_on=['periodo','id_empresa','modalidad'],right_on=['periodo','id_empresa','modalidad'])
+                    IngresosPorTraficoTelMovil['Ingresos/Trafico']=round(IngresosPorTraficoTelMovil['ingresos']/IngresosPorTraficoTelMovil['trafico'],1)
+                    IngresosPorTraficoTelMovil2=IngresosPorTraficoTelMovil.groupby(['periodo','modalidad'])['Ingresos/Trafico'].sum().reset_index()
+                    IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
+                    
+                    col1,col2=st.columns(2)
+                    with col1:
+                        st.plotly_chart(Plotlylineatiempo(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','(COP)',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    with col2:
+                        st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelMovil2,'Ingresos/Trafico','(COP/Min)',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                     
         if ServiciosMóviles=='Internet móvil':
 
