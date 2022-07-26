@@ -50,23 +50,32 @@ def periodoformato(x):
     return "{1}-{0}".format(*x.split('-')).replace('-','<br>')
 
 def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
-    maxdf=df[column].max()/escalamiento+10
-    modalidad=df['modalidad'].unique().tolist()
+    maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3
+    mindf=df[column].min()/escalamiento-10
     fig = make_subplots(rows=1, cols=1)
-    for i,elem in enumerate(modalidad):
-        fig.add_trace(go.Scatter(x=df[df['modalidad']==elem]['periodo_formato'],
-        y=df[df['modalidad']==elem][column]/escalamiento,text=df[df['modalidad']=='elem']['modalidad'],line=dict(color=colores[i]),
-        mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
-        '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
-        '<br><b>Periodo</b>: %{x}<br>'+                         
-        column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+    if 'modalidad' in df.columns.tolist():
+        modalidad=df['modalidad'].unique().tolist()
+        for i,elem in enumerate(modalidad):
+            fig.add_trace(go.Scatter(x=df[df['modalidad']==elem]['periodo_formato'],
+            y=df[df['modalidad']==elem][column]/escalamiento,text=df[df['modalidad']=='elem']['modalidad'],line=dict(color=colores[i]),
+            mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
+            '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
+            '<br><b>Periodo</b>: %{x}<br>'+                         
+            column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=column+' '+unidad, row=1, col=1)
+    
+    else:
+        fig.add_trace(go.Scatter(x=df['periodo_formato'],
+                                y=df[column]/escalamiento,line=dict(color='rgb(102,204,0)'),mode='lines+markers',name=column,
+                                hovertemplate ='<br><b>Periodo</b>: %{x}<br><extra></extra>'+                         
+            column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=column+' '+unidad, row=1, col=1)                        
     fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=column+' '+unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
     fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
     title={
-    'text':column.capitalize() +" por periodo y por modalidad",
+    'text':column.capitalize() +" por periodo",
     'y':0.95,
     'x':0.5,
     'xanchor': 'center',
@@ -76,7 +85,8 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
     #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     fig.update_layout(yaxis_tickformat ='d')
-    return fig    
+    return fig
+    
 def PlotlyBarras(df,column,unidad,escalamiento,titulo):   
     fig = make_subplots(rows=1, cols=1) 
     maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.2
@@ -97,8 +107,8 @@ def PlotlyBarras(df,column,unidad,escalamiento,titulo):
     'x':0.5,
     'xanchor': 'center',
     'yanchor': 'top'})        
-    fig.update_layout(legend=dict(orientation="h",y=1.1,x=0.02),showlegend=True)
-    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    fig.update_layout(legend=dict(orientation="h",y=1.15,x=0.02),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     return fig
 
@@ -236,13 +246,13 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache()
+@st.cache(ttl=24*3600)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-#@st.cache()
+@st.cache(ttl=24*3600)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
@@ -404,41 +414,124 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col2:
                     BarrasIngresosTelmovil=st.button('Diagrama de barras')
                 
+                IngresosTelMovil=IngresosTelMovil.astype({'ingresos_totales':'int64','ingresos_prepago':'int64','ingresos_pospago':'int64'})
+                IngresosTelMovil2=pd.melt(IngresosTelMovil,id_vars=['periodo','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
+                                                                                        'ingresos_pospago'],var_name='modalidad', value_name='ingresos')
+                IngresosTelMovil2['modalidad']=IngresosTelMovil2['modalidad'].replace({'ingresos_totales':'TOTAL','ingresos_prepago':'PREPAGO','ingresos_pospago':'POSPAGO'})
+                IngresosTelMovil2=IngresosTelMovil2[IngresosTelMovil2['ingresos']>0]
+                IngresosTelMovil2Agg=IngresosTelMovil2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
+                IngresosTelMovil2Agg['periodo_formato']=IngresosTelMovil2Agg['periodo'].apply(periodoformato)
+                
+                ## Limpieza Abonados
+                AbonadosTelMovilB2=AbonadosTelMovil.groupby(['periodo','anno','trimestre','empresa','id_empresa'])['abonados'].sum().reset_index()
+                AbonadosTelMovilB2['modalidad']='TOTAL'
+                AbonadosTelMovilTOTAL2=pd.concat([AbonadosTelMovil,AbonadosTelMovilB2])
+                ## Ingresos por Abonado
+                IngresosPorAbonadoTelMovil=IngresosTelMovil2.merge(AbonadosTelMovilTOTAL2,left_on=['periodo','id_empresa','modalidad'],right_on=['periodo','id_empresa','modalidad'])
+                IngresosPorAbonadoTelMovil2=IngresosPorAbonadoTelMovil.groupby(['periodo','modalidad']).agg({'ingresos':'sum','abonados':'sum'}).reset_index()
+                IngresosPorAbonadoTelMovil2['Ingresos/Abonado']=round(IngresosPorAbonadoTelMovil2['ingresos']/IngresosPorAbonadoTelMovil2['abonados'],1)
+                IngresosPorAbonadoTelMovil2['periodo_formato']=IngresosPorAbonadoTelMovil2['periodo'].apply(periodoformato)
+                ## Limpieza tráfico
+                TraficoTelMovil=TraficoTelMovil.rename(columns={'tipo_trafico':'modalidad'})
+                TraficoTelMovil['modalidad']=TraficoTelMovil['modalidad'].replace({'Tráfico pospago':'POSPAGO','Tráfico prepago':'PREPAGO'})
+                TraficoTelMovilB2=TraficoTelMovil.groupby(['periodo','anno','trimestre','empresa','id_empresa'])['trafico'].sum().reset_index()
+                TraficoTelMovilB2['modalidad']='TOTAL'
+                TraficoTelMovilTOTAL2=pd.concat([TraficoTelMovil,TraficoTelMovilB2])
+                ##Ingresos por Tráfico
+                IngresosPorTraficoTelMovil=IngresosTelMovil2.merge(TraficoTelMovilTOTAL2,left_on=['periodo','id_empresa','modalidad'],right_on=['periodo','id_empresa','modalidad'])
+                IngresosPorTraficoTelMovil2=IngresosPorTraficoTelMovil.groupby(['periodo','modalidad']).agg({'ingresos':'sum','trafico':'sum'}).reset_index()
+                IngresosPorTraficoTelMovil2['Ingresos/Trafico']=round(IngresosPorTraficoTelMovil2['ingresos']/IngresosPorTraficoTelMovil2['trafico'],1)
+                IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
+
                 if LineaTiempoIngresosTelmovil:
-                    IngresosTelMovil=IngresosTelMovil.astype({'ingresos_totales':'int64','ingresos_prepago':'int64','ingresos_pospago':'int64'})
-                    IngresosTelMovil2=pd.melt(IngresosTelMovil,id_vars=['periodo','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
-                                                                                            'ingresos_pospago'],var_name='modalidad', value_name='ingresos')
-                    IngresosTelMovil2['modalidad']=IngresosTelMovil2['modalidad'].replace({'ingresos_totales':'TOTAL','ingresos_prepago':'PREPAGO','ingresos_pospago':'POSPAGO'})
-                    IngresosTelMovil2=IngresosTelMovil2[IngresosTelMovil2['ingresos']>0]
-                    IngresosTelMovil2Agg=IngresosTelMovil2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
-                    IngresosTelMovil2Agg['periodo_formato']=IngresosTelMovil2Agg['periodo'].apply(periodoformato)
                     st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','(Miles de Millones de COP)',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
-                    ## Limpieza Abonados
-                    AbonadosTelMovilB2=AbonadosTelMovil.groupby(['periodo','anno','trimestre','empresa','id_empresa'])['abonados'].sum().reset_index()
-                    AbonadosTelMovilB2['modalidad']='TOTAL'
-                    AbonadosTelMovilTOTAL2=pd.concat([AbonadosTelMovil,AbonadosTelMovilB2])
-                    ## Ingresos por Abonado
-                    IngresosPorAbonadoTelMovil=IngresosTelMovil2.merge(AbonadosTelMovilTOTAL2,left_on=['periodo','id_empresa','modalidad'],right_on=['periodo','id_empresa','modalidad'])
-                    IngresosPorAbonadoTelMovil['Ingresos/Abonado']=round(IngresosPorAbonadoTelMovil['ingresos']/IngresosPorAbonadoTelMovil['abonados'],1)
-                    IngresosPorAbonadoTelMovil2=IngresosPorAbonadoTelMovil.groupby(['periodo','modalidad'])['Ingresos/Abonado'].sum().reset_index()
-                    IngresosPorAbonadoTelMovil2['periodo_formato']=IngresosPorAbonadoTelMovil2['periodo'].apply(periodoformato)
-                    ## Limpieza tráfico
-                    TraficoTelMovil=TraficoTelMovil.rename(columns={'tipo_trafico':'modalidad'})
-                    TraficoTelMovil['modalidad']=TraficoTelMovil['modalidad'].replace({'Tráfico pospago':'POSPAGO','Tráfico prepago':'PREPAGO'})
-                    TraficoTelMovilB2=TraficoTelMovil.groupby(['periodo','anno','trimestre','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    TraficoTelMovilB2['modalidad']='TOTAL'
-                    TraficoTelMovilTOTAL2=pd.concat([TraficoTelMovil,TraficoTelMovilB2])
-                    ##Ingresos por Tráfico
-                    IngresosPorTraficoTelMovil=IngresosTelMovil2.merge(TraficoTelMovilTOTAL2,left_on=['periodo','id_empresa','modalidad'],right_on=['periodo','id_empresa','modalidad'])
-                    IngresosPorTraficoTelMovil['Ingresos/Trafico']=round(IngresosPorTraficoTelMovil['ingresos']/IngresosPorTraficoTelMovil['trafico'],1)
-                    IngresosPorTraficoTelMovil2=IngresosPorTraficoTelMovil.groupby(['periodo','modalidad'])['Ingresos/Trafico'].sum().reset_index()
-                    IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
-                    
                     col1,col2=st.columns(2)
                     with col1:
                         st.plotly_chart(Plotlylineatiempo(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','(COP)',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                     with col2:
                         st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelMovil2,'Ingresos/Trafico','(COP/Min)',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+  
+                if BarrasIngresosTelmovil:
+                    IngresosTelMovil3=pd.melt(IngresosTelMovil,id_vars=['anno','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
+                                                                                        'ingresos_pospago'],var_name='modalidad', value_name='ingresos')
+                    IngresosTelMovil3=IngresosTelMovil3[IngresosTelMovil3['modalidad']=='ingresos_totales']                                                                  
+                    IngresosTelMovil3Agg=IngresosTelMovil3.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()    
+                    IngresosTelMovil3Agg=IngresosTelMovil3Agg[(IngresosTelMovil3Agg['id_empresa'].isin(['830122566','800153993','830114921']))&(IngresosTelMovil3Agg['anno'].isin(['2020','2021']))]
+                    st.plotly_chart(PlotlyBarras(IngresosTelMovil3Agg,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
+                    ##
+                    IngresosPorAbonadoTelMovil=IngresosPorAbonadoTelMovil[(IngresosPorAbonadoTelMovil['trimestre']=='4')&(IngresosPorAbonadoTelMovil['modalidad']=='TOTAL')]
+                    IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil.groupby(['anno','empresa_x','id_empresa']).agg({'ingresos':'sum','abonados':'sum'}).reset_index()
+                    IngresosPorAbonadoTelMovil3['Ingresos/Abonado']=round(IngresosPorAbonadoTelMovil3['ingresos']/IngresosPorAbonadoTelMovil3['abonados'],2)
+                    IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil3[(IngresosPorAbonadoTelMovil3['id_empresa'].isin(['830122566','800153993','830114921']))&(IngresosPorAbonadoTelMovil3['anno'].isin(['2020','2021']))]
+                    IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil3.rename(columns={'empresa_x':'empresa'})
+                    ##
+                    IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil.groupby(['anno','empresa_x','id_empresa']).agg({'ingresos':'sum','trafico':'sum'}).reset_index()
+                    IngresosPorTraficoTelMovil3['Ingresos/Trafico']=round(IngresosPorTraficoTelMovil3['ingresos']/IngresosPorTraficoTelMovil3['trafico'],2)
+                    IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil3[(IngresosPorTraficoTelMovil3['id_empresa'].isin(['830122566','800153993','830114921']))&(IngresosPorTraficoTelMovil3['anno'].isin(['2020','2021']))]
+                    IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil3.rename(columns={'empresa_x':'empresa'})
+                    
+                    
+                    col1,col2=st.columns(2)
+                    with col1:
+                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','(COP)',1,'Ingresos/Abonado anual por empresa'),use_container_width=True)  
+                    with col2:
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','(COP/Min)',1,'Ingresos/Trafico anual por empresa'),use_container_width=True)  
+
+                    
+            if ServiciosTelMovil=='Tráfico SMS':
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoTraficoSMSTelmovil=st.button('Línea de tiempo')
+                with col2:
+                    BarrasTraficoSMSTelmovil=st.button('Diagrama de barras') 
+                        
+                if LineaTiempoTraficoSMSTelmovil:
+                    TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
+                    TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico (SMS)'].sum().reset_index()
+                    TraficoSMSTelMovilAgg['periodo_formato']=TraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','(Millones)',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if BarrasTraficoSMSTelmovil:
+                    TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
+                    TraficoSMSTelMovilEmpresa=TraficoSMSTelMovil.groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index()  
+                    TraficoSMSTelMovilEmpresa=TraficoSMSTelMovilEmpresa[(TraficoSMSTelMovilEmpresa['id_empresa'].isin(['830122566','800153993','830114921']))&(TraficoSMSTelMovilEmpresa['anno'].isin(['2020','2021']))]
+                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','(Millones)',1e6,'Tráfico (SMS) anual por empresa'),use_container_width=True)  
+
+            if ServiciosTelMovil=='Ingresos SMS':
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoIngresosSMSTelmovil=st.button('Línea de tiempo')
+                with col2:
+                    BarrasIngresosSMSTelmovil=st.button('Diagrama de barras')
+                ## Limpieza Ingresos SMS    
+                IngresosSMSTelMovilAgg=IngresosSMSTelMovil.groupby(['periodo'])['ingresos'].sum().reset_index()
+                IngresosSMSTelMovilAgg['periodo_formato']=IngresosSMSTelMovilAgg['periodo'].apply(periodoformato)
+                IngresosSMSTelMovilEmpresa=IngresosSMSTelMovil.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                IngresosSMSTelMovilEmpresa=IngresosSMSTelMovilEmpresa[(IngresosSMSTelMovilEmpresa['id_empresa'].isin(['830122566','800153993','830114921']))&(IngresosSMSTelMovilEmpresa['anno'].isin(['2020','2021']))]
+                
+                ## Limpieza Tráfico SMS
+                TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico'})
+                TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico'].sum().reset_index()
+                ## Ingresos/TraficoSMS
+                IngresosPorTraficoSMSTelMovil=IngresosSMSTelMovil.merge(TraficoSMSTelMovil, left_on=['periodo','anno','trimestre','empresa','id_empresa'],right_on=['periodo','anno','trimestre','empresa','id_empresa'])
+                IngresosPorTraficoSMSTelMovilAgg=IngresosPorTraficoSMSTelMovil.groupby(['periodo']).agg({'ingresos':'sum','tráfico':'sum'}).reset_index()
+                IngresosPorTraficoSMSTelMovilAgg['Ingresos/Tráfico']=round(IngresosPorTraficoSMSTelMovilAgg['ingresos']/IngresosPorTraficoSMSTelMovilAgg['tráfico'],2)
+                IngresosPorTraficoSMSTelMovilAgg['periodo_formato']=IngresosPorTraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
+                
+                IngresosPorTraficoSMSTelMovilEmp=IngresosPorTraficoSMSTelMovil.groupby(['anno','empresa','id_empresa']).agg({'ingresos':'sum','tráfico':'sum'}).reset_index()
+                IngresosPorTraficoSMSTelMovilEmp=IngresosPorTraficoSMSTelMovilEmp[(IngresosPorTraficoSMSTelMovilEmp['id_empresa'].isin(['830122566','800153993','830114921']))&(IngresosPorTraficoSMSTelMovilEmp['anno'].isin(['2020','2021']))]
+                IngresosPorTraficoSMSTelMovilEmp['Ingresos/Tráfico']=round(IngresosPorTraficoSMSTelMovilEmp['ingresos']/IngresosPorTraficoSMSTelMovilEmp['tráfico'],2)
+
+                ## 
+                if LineaTiempoIngresosSMSTelmovil:
+                    st.plotly_chart(Plotlylineatiempo(IngresosSMSTelMovilAgg,'ingresos','(Miles de Millones de COP)',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoSMSTelMovilAgg,'Ingresos/Tráfico','(COP/Min)',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if BarrasIngresosSMSTelmovil:                    
+                    st.plotly_chart(PlotlyBarras(IngresosSMSTelMovilEmpresa,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos (SMS) anuales por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','(COP/Min)',1,'Ingresos/Tráfico (SMS) anual por empresa'),use_container_width=True)  
+
+                    
+                    
+                    
                     
         if ServiciosMóviles=='Internet móvil':
 
