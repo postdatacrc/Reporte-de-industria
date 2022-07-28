@@ -246,13 +246,13 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600)
+@st.cache(ttl=24*3600)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600)
+@st.cache(ttl=24*3600)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
@@ -380,8 +380,6 @@ Claro aumentó su participación, pasando de 37,7% en
                     figPieTelMovil.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent')
                     figPieTelMovil.update_layout(uniformtext_minsize=25,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3))
                     st.plotly_chart(figPieTelMovil)
-
-                
             
             if ServiciosTelMovil=='Tráfico':
                 
@@ -476,7 +474,6 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','(COP)',1,'Ingresos/Abonado anual por empresa'),use_container_width=True)  
                     with col2:
                         st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','(COP/Min)',1,'Ingresos/Trafico anual por empresa'),use_container_width=True)  
-
                     
             if ServiciosTelMovil=='Tráfico SMS':
                 col1,col2=st.columns(2)
@@ -537,6 +534,10 @@ Claro aumentó su participación, pasando de 37,7% en
             TraficoInternetMovil=TraficoInternetMovil[TraficoInternetMovil['trafico']>0]
             IngresosInternetmovil=IngresosInternetmovil[IngresosInternetmovil['ingresos']>0]
             AccesosInternetmovil=AccesosInternetmovil[AccesosInternetmovil['accesos']>0]
+            AccesosInternetmovil=AccesosInternetmovil.rename(columns={'sum_cantidad_abonados':'ABONADOS','sum_cantidad_suscriptores':'SUSCRIPTORES','accesos':'TOTAL'})
+            AccesosInternetmovil['empresa']=AccesosInternetmovil['empresa'].replace({'COLOMBIA TELECOMUNICACIONES S.A. E.S.P.':'COLOMBIA TELECOMUNICACIONES S.A. ESP',
+            AccesosInternetmovil['empresa'].unique().tolist()[2]:'COLOMBIA MOVIL S.A. E.S.P.','EMPRESA DE TELECOMUNICACIONES DE BOGOTA S.A. ESP':'EMPRESA DE TELECOMUNICACIONES DE BOGOTÁ S.A. ESP.',
+            'AVANTEL S.A.S':'AVANTEL S.A.S.'})
             
             TraficoInternetMovil.insert(0,'periodo',TraficoInternetMovil['anno']+'-T'+TraficoInternetMovil['trimestre'])
             IngresosInternetmovil.insert(0,'periodo',IngresosInternetmovil['anno']+'-T'+IngresosInternetmovil['trimestre'])
@@ -549,17 +550,44 @@ Claro aumentó su participación, pasando de 37,7% en
             #with col2:
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
                             
-            if ServiciosIntMovil=='Accesos':
-                Accnac=AccesosInternetmovil.groupby(['periodo','empresa','id_empresa'])['accesos'].sum().reset_index()              
-                st.plotly_chart(Plotlylineatiempo(Accnac,'accesos'), use_container_width=True)
-                AgGrid(Accnac)
+            if ServiciosIntMovil=='Accesos':  
+                AccesosInternetmovil2=pd.melt(AccesosInternetmovil,id_vars=['periodo','anno','trimestre','id_empresa','empresa'],value_vars=['ABONADOS','SUSCRIPTORES',
+                                                                                        'TOTAL'],var_name='modalidad', value_name='accesos')
+
+                col1,col2,col3=st.columns(3)
+                with col1:
+                    LineaTiempoAccesosIntmovil=st.button('Línea de tiempo')
+                with col2:
+                    BarrasAccesosIntmovil=st.button('Diagrama de barras')
+                with col3:
+                    PieAccesosIntmovil=st.button('Participaciones')    
+                 
+                if LineaTiempoAccesosIntmovil:
+                    AccesosInternetmovilNac=AccesosInternetmovil2.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
+                    AccesosInternetmovilNac['periodo_formato']=AccesosInternetmovilNac['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','(Millones)',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if BarrasAccesosIntmovil:
+                    AccesosInternetmovilEmp=AccesosInternetmovil2[(AccesosInternetmovil2['modalidad']=='TOTAL')&(AccesosInternetmovil2['trimestre']=='4')&(AccesosInternetmovil2['anno'].isin(['2020','2021']))&(AccesosInternetmovil2['id_empresa'].isin(['830122566','800153993','830114921']))]
+                    AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
+                    st.plotly_chart(PlotlyBarras(AccesosInternetmovilEmp,'accesos','(Millones)',1e6,'Accesos anuales por empresa'),use_container_width=True)
+                if PieAccesosIntmovil:
+                    AccesosInternetmovilPie=AccesosInternetmovil2[(AccesosInternetmovil2['modalidad']=='TOTAL')&(AccesosInternetmovil2['trimestre']=='4')&(AccesosInternetmovil2['anno'].isin(['2021']))]
+                    AccesosInternetmovilPie=AccesosInternetmovilPie.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
+                    AccesosInternetmovilPie['empresa']=AccesosInternetmovilPie['empresa'].replace(nombresComerciales)
+                    AccesosInternetmovilPie['participacion']=round(100*AccesosInternetmovilPie['accesos']/AccesosInternetmovilPie['accesos'].sum(),1)
+                    figPieIntMovil = px.pie(AccesosInternetmovilPie, values='accesos', names='empresa', color='empresa',
+                                 color_discrete_map=Colores_pie)
+                    figPieIntMovil.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent')
+                    figPieIntMovil.update_layout(uniformtext_minsize=24,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3))
+                    st.plotly_chart(figPieIntMovil)
+                
             if ServiciosIntMovil=='Tráfico':
                 Trafnac=TraficoInternetMovil.groupby(['periodo','empresa','id_empresa'])['trafico'].sum().reset_index()              
-                st.plotly_chart(Plotlylineatiempo(Trafnac,'trafico'), use_container_width=True)
+                #st.plotly_chart(Plotlylineatiempo(Trafnac,'trafico'), use_container_width=True)
                 AgGrid(Trafnac)
             if ServiciosIntMovil=='Ingresos':
                 Ingnac=IngresosInternetmovil.groupby(['periodo','empresa','id_empresa'])['ingresos'].sum().reset_index()              
-                st.plotly_chart(Plotlylineatiempo(Ingnac,'ingresos'), use_container_width=True)
+                #st.plotly_chart(Plotlylineatiempo(Ingnac,'ingresos'), use_container_width=True)
                 AgGrid(Ingnac)    
  
         if ServiciosMóviles=='Mensajería móvil':
