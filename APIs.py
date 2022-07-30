@@ -117,7 +117,6 @@ def ReadApiIMAccesos():
     #IM_ACCESOS.drop(columns=['sum_cantidad_suscriptores','sum_cantidad_abonados'], inplace=True)
     return IM_ACCESOS
 AccesosInternetmovil=ReadApiIMAccesos()
-
 ##Ingresos
 
 def ReadApiIMIng():
@@ -131,6 +130,7 @@ def ReadApiIMIng():
     json_base_cf = json.loads(response_base_cf.read())
     IMCF_ING = pd.DataFrame(json_base_cf['result']['records'])
     IMCF_ING.sum_ingresos = IMCF_ING.sum_ingresos.astype('int64')
+    IMCF_ING=IMCF_ING.rename(columns={'sum_ingresos':'CARGO FIJO'})
     resourceid_dda = '60a55889-ba71-45ff-b68f-33b503da36f2'
     consulta_dda='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_dda + ''\
                 '&filters[anno]=' + '2018,2019,2020,2021' + ''\
@@ -141,8 +141,9 @@ def ReadApiIMIng():
     json_base_dda = json.loads(response_base_dda.read())
     IMDDA_ING = pd.DataFrame(json_base_dda['result']['records'])
     IMDDA_ING.sum_ingresos = IMDDA_ING.sum_ingresos.astype('int64')
+    IMDDA_ING=IMDDA_ING.rename(columns={'sum_ingresos':'DEMANDA'})
     IM_ING=IMDDA_ING.merge(IMCF_ING, on=['anno','trimestre','id_empresa','empresa'])
-    IM_ING['ingresos']=IM_ING['sum_ingresos_y'].fillna(0)+IM_ING['sum_ingresos_x']
+    IM_ING['ingresos']=IM_ING['CARGO FIJO'].fillna(0)+IM_ING['DEMANDA']
     #IM_ING.drop(columns=['sum_ingresos_y','sum_ingresos_x'], inplace=True)
     return IM_ING
 IngresosInternetmovil=ReadApiIMIng()
@@ -160,6 +161,7 @@ def ReadApiIMTraf():
     json_base_cf = json.loads(response_base_cf.read())
     IMCF_TRAF = pd.DataFrame(json_base_cf['result']['records'])
     IMCF_TRAF.sum_trafico = IMCF_TRAF.sum_trafico.astype('int64')
+    IMCF_TRAF=IMCF_TRAF.rename(columns={'sum_trafico':'trafico cargo fijo'})
     resourceid_dda = 'c0be7034-29f8-4400-be54-c4aafe5df606'
     consulta_dda='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_dda + ''\
                 '&filters[anno]=' + '2018,2019,2020,2021' + ''\
@@ -170,8 +172,50 @@ def ReadApiIMTraf():
     json_base_dda = json.loads(response_base_dda.read())
     IMDDA_TRAF = pd.DataFrame(json_base_dda['result']['records'])
     IMDDA_TRAF.sum_trafico = IMDDA_TRAF.sum_trafico.astype('int64')
+    IMDDA_TRAF=IMDDA_TRAF.rename(columns={'sum_trafico':'trafico demanda'})
     IM_TRAF=IMDDA_TRAF.merge(IMCF_TRAF, on=['anno','trimestre','id_empresa','empresa'])
-    IM_TRAF['trafico']=IM_TRAF['sum_trafico_y'].fillna(0)+IM_TRAF['sum_trafico_x']
+    IM_TRAF['trafico']=IM_TRAF['trafico cargo fijo'].fillna(0)+IM_TRAF['trafico demanda']
     #IM_TRAF.drop(columns=['sum_trafico_y','sum_trafico_x'], inplace=True)
     return IM_TRAF
 TraficoInternetMovil=ReadApiIMTraf()
+
+########################################################### Internet fijo
+
+## Accesos Corporativos
+def ReadApiINTFAccesosCorp():
+    consulta_anno='2018','2019','2020','2021'
+    resourceid = '540ea080-bf16-4d63-911f-3b4814e8e4f1'
+    INTF_ACCESOS = pd.DataFrame()
+    for anno in consulta_anno:
+        consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+                 '&filters[id_segmento]=107,108&filters[anno]=' + anno + ''\
+                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+                 '&group_by=anno,trimestre,id_empresa,empresa'\
+                 '&sum=accesos' 
+        response_base = urlopen(consulta + '&limit=10000000') 
+        json_base = json.loads(response_base.read())
+        ACCESOS = pd.DataFrame(json_base['result']['records'])
+        INTF_ACCESOS = INTF_ACCESOS.append(ACCESOS)
+    INTF_ACCESOS.sum_accesos = INTF_ACCESOS.sum_accesos.astype('int64')
+    INTF_ACCESOS = INTF_ACCESOS.rename(columns={'sum_accesos':'accesos'})
+    return INTF_ACCESOS
+AccesosCorpIntFijo=ReadApiINTFAccesosCorp()
+## Accesos Residenciales
+def ReadApiINTFAccesosRes():
+    consulta_anno='2018','2019','2020','2021'
+    resourceid = '540ea080-bf16-4d63-911f-3b4814e8e4f1'
+    INTF_ACCESOS = pd.DataFrame()
+    for anno in consulta_anno:
+        consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+                 '&filters[id_segmento]=101,102,103,104,105,106&filters[anno]=' + anno + ''\
+                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+                 '&group_by=anno,trimestre,id_empresa,empresa'\
+                 '&sum=accesos' 
+        response_base = urlopen(consulta + '&limit=10000000') 
+        json_base = json.loads(response_base.read())
+        ACCESOS = pd.DataFrame(json_base['result']['records'])
+        INTF_ACCESOS = INTF_ACCESOS.append(ACCESOS)
+    INTF_ACCESOS.sum_accesos = INTF_ACCESOS.sum_accesos.astype('int64')
+    INTF_ACCESOS = INTF_ACCESOS.rename(columns={'sum_accesos':'accesos'})
+    return INTF_ACCESOS
+AccesosResIntFijo=ReadApiINTFAccesosRes()    
