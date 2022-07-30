@@ -219,3 +219,19 @@ def ReadApiINTFAccesosRes():
     INTF_ACCESOS = INTF_ACCESOS.rename(columns={'sum_accesos':'accesos'})
     return INTF_ACCESOS
 AccesosResIntFijo=ReadApiINTFAccesosRes()    
+## Ingresos
+def ReadApiINTFIng():
+    resourceid = 'd917a68d-9cb9-4257-82f1-74115a4cf629'
+    consulta_anno='2018,2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+             '&group_by=anno,trimestre,id_empresa,empresa'\
+             '&sum=ingresos' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    INTF_ING = pd.DataFrame(json_base['result']['records'])
+    INTF_ING.sum_ingresos = INTF_ING.sum_ingresos.astype('int64')
+    INTF_ING = INTF_ING.rename(columns={'sum_ingresos':'ingresos'})
+    return INTF_ING
+IngresosInternetFijo=ReadApiINTFIng()
