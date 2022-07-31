@@ -235,3 +235,130 @@ def ReadApiINTFIng():
     INTF_ING = INTF_ING.rename(columns={'sum_ingresos':'ingresos'})
     return INTF_ING
 IngresosInternetFijo=ReadApiINTFIng()
+
+########################################################### Telefonía fija
+## Ingresos
+def ReadAPILinTL():
+    resourceid_tl_lineas = '967fbbd1-1c10-42b8-a6af-88b2376d43e7'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_lineas = 'https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_lineas + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa&fields[]=id_segmento'\
+                        '&group_by=anno,trimestre,id_empresa,empresa,id_segmento'\
+                        '&sum=lineas' 
+    response_tl_lineas = urlopen(consulta_tl_lineas + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_lineas = json.loads(response_tl_lineas.read())
+    TL_LINEAS = pd.DataFrame(json_tl_lineas['result']['records'])
+    TL_LINEAS.sum_lineas = TL_LINEAS.sum_lineas.astype('int64')
+    TL_LINEAS['periodo']=TL_LINEAS['anno']+'-T'+TL_LINEAS['trimestre']
+    TL_LINEAS = TL_LINEAS.rename(columns={'sum_lineas':'lineas'})
+    return TL_LINEAS  
+LineasTelefoníaLocal=ReadAPILinTL()
+
+##Trafico
+def ReadAPITrafTelefoniaLocal():
+    resourceid_tl_traf = 'bb2b4afe-f098-4c5d-819a-cba76337c3a9'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_traf='https://postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_traf + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa'\
+                        '&group_by=anno,trimestre,id_empresa,empresa'\
+                        '&sum=trafico' 
+    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_traf = json.loads(response_tl_traf.read())
+    TL_TRAF = pd.DataFrame(json_tl_traf['result']['records'])
+    TL_TRAF.sum_trafico = TL_TRAF.sum_trafico.astype('int64')
+    TL_TRAF['modalidad']='Local'
+    TL_TRAF['periodo']=TL_TRAF['anno']+'-T'+TL_TRAF['trimestre']
+    TL_TRAF = TL_TRAF.rename(columns={'sum_trafico':'trafico'})
+    return TL_TRAF
+def ReadAPITrafTelefoniaLDN():
+    resourceid_tl_traf = '786ced6d-5e4a-41d2-90f8-5f2a56fc50e1'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_traf='https://postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_traf + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa'\
+                        '&group_by=anno,trimestre,id_empresa,empresa'\
+                        '&sum=trafico' 
+    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_traf = json.loads(response_tl_traf.read())
+    TL_TRAF = pd.DataFrame(json_tl_traf['result']['records'])
+    TL_TRAF.sum_trafico = TL_TRAF.sum_trafico.astype('int64')
+    TL_TRAF['modalidad']='Larga distancia nacional'
+    TL_TRAF['periodo']=TL_TRAF['anno']+'-T'+TL_TRAF['trimestre']
+    TL_TRAF = TL_TRAF.rename(columns={'sum_trafico':'trafico'})
+    return TL_TRAF
+def ReadAPITrafTelefoniaLDI():
+    resourceid_tl_traf = 'ae33862d-954e-493c-8a4a-37b3443ec1c6'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_traf='https://postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_traf + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa'\
+                        '&group_by=anno,trimestre,id_empresa,empresa'\
+                        '&sum=trafico' 
+    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_traf = json.loads(response_tl_traf.read())
+    TL_TRAF = pd.DataFrame(json_tl_traf['result']['records'])
+    TL_TRAF.sum_trafico = TL_TRAF.sum_trafico.astype('int64')
+    TL_TRAF['modalidad']='Larga distancia internacional'
+    TL_TRAF['periodo']=TL_TRAF['anno']+'-T'+TL_TRAF['trimestre']
+    TL_TRAF = TL_TRAF.rename(columns={'sum_trafico':'trafico'})
+    return TL_TRAF
+TraficoTelefoniaLocal=ReadAPITrafTelefoniaLocal()
+TraficoTelefoniaLDN=ReadAPITrafTelefoniaLDN()
+TraficoTelefoniaLDI=ReadAPITrafTelefoniaLDI()
+TraficoTelefoniaFija=pd.concat([TraficoTelefoniaLocal,TraficoTelefoniaLDN,TraficoTelefoniaLDI]).sort_values(by=['periodo'])
+
+##Ingresos
+def ReadAPIIngTL():
+    resourceid_tl_ing = 'f923f3bc-0628-44cc-beed-ca98b8bc3679'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_ing = 'https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_ing + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+                        '&group_by=anno,trimestre,id_empresa,empresa'\
+                        '&sum=ingresos' 
+    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_ing = json.loads(response_tl_ing.read())
+    TL_ING = pd.DataFrame(json_tl_ing['result']['records'])
+    TL_ING.sum_ingresos = TL_ING.sum_ingresos.astype('int64')
+    TL_ING = TL_ING.rename(columns={'sum_ingresos':'ingresos'})
+    TL_ING['periodo']=TL_ING['anno']+'-T'+TL_ING['trimestre']
+    TL_ING['modalidad']='Local'
+    return TL_ING  
+def ReadAPIIngTLDN():
+    resourceid_tl_ing = '535bae3e-87d2-46df-b9f4-b73cdbc9fceb'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_ing = 'https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_ing + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+                        '&group_by=anno,trimestre,id_empresa,empresa'\
+                        '&sum=ingresos' 
+    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_ing = json.loads(response_tl_ing.read())
+    TL_ING = pd.DataFrame(json_tl_ing['result']['records'])
+    TL_ING.sum_ingresos = TL_ING.sum_ingresos.astype('int64')
+    TL_ING = TL_ING.rename(columns={'sum_ingresos':'ingresos'})
+    TL_ING['periodo']=TL_ING['anno']+'-T'+TL_ING['trimestre']
+    TL_ING['modalidad']='Larga distancia nacional'
+    return TL_ING 
+def ReadAPIIngTLDI():
+    resourceid_tl_ing = '878678cb-89c8-4b55-a60d-316870c3e896'
+    consulta_anno='2018,2019,2020,2021'
+    consulta_tl_ing = 'https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid_tl_ing + ''\
+                        '&filters[anno]=' + consulta_anno + ''\
+                        '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+                        '&group_by=anno,trimestre,id_empresa,empresa'\
+                        '&sum=ingresos' 
+    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    json_tl_ing = json.loads(response_tl_ing.read())
+    TL_ING = pd.DataFrame(json_tl_ing['result']['records'])
+    TL_ING.sum_ingresos = TL_ING.sum_ingresos.astype('int64')
+    TL_ING = TL_ING.rename(columns={'sum_ingresos':'ingresos'})
+    TL_ING['periodo']=TL_ING['anno']+'-T'+TL_ING['trimestre']
+    TL_ING['modalidad']='Larga distancia internacional'
+    return TL_ING 
+IngresosTelefoniaLocal=ReadAPIIngTL()
+IngresosTelefoniaLDN=ReadAPIIngTLDN()
+IngresosTelefoniaLDI=ReadAPIIngTLDI()
+IngresosTelefoniaFija=pd.concat([IngresosTelefoniaLocal,IngresosTelefoniaLDN,IngresosTelefoniaLDI])
