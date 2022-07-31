@@ -21,21 +21,29 @@ nombresComerciales={'ALMACENES EXITO INVERSIONES S.A.S.':'Móvil Éxito',
  'AVANTEL S.A.S.':'Avantel',
  'COLOMBIA MOVIL S.A. E.S.P.':'Tigo',
  'COLOMBIA TELECOMUNICACIONES S.A. ESP':'Telefónica',
+ 'COLOMBIA TELECOMUNICACIONES S.A. E.S.P.':'Movistar',
  'COMUNICACION CELULAR S A COMCEL S A':'Claro',
  'EMPRESA DE TELECOMUNICACIONES DE BOGOTÁ S.A. ESP.':'ETB',
+ 'EMPRESA DE TELECOMUNICACIONES DE BOGOTA S.A. ESP':'ETB',
  'LOGISTICA FLASH COLOMBIA S.A.S':'Flash',
  'PARTNERS TELECOM COLOMBIA SAS':'WOM',
  'SETROC MOBILE GROUP SAS':'Setroc',
  'SUMA MOVIL SAS':'Suma',
- 'VIRGIN MOBILE COLOMBIA S.A.S.':'Virgin'}
+ 'VIRGIN MOBILE COLOMBIA S.A.S.':'Virgin',
+ 'DIRECTV COLOMBIA LTDA':'Directv',
+ 'EDATEL S.A.':'Edatel',
+ 'EMPRESAS MUNICIPALES DE CALI EICE E.S.P':'Emcali',
+ 'H V TELEVISION S.A.S.':'H V',
+ 'UNE EPM TELECOMUNICACIONES S.A.':'Tigo-Une'}
 Colores_pie={'Claro':'rgba(255,0,0,0.7)','Telefónica':'rgba(154,205,50,0.7)','Tigo':'rgba(100,149,237,0.7)','Virgin':'rgb(255,102,178)',
          'Móvil Éxito':'rgba(241, 196, 15,0.7)','WOM':'rgb(198,84,206)',
         'Avantel':'rgba(240, 128, 128,0.7)','ETB':'rgba(26, 82, 118,0.7)','Flash':'black','Setroc':'black','Suma':'black'}
+Colores_pie2={'Claro':'rgba(255,0,0,0.7)','Movistar':'rgba(154,205,50,0.7)','Tigo-Une':'rgba(100,149,237,0.7)','Otros':'rgb(192,192,192)','ETB':'rgba(26, 82, 118,0.7)'}
 
 def Participacion(df,column):
     part=df[column]/df[column].sum()
     return part
-def PColoresEmpINTMovil(id_empresa):
+def PColoresEmp(id_empresa):
     if id_empresa == '800153993':
         return 'rgb(255,75,75)'
     elif id_empresa == '830114921':
@@ -43,13 +51,15 @@ def PColoresEmpINTMovil(id_empresa):
     elif id_empresa == '830122566':
         return 'rgb(178,255,102)'
     elif id_empresa=='899999115':
-        return 'rgba(26, 82, 118,0.7)'
+        return 'rgb(53,128,138)'
     elif id_empresa=='900420122':
         return 'rgb(255,102,178)'
     elif id_empresa=='901354361':
         return 'rgb(198,84,206)'
     elif id_empresa=='830016046':
         return 'rgb(240, 128, 128)'
+    elif id_empresa=='900092385':
+        return 'rgb(153,175,255)'
     else:
         pass            
 def periodoformato(x):
@@ -66,7 +76,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
             mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
             '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
             '<br><b>Periodo</b>: %{x}<br>'+                         
-            column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+            column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
         fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
@@ -75,8 +85,37 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
         fig.add_trace(go.Scatter(x=df['periodo_formato'],
                                 y=df[column]/escalamiento,line=dict(color='rgb(102,204,0)'),mode='lines+markers',name=column,
                                 hovertemplate ='<br><b>Periodo</b>: %{x}<br><extra></extra>'+                         
-            column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+            column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
         fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text':column.capitalize() +" por periodo",
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    fig.update_layout(yaxis_tickformat ='d')
+    return fig
+
+def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
+    fig = make_subplots(rows=1, cols=1)
+    maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3  
+    tecnologia=df['CodTec'].unique().tolist()
+    for i,elem in enumerate(tecnologia):
+        fig.add_trace(go.Scatter(x=df[df['CodTec']==elem]['periodo_formato'],
+        y=df[df['CodTec']==elem][column]/escalamiento,text=df[df['CodTec']=='elem']['CodTec'],line=dict(color=colores[i]),
+        mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
+        '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
+        '<br><b>Periodo</b>: %{x}<br>'+                         
+        column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
     fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
@@ -99,7 +138,7 @@ def PlotlyBarras(df,column,unidad,escalamiento,titulo):
     maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.5
     for empresa in df['empresa'].unique().tolist():
         fig.add_trace(go.Bar(x=df[df['empresa']==empresa]['anno'],y=df[df['empresa']==empresa][column]/escalamiento
-                             ,marker_color=PColoresEmpINTMovil(df[df['empresa']==empresa]['id_empresa'].unique()[0]),
+                             ,marker_color=PColoresEmp(df[df['empresa']==empresa]['id_empresa'].unique()[0]),
                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
         column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
     fig.update_layout(barmode='group')
@@ -114,7 +153,7 @@ def PlotlyBarras(df,column,unidad,escalamiento,titulo):
     'x':0.5,
     'xanchor': 'center',
     'yanchor': 'top'})        
-    fig.update_layout(legend=dict(orientation="h",y=1.2,xanchor='left',x=0.2,font_size=12),showlegend=True)
+    fig.update_layout(legend=dict(orientation="h",y=1.2,xanchor='center',x=0.5,font_size=12),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     return fig
@@ -246,19 +285,19 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internetfijo
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
@@ -383,7 +422,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     figPieTelMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTelMovil.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTelMovil)
-            
+                               
             if ServiciosTelMovil=='Tráfico':
                 
                 col1,col2=st.columns(2)
@@ -630,7 +669,7 @@ Claro aumentó su participación, pasando de 37,7% en
         if ServiciosMóviles=='Mensajería':
             st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
 
-            ServiciosMenMovil=st.radio('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos'],horizontal=True) 
+            ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
             
             if ServiciosMenMovil=='Tráfico':
                 TraficoSMSTelMovil['periodo']=TraficoSMSTelMovil['anno']+'-T'+TraficoSMSTelMovil['trimestre']
@@ -699,18 +738,125 @@ Claro aumentó su participación, pasando de 37,7% en
             st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
             
             AccesosCorpIntFijo=AccesosCorpIntFijo[AccesosCorpIntFijo['accesos']>0]
-            AccesosCorpIntFijo=AccesosCorpIntFijo.rename(columns={'accesos':'Accesos corporativos'})
+            AccesosCorpIntFijo=AccesosCorpIntFijo.rename(columns={'accesos':'CORPORATIVOS'})
+            AccesosCorpIntFijo['periodo']=AccesosCorpIntFijo['anno']+'-T'+AccesosCorpIntFijo['trimestre']
             AccesosResIntFijo=AccesosResIntFijo[AccesosResIntFijo['accesos']>0]
-            AccesosResIntFijo=AccesosResIntFijo.rename(columns={'accesos':'Accesos residenciales'})
-            
-            AccesosInternetFijo=AccesosCorpIntFijo.merge(AccesosResIntFijo,left_on=['anno','trimestre','id_empresa'])
+            AccesosResIntFijo=AccesosResIntFijo.rename(columns={'accesos':'RESIDENCIALES'})
+            AccesosResIntFijo['periodo']=AccesosResIntFijo['anno']+'-T'+AccesosResIntFijo['trimestre']
+            ##
+            AccesosCorpIntFijoNac=AccesosCorpIntFijo.groupby(['periodo'])['CORPORATIVOS'].sum().reset_index()
+            AccesosResIntFijoNac=AccesosResIntFijo.groupby(['periodo'])['RESIDENCIALES'].sum().reset_index()
+            AccesosCorpIntFijoEmp=AccesosCorpIntFijo.groupby(['anno','id_empresa','empresa'])['CORPORATIVOS'].sum().reset_index()
+            AccesosResIntFijoEmp=AccesosResIntFijo.groupby(['anno','id_empresa','empresa'])['RESIDENCIALES'].sum().reset_index()
+            ##
+            AccesosCorpIntFijoPie=AccesosCorpIntFijo.groupby(['periodo','id_empresa','empresa'])['CORPORATIVOS'].sum().reset_index()
+            AccesosCorpIntFijoPie['modalidad']='CORPORATIVO'
+            AccesosCorpIntFijoPie=AccesosCorpIntFijoPie.rename(columns={'CORPORATIVOS':'accesos'})
+            AccesosResIntFijoPie=AccesosResIntFijo.groupby(['periodo','id_empresa','empresa'])['RESIDENCIALES'].sum().reset_index()
+            AccesosResIntFijoPie['modalidad']='RESIDENCIAL'
+            AccesosResIntFijoPie=AccesosResIntFijoPie.rename(columns={'RESIDENCIALES':'accesos'})            
+            ##
+            AccesosCorpIntFijoTec=AccesosCorpIntFijo.groupby(['periodo','id_empresa','empresa','id_tecnologia','tecnologia'])['CORPORATIVOS'].sum().reset_index()
+            AccesosCorpIntFijoTec['modalidad']='CORPORATIVO'
+            AccesosCorpIntFijoTec=AccesosCorpIntFijoTec.rename(columns={'CORPORATIVOS':'accesos'})
+            AccesosResIntFijoTec=AccesosResIntFijo.groupby(['periodo','id_empresa','empresa','id_tecnologia','tecnologia'])['RESIDENCIALES'].sum().reset_index()
+            AccesosResIntFijoTec['modalidad']='RESIDENCIAL'
+            AccesosResIntFijoTec=AccesosResIntFijoTec.rename(columns={'RESIDENCIALES':'accesos'})    
+            ##
             IngresosInternetFijo=IngresosInternetFijo[IngresosInternetFijo['ingresos']>0]
+            IngresosInternetFijo['periodo']=IngresosInternetFijo['anno']+'-T'+IngresosInternetFijo['trimestre']
+            
+            IngresosInternetFijoNac=IngresosInternetFijo.groupby(['periodo'])['ingresos'].sum().reset_index()
+            IngresosInternetFijoNacProm=IngresosInternetFijo.groupby(['periodo'])['ingresos'].mean().reset_index()
+            IngresosInternetFijoEmp=IngresosInternetFijo.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
             
             ServiciosIntFijo=st.selectbox('Escoja el servicio de Internet fijo',['Accesos','Ingresos'])
+            st.markdown('Escoja la dimensión del análisis')
             
             if ServiciosIntFijo=='Accesos':
-                AgGrid(AccesosCorpIntFijo)
-                AgGrid(AccesosResIntFijo)
+                col1,col2,col3,col4=st.columns(4)
+                with col1:
+                    LineaTiempoAccesosIntFijo=st.button('Modalidad')
+                with col2:
+                    BarrasAccesosIntFijo=st.button('Operadores')
+                with col3:
+                    PieAccesosIntFijo=st.button('Participaciones')
+                with col4:
+                    TecnologiaAccesosIntFijo=st.button('Tecnología')    
+                    
+                AccesosInternetFijoNac=AccesosCorpIntFijoNac.merge(AccesosResIntFijoNac,left_on=['periodo'],right_on=['periodo'])
+                AccesosInternetFijoNac['TOTAL']=AccesosInternetFijoNac['CORPORATIVOS']+AccesosInternetFijoNac['RESIDENCIALES']
+                AccesosInternetFijoNac2=pd.melt(AccesosInternetFijoNac,id_vars=['periodo'],value_vars=['CORPORATIVOS',
+                'RESIDENCIALES','TOTAL'],var_name='modalidad',value_name='accesos')
+                ##
+                AccesosInternetFijoEmp=AccesosCorpIntFijoEmp.merge(AccesosResIntFijoEmp,left_on=['anno','id_empresa'],right_on=['anno','id_empresa'])
+                AccesosInternetFijoEmp['TOTAL']=AccesosInternetFijoEmp['CORPORATIVOS']+AccesosInternetFijoEmp['RESIDENCIALES']
+                AccesosInternetFijoEmp=AccesosInternetFijoEmp.rename(columns={'empresa_x':'empresa'})
+                AccesosInternetFijoEmp=AccesosInternetFijoEmp.drop(columns=['empresa_y'])
+                AccesosInternetFijoEmp2=pd.melt(AccesosInternetFijoEmp,id_vars=['anno','id_empresa','empresa'],value_vars=['CORPORATIVOS',
+                'RESIDENCIALES','TOTAL'],var_name='modalidad',value_name='accesos')
+                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['modalidad']=='TOTAL']    
+                EmpIntFijoAccesos=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
+                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['id_empresa'].isin(EmpIntFijoAccesos))&(AccesosInternetFijoEmp2['anno'].isin(['2020','2021']))]
+                ##
+                AccesosInternetFijoPie=pd.concat([AccesosCorpIntFijoPie,AccesosResIntFijoPie])
+                AccesosInternetFijoPieAgg=AccesosInternetFijoPie.groupby(['periodo','id_empresa','empresa'])['accesos'].sum().reset_index()
+                AccesosInternetFijoPieAgg=AccesosInternetFijoPieAgg[AccesosInternetFijoPieAgg['periodo']=='2021-T4']
+                AccesosInternetFijoPieAgg['participacion']=round(100*AccesosInternetFijoPieAgg['accesos']/AccesosInternetFijoPieAgg['accesos'].sum(),1)
+                AccesosInternetFijoPieAgg.loc[AccesosInternetFijoPieAgg['participacion']<=1,'empresa']='Otros'
+                AccesosInternetFijoPieAgg['empresa']=AccesosInternetFijoPieAgg['empresa'].replace(nombresComerciales)
+                ##
+                AccesosInternetFijoTec=pd.concat([AccesosCorpIntFijoTec,AccesosResIntFijoTec])
+                AccesosInternetFijoTec=AccesosInternetFijoTec.groupby(['periodo','id_empresa','empresa','id_tecnologia','tecnologia'])['accesos'].sum().reset_index()
+                AccesosInternetFijoTec['id_tecnologia']=AccesosInternetFijoTec['id_tecnologia'].astype('int64')
+                AccesosInternetFijoTec['CodTec']=None
+                AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([1,4,7,9,114,105,104]),'Inalambrico',AccesosInternetFijoTec['CodTec'])
+                AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([5,102,106]),'Cable',AccesosInternetFijoTec['CodTec'])
+                AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([6,103]),'Satelital',AccesosInternetFijoTec['CodTec'])
+                AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([8,41,42,107,108,109,110,111,112,113]),'Fibra Óptica',AccesosInternetFijoTec['CodTec'])
+                AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([2,101]),'xDSL',AccesosInternetFijoTec['CodTec'])
+                AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([3,10,31,115]),'Otras',AccesosInternetFijoTec['CodTec'])
+                AccesosInternetFijoTecAgg=AccesosInternetFijoTec.groupby(['periodo','CodTec'])['accesos'].sum().reset_index()
+                
+                if LineaTiempoAccesosIntFijo:
+                    AccesosInternetFijoNac2['periodo_formato']=AccesosInternetFijoNac2['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if BarrasAccesosIntFijo:
+                    st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','Millones',1e6,'Accesos anuales por empresa'),use_container_width=True)
+                if PieAccesosIntFijo:
+                    figPieIntFijo = px.pie(AccesosInternetFijoPieAgg, values='accesos', names='empresa', color='empresa',
+                                 color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2021-T4)')
+                    figPieIntFijo.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieIntFijo.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
+                    figPieIntFijo.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieIntFijo)
+                if TecnologiaAccesosIntFijo:
+                    AccesosInternetFijoTecAgg['periodo_formato']=AccesosInternetFijoTecAgg['periodo'].apply(periodoformato)
+                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)']), use_container_width=True)
+
+            if ServiciosIntFijo=='Ingresos':
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoIngresosIntFijo=st.button('Evolución temporal')
+                with col2:
+                    BarrasIngresosIntFijo=st.button('Operadores')
+
+                ## Ingresos/Accceso total
+                AccesosInternetFijoNac=AccesosCorpIntFijoNac.merge(AccesosResIntFijoNac,left_on=['periodo'],right_on=['periodo'])
+                AccesosInternetFijoNac['TOTAL']=AccesosInternetFijoNac['CORPORATIVOS']+AccesosInternetFijoNac['RESIDENCIALES']
+                IngresosPorAccesoIntFijo=IngresosInternetFijoNac.merge(AccesosInternetFijoNac,left_on=['periodo'],right_on=['periodo'])
+                IngresosPorAccesoIntFijo['Ingresos/Accceso']=round(IngresosPorAccesoIntFijo['ingresos']/IngresosPorAccesoIntFijo['TOTAL'],2)
+                
+                if LineaTiempoIngresosIntFijo: 
+                    IngresosInternetFijoNac['periodo_formato']=IngresosInternetFijoNac['periodo'].apply(periodoformato)
+                    IngresosPorAccesoIntFijo['periodo_formato']=IngresosPorAccesoIntFijo['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if BarrasIngresosIntFijo:
+                    EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+                    IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos))&(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))]
+                    st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
+ 
  
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector Postal")
