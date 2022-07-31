@@ -189,8 +189,8 @@ def ReadApiINTFAccesosCorp():
     for anno in consulta_anno:
         consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
                  '&filters[id_segmento]=107,108&filters[anno]=' + anno + ''\
-                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                 '&group_by=anno,trimestre,id_empresa,empresa'\
+                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
+                 '&group_by=anno,trimestre,id_empresa,empresa,id_tecnologia,tecnologia'\
                  '&sum=accesos' 
         response_base = urlopen(consulta + '&limit=10000000') 
         json_base = json.loads(response_base.read())
@@ -208,8 +208,8 @@ def ReadApiINTFAccesosRes():
     for anno in consulta_anno:
         consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
                  '&filters[id_segmento]=101,102,103,104,105,106&filters[anno]=' + anno + ''\
-                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-                 '&group_by=anno,trimestre,id_empresa,empresa'\
+                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
+                 '&group_by=anno,trimestre,id_empresa,empresa,id_tecnologia,tecnologia'\
                  '&sum=accesos' 
         response_base = urlopen(consulta + '&limit=10000000') 
         json_base = json.loads(response_base.read())
