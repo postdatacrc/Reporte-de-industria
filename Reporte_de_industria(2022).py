@@ -60,6 +60,8 @@ def PColoresEmp(id_empresa):
         return 'rgb(240, 128, 128)'
     elif id_empresa=='900092385':
         return 'rgb(153,175,255)'
+    elif id_empresa=='805006014':
+        return 'rgb(0,255,255)'
     else:
         pass            
 def periodoformato(x):
@@ -80,10 +82,10 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
         fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
-        maxdf=df[column].max()/escalamiento+10
-        mindf=df[column].min()/escalamiento-10
-        fig.add_trace(go.Scatter(x=df['periodo_formato'],
-                                y=df[column]/escalamiento,line=dict(color='rgb(102,204,0)'),mode='lines+markers',name=column,
+        maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.1  
+        mindf=df[column].min()/escalamiento-(df[column].min()/escalamiento)*0.1  
+        fig.add_trace(go.Bar(x=df['periodo_formato'],
+                                y=df[column]/escalamiento,marker_color='rgb(102,204,0)',name=column,
                                 hovertemplate ='<br><b>Periodo</b>: %{x}<br><extra></extra>'+                         
             column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
         fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
@@ -285,29 +287,36 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
     from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
+## TV por suscripción
+@st.cache(ttl=24*3600,allow_output_mutation=True)
+def APIsTVSus():
+    from APIs import SuscriptoresTVSus,IngresosTVSus
+    return SuscriptoresTVSus,IngresosTVSus
+SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
+
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
@@ -711,7 +720,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 IngresosSMSTelMovilEmpresa=IngresosSMSTelMovil.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
                 EmpMenMovilTraficoSMS=IngresosSMSTelMovilEmpresa[IngresosSMSTelMovilEmpresa['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                 IngresosSMSTelMovilEmpresa=IngresosSMSTelMovilEmpresa[(IngresosSMSTelMovilEmpresa['id_empresa'].isin(EmpMenMovilTraficoSMS))&(IngresosSMSTelMovilEmpresa['anno'].isin(['2020','2021']))]
-                st.markdown(EmpMenMovilTraficoSMS)
+
                 ## Limpieza Tráfico SMS
                 TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico'})
                 TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico'].sum().reset_index()
@@ -732,8 +741,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasIngresosSMSTelmovil:                    
                     st.plotly_chart(PlotlyBarras(IngresosSMSTelMovilEmpresa,'ingresos','Miles de Millones de pesos',1e9,'Ingresos (SMS) anuales por empresa'),use_container_width=True)  
                     st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos/Tráfico (SMS) anual por empresa'),use_container_width=True)  
-            
-            
+                        
     if select_secResumenDinTic == 'Servicios fijos': 
         st.markdown(r"""<div class="titulo"><h3>Servicios fijos</h3></div>""",unsafe_allow_html=True)
         st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
@@ -1025,7 +1033,109 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasIngresosporlineaTelFija:
                     st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'Ingresos/Líneas anuales de Telefonía local por empresa'),use_container_width=True)
-                        
+
+    if select_secResumenDinTic == 'Contenidos audiovisuales':
+        st.markdown(r"""<div class="titulo"><h3>Contenidos audiovisuales</h3></div>""",unsafe_allow_html=True)
+        st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
+
+        ServiciosAudiovisuales=st.radio('Servicios',['TV abierta','TV por suscripción','TV comunitaria','OTT'],horizontal=True)
+        st.markdown(r"""<hr>""",unsafe_allow_html=True)
+        
+        if ServiciosAudiovisuales == 'TV por suscripción':
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+            ##Suscriptores
+            SuscriptoresTVSusNac=SuscriptoresTVSus.groupby(['periodo'])['suscriptores'].sum().reset_index()
+            #
+            SuscriptoresTVSusEmp=SuscriptoresTVSus.groupby(['anno','trimestre','id_empresa','empresa'])['suscriptores'].sum().reset_index()
+            SuscriptoresTVSusEmp=SuscriptoresTVSusEmp[(SuscriptoresTVSusEmp['anno'].isin(['2020','2021']))&(SuscriptoresTVSusEmp['trimestre']=='4')]
+            EmpSuscriptoresTVSusEmp=SuscriptoresTVSusEmp[SuscriptoresTVSusEmp['anno']=='2021'].sort_values(by='suscriptores',ascending=False)['id_empresa'].to_list()[0:4]
+            SuscriptoresTVSusEmp=SuscriptoresTVSusEmp[SuscriptoresTVSusEmp['id_empresa'].isin(EmpSuscriptoresTVSusEmp)]
+            #
+            SuscriptoresTVSusPie=SuscriptoresTVSus.groupby(['periodo','id_empresa','empresa'])['suscriptores'].sum().reset_index()
+            SuscriptoresTVSusPie=SuscriptoresTVSusPie[SuscriptoresTVSusPie['periodo']=='2021-T4']
+            SuscriptoresTVSusPie['participacion']=round(100*SuscriptoresTVSusPie['suscriptores']/SuscriptoresTVSusPie['suscriptores'].sum(),1)
+            SuscriptoresTVSusPie.loc[SuscriptoresTVSusPie['participacion']<=1,'empresa']='Otros'
+            SuscriptoresTVSusPie['empresa']=SuscriptoresTVSusPie['empresa'].replace(nombresComerciales) 
+            #
+            SuscriptoresTVSusTec=SuscriptoresTVSus[SuscriptoresTVSus['anno']=='2021'].groupby(['periodo','id_tecnologia','tecnologia'])['suscriptores'].sum().reset_index()
+            SuscriptoresTVSusTec=SuscriptoresTVSusTec.rename(columns={'tecnologia':'CodTec'})
+            ##Ingresos
+            IngresosTVSus['concepto']=IngresosTVSus['concepto'].replace({'Cargo fijo plan básico de televisión por suscripción':'Cargo fijo plan básico',
+            'Otros ingresos operacionales televisión por suscripción':'Otros ingresos operacionales','Cargo fijo plan premium de televisión por suscripción':'Cargo fijo plan premium',
+            'Provisión de contenidos audiovisuales a través del servicio de televisión por suscripción':'Provisión de contenidos audiovisuales'})
+            IngresosTVSusNac=IngresosTVSus.groupby(['periodo'])['ingresos'].sum().reset_index()
+            #
+            IngresosTVSusEmp=IngresosTVSus.groupby(['anno','trimestre','empresa','id_empresa'])['ingresos'].sum().reset_index()
+            IngresosTVSusEmp=IngresosTVSusEmp[(IngresosTVSusEmp['anno'].isin(['2020','2021']))&(IngresosTVSusEmp['trimestre']=='4')]
+            EmpIngresosTVSusEmp=IngresosTVSusEmp[IngresosTVSusEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosTVSusEmp=IngresosTVSusEmp[IngresosTVSusEmp['id_empresa'].isin(EmpIngresosTVSusEmp)]
+            #
+            IngresosTVSusConcep=IngresosTVSus.groupby(['periodo','id_concepto','concepto'])['ingresos'].sum().reset_index()
+            IngresosTVSusConcep=IngresosTVSusConcep.rename(columns={'concepto':'modalidad'})
+            ##Ingresos por suscriptores
+            IngresosPorSuscriptoresTV=IngresosTVSusNac.merge(SuscriptoresTVSusNac,left_on=['periodo'],right_on=['periodo'])
+            IngresosPorSuscriptoresTV['Ingresos/Suscriptores']=round(IngresosPorSuscriptoresTV['ingresos']/IngresosPorSuscriptoresTV['suscriptores'],2)                    
+            #
+            IngresosPorSuscriptoresTVEmp=IngresosTVSusEmp.merge(SuscriptoresTVSusEmp,left_on=['anno','id_empresa','empresa'],right_on=['anno','id_empresa','empresa'])
+            IngresosPorSuscriptoresTVEmp['Ingresos/Suscriptores']=round(IngresosPorSuscriptoresTVEmp['ingresos']/IngresosPorSuscriptoresTVEmp['suscriptores'],2)
+            
+            ServiciosTVporSus=st.selectbox('Escoja el servicio de TV por suscripción',['Suscriptores','Ingresos'])
+            st.markdown('Escoja la dimensión del análisis')
+            if ServiciosTVporSus=='Suscriptores':
+                
+                col1,col2,col3,col4=st.columns(4)
+                with col1:
+                    LineaTiempoSuscriptoresTVSus=st.button('Evolución temporal')
+                with col2:
+                    BarrasSuscriptoresTVSus=st.button('Operadores')
+                with col3:
+                    PieSuscriptoresTVSus=st.button('Participaciones')
+                with col4:
+                    TecnologiaSuscriptoresTVSus=st.button('Tecnología')    
+                
+                if LineaTiempoSuscriptoresTVSus:
+                    SuscriptoresTVSusNac['periodo_formato']=SuscriptoresTVSusNac['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+            
+                if BarrasSuscriptoresTVSus:
+                    st.plotly_chart(PlotlyBarras(SuscriptoresTVSusEmp,'suscriptores','',1,'Suscriptores anuales por empresa'),use_container_width=True)
+                
+                if PieSuscriptoresTVSus:
+                    figPieTVSus = px.pie(SuscriptoresTVSusPie, values='suscriptores', names='empresa', color='empresa',
+                                 color_discrete_map=Colores_pie2, title='<b>Participación en suscriptores de TV por suscripción<br>(2021-T4)')
+                    figPieTVSus.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieTVSus.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
+                    figPieTVSus.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieTVSus)   
+
+                if TecnologiaSuscriptoresTVSus:
+                    SuscriptoresTVSusTec['periodo_formato']=SuscriptoresTVSusTec['periodo'].apply(periodoformato)
+                    st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)']), use_container_width=True)
+
+            if ServiciosTVporSus=='Ingresos':
+
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoIngresosTVSus=st.button('Evolución temporal')
+                with col2:
+                    BarrasIngresosTVSus=st.button('Operadores')
+                # with col3:
+                    # ConceptoIngresosTVSus=st.button('Concepto')
+                
+                if LineaTiempoIngresosTVSus:
+                    IngresosTVSusNac['periodo_formato']=IngresosTVSusNac['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    IngresosPorSuscriptoresTV['periodo_formato']=IngresosPorSuscriptoresTV['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+
+                if BarrasIngresosTVSus:
+                    st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Suscriptores anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'Ingresos/Suscriptores anuales por empresa'),use_container_width=True)
+                
+                # if ConceptoIngresosTVSus:        
+                    # IngresosTVSusConcep['periodo_formato']=IngresosTVSusConcep['periodo'].apply(periodoformato)
+                    # st.plotly_chart(Plotlylineatiempo(IngresosTVSusConcep,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)','rgb(255,0,0)']), use_container_width=True)
+        
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector Postal")
     st.markdown("En el año 2020")    
