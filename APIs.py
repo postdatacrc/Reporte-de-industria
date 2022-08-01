@@ -362,3 +362,41 @@ IngresosTelefoniaLocal=ReadAPIIngTL()
 IngresosTelefoniaLDN=ReadAPIIngTLDN()
 IngresosTelefoniaLDI=ReadAPIIngTLDI()
 IngresosTelefoniaFija=pd.concat([IngresosTelefoniaLocal,IngresosTelefoniaLDN,IngresosTelefoniaLDI])
+
+########################################################### TV por suscripción
+
+##Suscriptores
+def ReadApiTVSUSSus():
+    resourceid = '0c4b69a7-734d-432c-9d9b-9dc600d50391'
+    consulta_anno='2018,2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[mes_del_trimestre]=3&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=desc_empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
+             '&group_by=anno,trimestre,id_empresa,desc_empresa,id_tecnologia,tecnologia'\
+             '&sum=suscriptores' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    TV_SUS = pd.DataFrame(json_base['result']['records'])
+    TV_SUS.sum_suscriptores = TV_SUS.sum_suscriptores.astype('int64')
+    TV_SUS = TV_SUS.rename(columns={'desc_empresa':'empresa','sum_suscriptores':'suscriptores'})
+    TV_SUS['periodo']=TV_SUS['anno']+'-T'+TV_SUS['trimestre']
+    return TV_SUS 
+SuscriptoresTVSus=ReadApiTVSUSSus()    
+##Ingresos
+def ReadApiTVSUSIng():
+    resourceid = '1033b0f2-8107-4e04-ae33-8b12882b762d'
+    consulta_anno='2018,2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=desc_empresa&fields[]=id_concepto&fields[]=concepto'\
+             '&group_by=anno,trimestre,id_empresa,desc_empresa'\
+             '&sum=ingresos' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    TVSUS_ING = pd.DataFrame(json_base['result']['records'])
+    TVSUS_ING.sum_ingresos = TVSUS_ING.sum_ingresos.astype('float').astype('int64')
+    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos','desc_empresa':'empresa'})
+    TVSUS_ING['periodo']=TVSUS_ING['anno']+'-T'+TVSUS_ING['trimestre']
+    TVSUS_ING=TVSUS_ING.rename(columns={'desc_empresa':'empresa'})
+    return TVSUS_ING
+IngresosTVSus=ReadApiTVSUSIng()
