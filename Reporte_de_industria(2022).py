@@ -287,31 +287,31 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
     from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
     from APIs import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
