@@ -34,11 +34,28 @@ nombresComerciales={'ALMACENES EXITO INVERSIONES S.A.S.':'Móvil Éxito',
  'EDATEL S.A.':'Edatel',
  'EMPRESAS MUNICIPALES DE CALI EICE E.S.P':'Emcali',
  'H V TELEVISION S.A.S.':'H V',
- 'UNE EPM TELECOMUNICACIONES S.A.':'Tigo-Une'}
+ 'UNE EPM TELECOMUNICACIONES S.A.':'Tigo-Une',
+ 'SERVIENTREGA S.A.':'Servientrega',
+ 'INTER RAPIDISIMO S.A':'InterRapidisimo',
+ 'COLVANES S.A.S.':'Colvanes',
+ 'COORDINADORA MERCANTIL S. A.':'Coordinadora',
+ 'DHL EXPRESS COLOMBIA LTDA':'DHL',
+ 'UPS SERVICIOS EXPRESOS S.A.S.':'UPS',
+ 'DOMINA ENTREGA TOTAL S.A.S.':'Domina',
+ 'DOMESA DE COLOMBIA S.A.':'Domesa',
+ 'CADENA COURRIER S.A.S.':'Cadena',
+ 'DATACURRIER S A S':'Datacurrier',
+ 'ENTREGA INMEDIATA SEGURA S.A':'EIS'}
+ 
 Colores_pie={'Claro':'rgba(255,0,0,0.7)','Telefónica':'rgba(154,205,50,0.7)','Tigo':'rgba(100,149,237,0.7)','Virgin':'rgb(255,102,178)',
          'Móvil Éxito':'rgba(241, 196, 15,0.7)','WOM':'rgb(198,84,206)',
         'Avantel':'rgba(240, 128, 128,0.7)','ETB':'rgba(26, 82, 118,0.7)','Flash':'black','Setroc':'black','Suma':'black'}
 Colores_pie2={'Claro':'rgba(255,0,0,0.7)','Movistar':'rgba(154,205,50,0.7)','Tigo-Une':'rgba(100,149,237,0.7)','Otros':'rgb(192,192,192)','ETB':'rgba(26, 82, 118,0.7)'}
+Colores_pie3={'Colvantes':'rgb(204,0,0)','InterRapidisimo':'rgb(255,128,0)','DHL':'rgb(255,255,0)','Servientrega':'rgb(31,226,109)',
+             'Coordinadora':'rgb(51,51,255)','UPS':'rgb(255,181,0)','Otros':'rgb(192,192,192)','Domina':'rgb(19,114,209)','Domesa':'rgb(76,0,153)',
+             'EIS':'rgb(0,102,102)','Cadena':'rgb(255,51,51)','Datacurrier':'rgb(153,255,51)'}
+
+
 
 def Participacion(df,column):
     part=df[column]/df[column].sum()
@@ -62,6 +79,16 @@ def PColoresEmp(id_empresa):
         return 'rgb(153,175,255)'
     elif id_empresa=='805006014':
         return 'rgb(0,255,255)'
+    elif id_empresa=='800088155':
+        return 'rgb(19,114,209)'
+    elif id_empresa=='800185306':
+        return 'rgb(204,0,0)'    
+    elif id_empresa=='800251569':
+        return 'rgb(255,128,0)'
+    elif id_empresa=='860512330':
+        return 'rgb(31,226,109)'
+    elif id_empresa=='890904713':
+        return 'rgb(51,51,255)'        
     else:
         pass            
 def periodoformato(x):
@@ -114,7 +141,7 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
         fig.add_trace(go.Scatter(x=df[df['CodTec']==elem]['periodo_formato'],
         y=df[df['CodTec']==elem][column]/escalamiento,text=df[df['CodTec']=='elem']['CodTec'],line=dict(color=colores[i]),
         mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
-        '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
+        '<br><b>Tecnología</b>:<br><extra></extra>'+elem+
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
     fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
@@ -134,7 +161,35 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     fig.update_layout(yaxis_tickformat ='d')
     return fig
-    
+ 
+def PlotlylineatiempoDep(df,column,unidad):
+    fig = make_subplots(rows=1, cols=1)
+    departamentos=df['departamento'].unique().tolist()
+    for i,elem in enumerate(departamentos):
+        fig.add_trace(go.Scatter(x=df[df['departamento']==elem]['periodo_formato'],
+        y=df[df['departamento']==elem][column],text=df[df['departamento']=='elem']['departamento'],
+        mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
+        '<br><b>Departamento</b>:<br><extra></extra>'+elem+
+        '<br><b>Periodo</b>: %{x}<br>'+                         
+        column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+    fig.update_yaxes(tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text':column.capitalize() +" por periodo",
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    fig.update_layout(yaxis_tickformat ='d')
+    return fig
+ 
 def PlotlyBarras(df,column,unidad,escalamiento,titulo):   
     fig = make_subplots(rows=1, cols=1) 
     maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.5
@@ -156,6 +211,33 @@ def PlotlyBarras(df,column,unidad,escalamiento,titulo):
     'xanchor': 'center',
     'yanchor': 'top'})        
     fig.update_layout(legend=dict(orientation="h",y=1.2,xanchor='center',x=0.5,font_size=12),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    return fig
+
+def PlotyMultiIndexBarra(df,column,unidad,titulo,escalamiento):
+    color_ambito={'Internacional de entrada':'rgb(255,102,102)','Internacional de salida':'rgb(102,255,102)',
+                 'Local':'rgb(102,178,255)','Nacional':'rgb(178,102,255)'}
+    fig = make_subplots(rows=1,cols=1)
+    for ambito in df['ambito'].unique().tolist():
+        df2=df[df['ambito']==ambito]    
+        X=[df2['anno'].tolist(),df2['tipo_envio'].tolist()]
+        fig.add_trace(go.Bar(x=X,y=df[df['ambito']==ambito][column]/escalamiento,name=ambito,marker_color=color_ambito[ambito],
+        hovertemplate='<br><b>Ámbito</b>:<br><extra></extra>'+ambito+'<br>'+                       
+        column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
+    fig.update_layout(barmode='group')
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text': titulo,
+    'y':0.98,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",y=1.1,xanchor='center',x=0.5,font_size=12),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     return fig
@@ -287,37 +369,48 @@ st.markdown("""
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
     from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
     from APIs import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
-
-
+## TV comunitaria
+@st.cache(ttl=24*3600,allow_output_mutation=True)
+def APIsTVCom():
+    from APIs import AsociadosTVComunitaria,IngresosTVComunitariaIng
+    return AsociadosTVComunitaria,IngresosTVComunitariaIng
+AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
+## Correo
+@st.cache(ttl=24*3600,allow_output_mutation=True)
+def APIsDinPostal():
+    from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa
+    return IngresosyEnviosCorreo,IngresosyEnviosMExpresa
+IngresosyEnviosCorreo,IngresosyEnviosMExpresa=APIsDinPostal()
+    
 st.markdown(page_bg_img, unsafe_allow_html=True)
 st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
@@ -433,7 +526,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     AboAnualTelMovl['participacion']=round(100*AboAnualTelMovl['abonados']/AboAnualTelMovl['abonados'].sum(),1)
                     figPieTelMovil = px.pie(AboAnualTelMovl, values='abonados', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie, title='<b>Participación en abonados de telefonía móvil<br>(2021-T4)')
-                    figPieTelMovil.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieTelMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTelMovil.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTelMovil)
@@ -585,7 +678,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     AccesosInternetmovilPie['participacion']=round(100*AccesosInternetmovilPie['accesos']/AccesosInternetmovilPie['accesos'].sum(),1)
                     figPieIntMovil = px.pie(AccesosInternetmovilPie, values='accesos', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie,title='<b>Participación en accesos de Internet móvil<br>(2021-T4)')
-                    figPieIntMovil.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieIntMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieIntMovil.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieIntMovil)
@@ -840,7 +933,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 if PieAccesosIntFijo:
                     figPieIntFijo = px.pie(AccesosInternetFijoPieAgg, values='accesos', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2021-T4)')
-                    figPieIntFijo.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieIntFijo.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntFijo.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieIntFijo.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieIntFijo)
@@ -962,7 +1055,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 if PieLineasTelFija:
                     figPieTelFija = px.pie(LineasTelefoníaLocalPie, values='lineas', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en líneas de Telefonía local<br>(2021-T4)')
-                    figPieTelFija.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieTelFija.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelFija.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTelFija.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTelFija)                            
@@ -1081,6 +1174,7 @@ Claro aumentó su participación, pasando de 37,7% en
             
             ServiciosTVporSus=st.selectbox('Escoja el servicio de TV por suscripción',['Suscriptores','Ingresos'])
             st.markdown('Escoja la dimensión del análisis')
+            
             if ServiciosTVporSus=='Suscriptores':
                 
                 col1,col2,col3,col4=st.columns(4)
@@ -1103,7 +1197,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 if PieSuscriptoresTVSus:
                     figPieTVSus = px.pie(SuscriptoresTVSusPie, values='suscriptores', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en suscriptores de TV por suscripción<br>(2021-T4)')
-                    figPieTVSus.update_traces(textposition='inside',textinfo='percent+label',hoverinfo='label+percent',textfont_color='black')
+                    figPieTVSus.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTVSus.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTVSus.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTVSus)   
@@ -1135,9 +1229,147 @@ Claro aumentó su participación, pasando de 37,7% en
                 # if ConceptoIngresosTVSus:        
                     # IngresosTVSusConcep['periodo_formato']=IngresosTVSusConcep['periodo'].apply(periodoformato)
                     # st.plotly_chart(Plotlylineatiempo(IngresosTVSusConcep,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)','rgb(255,0,0)']), use_container_width=True)
-        
-if select_seccion =='Dinámica postal':
-    st.title("Dinámica del sector Postal")
-    st.markdown("En el año 2020")    
-                
 
+        if ServiciosAudiovisuales == 'TV comunitaria':
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
+
+            ServiciosTVCom=st.selectbox('Escoja el servicio de TV comunitaria',['Asociados','Ingresos'])
+           
+            
+            ##Asociados
+            AsociadosTVComunitaria['periodo']=AsociadosTVComunitaria['anno']+'-T'+AsociadosTVComunitaria['trimestre']
+            AsociadosTVComunitariaNac=AsociadosTVComunitaria.groupby(['periodo'])['asociados'].sum().reset_index()
+            #
+            AsociadosTVComunitariaEmp=AsociadosTVComunitaria[AsociadosTVComunitaria['trimestre']=='4'].groupby(['anno','empresa','id_empresa'])['asociados'].sum().reset_index()
+            AsociadosTVComunitariaEmp=AsociadosTVComunitariaEmp[(AsociadosTVComunitariaEmp['anno'].isin(['2020','2021']))]
+            EmpAsocidosTVComEmp=AsociadosTVComunitariaEmp[AsociadosTVComunitariaEmp['anno']=='2021'].sort_values(by='asociados',ascending=False)['id_empresa'].to_list()[0:4]
+            AsociadosTVComunitariaEmp=AsociadosTVComunitariaEmp[AsociadosTVComunitariaEmp['id_empresa'].isin(EmpAsocidosTVComEmp)]
+            #
+            AsociadosTVComunitariaDep=AsociadosTVComunitaria.groupby(['periodo','departamento','id_departamento'])['asociados'].sum().reset_index()
+            ##Ingresos 
+            IngresosTVComunitariaIng2=pd.melt(IngresosTVComunitariaIng,id_vars=['periodo','id_empresa','empresa'],value_vars=['Ing Total','Ing Pauta publicitaria',
+                                                                                        'Ing Brutos operacionales'],var_name='modalidad', value_name='ingresos')
+            IngresosTVComunitariaIngNac=IngresosTVComunitariaIng2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
+            #    
+            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIng.groupby(['anno','id_empresa','empresa'])['Ing Total'].sum().reset_index()
+            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp[(IngresosTVComunitariaIngEmp['anno'].isin(['2020','2021']))]
+            EmpIngresosTVComEmp=IngresosTVComunitariaIngEmp[IngresosTVComunitariaIngEmp['anno']=='2021'].sort_values(by='Ing Total',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp[IngresosTVComunitariaIngEmp['id_empresa'].isin(EmpIngresosTVComEmp)]
+            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp.rename(columns={'Ing Total':'ingresos'})
+
+            
+            if ServiciosTVCom=='Asociados':
+                col1,col2=st.columns(2)
+                with col1:
+                    DimensionTVCom=st.selectbox('Escoja la dimensión del análisis',['Evolución temporal','Operadores','Departamentos'])    
+                
+                if DimensionTVCom=='Evolución temporal':  
+                    AsociadosTVComunitariaNac['periodo_formato']=AsociadosTVComunitariaNac['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if DimensionTVCom=='Operadores':
+                    st.plotly_chart(PlotlyBarras(AsociadosTVComunitariaEmp,'asociados','',1,'Asociados anuales por empresa'),use_container_width=True)
+                if DimensionTVCom=='Departamentos':
+                    AsociadosTVComunitariaDep['periodo_formato']=AsociadosTVComunitariaDep['periodo'].apply(periodoformato)
+                    DepartamentosAsoTVCom=AsociadosTVComunitariaDep['departamento'].unique().tolist()
+                    with col2:
+                        OpcionesDPTO=st.multiselect('Seleccione los departamentos para visualizar la evolución del número de asociados',DepartamentosAsoTVCom)
+                        AsociadosTVComunitariaDep2=AsociadosTVComunitariaDep[AsociadosTVComunitariaDep['departamento'].isin(OpcionesDPTO)]
+                    st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados',''), use_container_width=True)   
+
+            if ServiciosTVCom=='Ingresos':
+
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoIngresosTVCom=st.button('Modalidad')
+                with col2:
+                    BarrasIngresosTVCom=st.button('Operadores')
+                
+                if LineaTiempoIngresosTVCom:
+                    IngresosTVComunitariaIngNac['periodo_formato']=IngresosTVComunitariaIngNac['periodo'].apply(periodoformato)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                if BarrasIngresosTVCom:
+                    st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
+                    
+
+if select_seccion =='Dinámica postal':
+    st.title("Dinámica del sector de telecomunicaciones")
+    st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
+    select_DinPos = st.selectbox('Seleccione el sector de los servicios postales a consultar',['Correo',
+    'Mensajería expresa','Giros'])      
+    st.markdown(r"""<hr>""",unsafe_allow_html=True)
+
+    if select_DinPos=='Correo':
+        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
+
+        ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
+        ##Número de envíos e ingresos
+        IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
+
+        if ServiciosCorreo=='Número de envíos':
+            st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
+        
+        if ServiciosCorreo=='Ingresos':
+            st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+
+    if select_DinPos=='Mensajería expresa':
+        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
+
+        ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
+        ##Número de envíos e ingresos
+        IngresosyEnviosMexpresaNac=IngresosyEnviosMExpresa.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
+        IngresosyEnviosMexpresaEMp=IngresosyEnviosMExpresa.groupby(['anno','id_empresa','empresa']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()    
+        EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
+        EmpMensExpIng=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+        IngresosyEnviosMexpresaEMpEnv=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpNumEnv))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
+        IngresosyEnviosMexpresaEMpIng=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpIng))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
+        IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2020'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
+        #
+        IngresosMenExpEmpInd=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Individuales']
+        IngresosMenExpEmpInd['participacion']=round(100*IngresosMenExpEmpInd['Ingresos']/IngresosMenExpEmpInd['Ingresos'].sum(),1)
+        IngresosMenExpEmpInd.loc[IngresosMenExpEmpInd['participacion']<=5,'empresa']='Otros'
+        IngresosMenExpEmpInd['empresa']=IngresosMenExpEmpInd['empresa'].replace(nombresComerciales)
+        IngresosMenExpEmpMas=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Masivos']
+        IngresosMenExpEmpMas['participacion']=round(100*IngresosMenExpEmpMas['Ingresos']/IngresosMenExpEmpMas['Ingresos'].sum(),1)
+        IngresosMenExpEmpMas.loc[IngresosMenExpEmpMas['participacion']<=5,'empresa']='Otros'
+        IngresosMenExpEmpMas['empresa']=IngresosMenExpEmpMas['empresa'].replace(nombresComerciales)
+        
+        if ServiciosCorreo=='Número de envíos':
+            col1,col2=st.columns(2)
+            with col1:
+                LineaTiempoEnviosMenExpresa=st.button('Modalidad')
+            with col2:
+                BarrasEnviosMenExpresa=st.button('Operadores')
+            
+            if LineaTiempoEnviosMenExpresa:
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
+            
+            if BarrasEnviosMenExpresa:
+               st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'Envíos anuales por empresa'),use_container_width=True) 
+                
+        if ServiciosCorreo=='Ingresos':
+            col1,col2,col3=st.columns(3)
+            with col1:
+                LineaTiempoIngresosMenExpresa=st.button('Modalidad')
+            with col2:
+                BarrasIngresosMenExpresa=st.button('Operadores')  
+            with col3:
+                PieIngresosMenExpresa=st.button('Participaciones')
+            
+            if LineaTiempoIngresosMenExpresa:    
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+            if BarrasIngresosMenExpresa:
+                st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'Ingresos anuales por empresa'),use_container_width=True) 
+            if PieIngresosMenExpresa:
+                figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
+                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de mensajería expresa individual<br>(2021)')
+                figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
+                figPieMenExpInd.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                st.plotly_chart(figPieMenExpInd)
+
+                figPieMenExpMas = px.pie(IngresosMenExpEmpMas, values='Ingresos', names='empresa', color='empresa',
+                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de mensajería expresa masivos<br>(2021)')
+                figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
+                figPieMenExpMas.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                st.plotly_chart(figPieMenExpMas)    
