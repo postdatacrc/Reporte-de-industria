@@ -400,3 +400,87 @@ def ReadApiTVSUSIng():
     TVSUS_ING=TVSUS_ING.rename(columns={'desc_empresa':'empresa'})
     return TVSUS_ING
 IngresosTVSus=ReadApiTVSUSIng()
+
+########################################################### TV Comunitaria
+##Asociados
+def ReadApiTVComunitariaAsociados():
+    resourceid = '6a80e055-0a5c-427e-a6d8-fcb3526dbcd5'
+    consulta_anno='2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[mes]=3&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_operador&fields[]=operador&fields[]=id_departamento&fields[]=departamento'\
+             '&group_by=anno,trimestre,id_operador,operador,id_departamento,departamento'\
+             '&sum=total_asociados' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    TV_COM = pd.DataFrame(json_base['result']['records'])
+    TV_COM.sum_total_asociados = TV_COM.sum_total_asociados.astype('int64')
+    TV_COM = TV_COM.rename(columns={'id_operador':'id_empresa','operador':'empresa','sum_total_asociados':'asociados'})
+    return TV_COM  
+AsociadosTVComunitaria=ReadApiTVComunitariaAsociados()
+
+##Ingresos
+def ReadApiTVComunitariaIngresos():
+    resourceid = '359d8eff-6891-4b4d-b04d-0948b002a651'
+    consulta_anno='2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=mes_del_trimestre&fields[]=id_empresa&fields[]=desc_empresa'\
+             '&group_by=anno,trimestre,mes_del_trimestre,id_empresa,desc_empresa'\
+             '&sum[]=ingresos_totales&sum[]=ingr_brutos_pauta_publicitaria&sum[]=ingresos_brutos_operacionales' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    TV_COM = pd.DataFrame(json_base['result']['records'])
+    TV_COM['periodo']=TV_COM['anno']+'-T'+TV_COM['trimestre']
+    TV_COM.sum_ingresos_totales = TV_COM.sum_ingresos_totales.astype('int64')
+    TV_COM.sum_ingr_brutos_pauta_publicitaria = TV_COM.sum_ingr_brutos_pauta_publicitaria.astype('int64')
+    TV_COM.sum_ingresos_brutos_operacionales = TV_COM.sum_ingresos_brutos_operacionales.astype('int64')
+    TV_COM.trimestre=TV_COM.trimestre.astype('int64')
+    TV_COM.mes_del_trimestre=TV_COM.mes_del_trimestre.astype('int64')
+    TV_COM = TV_COM.rename(columns={'desc_empresa':'empresa','sum_ingresos_totales':'Ing Total',
+                                   'sum_ingr_brutos_pauta_publicitaria':'Ing Pauta publicitaria',
+                                   'sum_ingresos_brutos_operacionales':'Ing Brutos operacionales'})
+    return TV_COM  
+IngresosTVComunitariaIng=ReadApiTVComunitariaIngresos()
+
+########################################################### Correo
+##Ingresos y envíos
+def ReadApiCorreoEnviosIngresos():
+    resourceid = '3709bd6a-ee6b-4bc7-b711-9ebc64a89898'
+    consulta_anno='2018,2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_envio'\
+             '&group_by=anno,trimestre,ambito,tipo_envio'\
+             '&sum[]=ingresos&sum[]=numero_total_envios' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    Correo = pd.DataFrame(json_base['result']['records'])
+    Correo['periodo']=Correo['anno']+'-T'+Correo['trimestre']
+    Correo.sum_ingresos = Correo.sum_ingresos.astype('int64')
+    Correo.sum_numero_total_envios = Correo.sum_numero_total_envios.astype('int64')
+    Correo = Correo.rename(columns={'sum_numero_total_envios':'Envíos','sum_ingresos':'Ingresos'})
+    Correo['tipo_envio']=Correo['tipo_envio'].replace({'Envíos Individuales':'Individuales','Envíos Masivos':'Masivos'})
+    return Correo  
+IngresosyEnviosCorreo=ReadApiCorreoEnviosIngresos()
+
+########################################################### M Expresa
+##Ingresos y envíos
+def ReadApiMExpresaEnviosIngresos():
+    resourceid = '8b901e29-4fcd-465f-b006-fd73bd01215f'
+    consulta_anno='2018,2019,2020,2021'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_envio&fields[]=id_empresa&fields[]=empresa'\
+             '&group_by=anno,trimestre,ambito,tipo_envio,id_empresa,empresa'\
+             '&sum[]=ingresos&sum[]=numero_total_envios' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    MExpresa = pd.DataFrame(json_base['result']['records'])
+    MExpresa['periodo']=MExpresa['anno']+'-T'+MExpresa['trimestre']
+    MExpresa.sum_ingresos = MExpresa.sum_ingresos.astype('int64')
+    MExpresa.sum_numero_total_envios = MExpresa.sum_numero_total_envios.astype('int64')
+    MExpresa = MExpresa.rename(columns={'sum_numero_total_envios':'Envíos','sum_ingresos':'Ingresos'})
+    MExpresa['tipo_envio']=MExpresa['tipo_envio'].replace({'Envíos Individuales':'Individuales','Envíos Masivos':'Masivos'})
+    return MExpresa  
+IngresosyEnviosMExpresa=ReadApiMExpresaEnviosIngresos()
