@@ -104,7 +104,15 @@ def PColoresEmp(id_empresa):
     elif id_empresa=='900392611':
         return 'rgb(255,0,127)' 
     elif id_empresa=='860014923':
-        return 'rgb(220,11,11)'         
+        return 'rgb(220,11,11)'   
+    elif id_empresa=='860025674':
+        return 'rgb(51,51,255)' 
+    elif id_empresa=='900163045':
+        return 'rgb(255,128,0)'   
+    elif id_empresa=='901032662':
+        return 'rgb(220,20,60)' 
+    elif id_empresa=='830029703':
+        return 'rgb(102,204,0)'           
     else:
         pass            
 def periodoformato(x):
@@ -504,6 +512,12 @@ def APIsDinPostal():
     from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
+##TV abierta
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
+def TVabierta():
+    TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
+    return TVabierta
+TVabierta=TVabierta()
     
 st.markdown(page_bg_img, unsafe_allow_html=True)
 st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
@@ -1178,7 +1192,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoIngresosTelFija:
                     IngresosTelefoniaFijaNac['periodo_formato']=IngresosTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Millones de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasIngresosTelFija:
                     st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTL,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía local por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
@@ -1317,10 +1331,6 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Suscriptores anuales por empresa'),use_container_width=True)
                     st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'Ingresos/Suscriptores anuales por empresa'),use_container_width=True)
                 
-                # if ConceptoIngresosTVSus:        
-                    # IngresosTVSusConcep['periodo_formato']=IngresosTVSusConcep['periodo'].apply(periodoformato)
-                    # st.plotly_chart(Plotlylineatiempo(IngresosTVSusConcep,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)','rgb(255,0,0)']), use_container_width=True)
-
         if ServiciosAudiovisuales == 'TV comunitaria':
             st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
 
@@ -1381,6 +1391,173 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasIngresosTVCom:
                     st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
 
+        if ServiciosAudiovisuales == 'OTT':
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Serivicios Over the top (OTT)</h4></div>""",unsafe_allow_html=True)   
+            st.markdown('')
+            OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/OTT.csv',delimiter=';')
+            OTT['periodo']=OTT['periodo'].replace({r'Q':'-T'},regex=True)
+            OTT['penetracion']=OTT['penetracion'].replace({r'%':''},regex=True).astype('float')
+            OTTAgg=OTT[(OTT['concepto']=='Penetracion modelo de negocio')&(OTT['periodo'].isin(['2018-T4','2019-T4','2020-T4','2021-T4']))].groupby(['periodo','modelo_negocio'])['penetracion'].sum().reset_index()
+            OTT2=OTTAgg[OTTAgg['modelo_negocio'].isin(['AVOD','FVOD'])]
+            OTTAgg2=OTT2.groupby(['periodo'])['penetracion'].sum().reset_index()
+            OTTAgg2['modelo_negocio']='FVOD-AVOD'
+            OTTdf=pd.concat([OTTAgg,OTTAgg2])
+            OTTdf=OTTdf[OTTdf['modelo_negocio'].isin(['AVOD','FVOD'])==False]
+            OTTdf['modelo_negocio']=OTTdf['modelo_negocio'].replace({'TV Everywhere pago':'TV Everywhere<br>pago'})
+            #
+            OTTMotivos=OTT[OTT['concepto']=='Motivos cutterss']
+            OTTMotivos=OTTMotivos.rename(columns={'modelo_negocio':'motivos'})
+            Motivos21T4=OTTMotivos[OTTMotivos['periodo']=='2021-T4'].sort_values(by='penetracion',ascending=False)['motivos'].values.tolist()[0:5]
+            OTTMotivos=OTTMotivos[OTTMotivos['motivos'].isin(Motivos21T4)]
+            OTTMotivos['penetracion']=OTTMotivos['penetracion']*100
+            reshape_motivos={'Es muy caro.':'Servicio muy caro','No lo estaba utilizando.':'No lo utilizaba',
+                            'Estaba obligado a pagar por muchos canales que luego no miraba realmente.':'Obligado a pagar<br>canales que no<br>miraba',
+                            'Puedo ver los mismos contenidos en internet y gratis.':'Mismo contenigo gratis<br>en internet',
+                            'El servicio al cliente es muy malo.':'Pésimo servicio al cliente'}
+            OTTMotivos['motivos']=OTTMotivos['motivos'].replace(reshape_motivos)
+            
+                        
+            col1,col2=st.columns(2)
+            with col1:
+                ModeloOTT=st.button('Modelo de negocio')
+            with col2:
+                MotivosOTT=st.button('Motivos corte servicio')
+
+            if ModeloOTT:
+                figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
+                figModeloOTT.update_layout(barmode='group')
+                figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                figModeloOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
+                figModeloOTT.update_layout(height=550,legend_title=None)
+                figModeloOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                title={
+                'text': 'Penetración suscriptores OTT por modelo de servicio',
+                'y':0.98,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'})        
+                figModeloOTT.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                figModeloOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                figModeloOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                st.plotly_chart(figModeloOTT,use_container_width=True)
+                
+            if MotivosOTT:
+                figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
+                figMotivosOTT.update_layout(barmode='group')
+                figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text='Porcentaje',row=1, col=1,
+                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                figMotivosOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=None, row=1, col=1)
+                figMotivosOTT.update_layout(height=550,legend_title=None)
+                figMotivosOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                title={
+                'text': 'Motivos más comunes de cancelación del servicio',
+                'y':0.98,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'})        
+                figMotivosOTT.update_layout(legend=dict(orientation="v",y=0.87,x=0.8,font_size=14),showlegend=True)
+                figMotivosOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                figMotivosOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                st.plotly_chart(figMotivosOTT,use_container_width=True)
+              
+        if ServiciosAudiovisuales == 'TV abierta':
+            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
+            st.markdown('') 
+            
+            IngresosTVabierta=st.selectbox('Escoja el servicio de TV abierta',['Ingresos por servicio','Ingresos TV pública'])
+              
+            ##Ingresos TV abierta
+            TVabierta=TVabierta.dropna()
+            TVabierta=TVabierta[TVabierta['ingresos']>0]
+            TVabierta=TVabierta.rename(columns={'nit':'id_empresa','razon social':'empresa'})   
+            TVabiertaNac=TVabierta.groupby(['anno','modalidad'])['ingresos'].sum().reset_index()
+            #
+            TVabiertaEmp=TVabierta.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+            TVabiertaEmp=TVabiertaEmp[TVabiertaEmp['anno'].isin([2020,2021])]
+            EmpTVAbierta=TVabiertaEmp[TVabiertaEmp['anno']==2021].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            TVabiertaEmp=TVabiertaEmp[(TVabiertaEmp['id_empresa'].isin(EmpTVAbierta))]
+            ##TV Pública
+            TVPublica=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_publica.csv',delimiter=';')
+            TVPublica=TVPublica.fillna(0)
+            
+            if IngresosTVabierta=='Ingresos por servicio':   
+                st.markdown('Escoja la dimensión del análisis')  
+                col1,col2=st.columns(2)
+                with col1:
+                    ModalidadTVabierta=st.button('Modalidad')
+                with col2:
+                    OperadoresTVabierta=st.button('Operadores')
+
+                if ModalidadTVabierta:
+                    figTVabiertaMod=make_subplots(rows=1,cols=2)
+                    Color_Modalidad={'TELEVISIÓN LOCAL CON ÁNIMO DE LUCRO':'rgb(122, 68, 242)','TELEVISIÓN LOCAL SIN ÁNIMO DE LUCRO':'rgb(0, 128, 255)',
+                                    'TELEVISIÓN NACIONAL (Concesión)':'rgb(102,204,0)','TELEVISIÓN NACIONAL PRIVADA':'#ffbf00'}
+                    for modalidad in ['TELEVISIÓN NACIONAL PRIVADA']:
+                        df=TVabiertaNac[TVabiertaNac['modalidad']==modalidad]
+                        figTVabiertaMod.add_trace(go.Bar(x=df['anno'],y=df['ingresos']/1e9,name=modalidad,marker_color=Color_Modalidad[modalidad]),row=1,col=2)
+                        
+                    for modalidad in ['TELEVISIÓN LOCAL CON ÁNIMO DE LUCRO','TELEVISIÓN LOCAL SIN ÁNIMO DE LUCRO','TELEVISIÓN NACIONAL (Concesión)']:
+                        df=TVabiertaNac[TVabiertaNac['modalidad']==modalidad]
+                        figTVabiertaMod.add_trace(go.Bar(x=df['anno'],y=df['ingresos']/1e6,name=modalidad,marker_color=Color_Modalidad[modalidad]),row=1,col=1)
+                        
+                    figTVabiertaMod.update_layout(barmode='group')
+                    figTVabiertaMod.update_yaxes(title_text='Miles de Millones de pesos',row=1,col=2)
+                    figTVabiertaMod.update_yaxes(title_text='Millones de pesos',row=1,col=1)
+                    figTVabiertaMod.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,
+                    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                    figTVabiertaMod.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18)
+                    figTVabiertaMod.update_layout(height=550,legend_title=None)
+                    figTVabiertaMod.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    title={
+                    'text': 'Ingresos de televisión abierta por modalidad',
+                    'y':0.95,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'})        
+                    figTVabiertaMod.update_layout(legend=dict(orientation="h",y=1.12,x=0.1,font_size=12),showlegend=True)
+                    figTVabiertaMod.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                    figTVabiertaMod.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                    st.plotly_chart(figTVabiertaMod,use_container_width=True)
+                 
+                if OperadoresTVabierta:
+                    st.plotly_chart(PlotlyBarras(TVabiertaEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)            
+            
+            if IngresosTVabierta=='Ingresos TV pública':    
+                TVPublica=TVPublica.fillna(0)
+                TVPublica=TVPublica.rename(columns={'Operador':'empresa'})
+                TVPublicaAgg=TVPublica.groupby(['anno','empresa']).agg({'Oper_TV(%)':'sum','Otros_servicios(%)':'sum','Transferencias(%)':'sum'}).reset_index()
+                TVPublicaAgg[['Oper_TV(%)','Otros_servicios(%)','Transferencias(%)']]=TVPublicaAgg[['Oper_TV(%)','Otros_servicios(%)','Transferencias(%)']]*100
+                TVPublicaAgg=TVPublicaAgg.rename(columns={'Oper_TV(%)':'Operativo TV','Otros_servicios(%)':'Otros servicios','Transferencias(%)':'Transferencias'})
+                TVPublicaAgg2=pd.melt(TVPublicaAgg,id_vars=['anno','empresa'],value_vars=['Operativo TV','Otros servicios','Transferencias'],
+                                     var_name='ambito',value_name='Porcentaje')
+                TVPublicaAgg2=TVPublicaAgg2[TVPublicaAgg2['anno'].isin([2020,2021])]
+                
+                color_ambitoTVPu={'Operativo TV':'rgb(178,102,255)','Otros servicios':'rgb(102,255,102)',
+                             'Transferencias':'rgb(102,178,255)'}
+                figTVPublica = make_subplots(rows=1,cols=1)
+                for ambito in TVPublicaAgg2['ambito'].unique().tolist():
+                    df2=TVPublicaAgg2[TVPublicaAgg2['ambito']==ambito]    
+                    X=[df2['empresa'].tolist(),df2['anno'].tolist()]
+                    figTVPublica.add_trace(go.Bar(x=X,y=TVPublicaAgg2[TVPublicaAgg2['ambito']==ambito]['Porcentaje'],name=ambito,marker_color=color_ambitoTVPu[ambito]))
+                figTVPublica.update_layout(barmode='stack')
+                figTVPublica.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=12),title_text=None,row=1, col=1,
+                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                figTVPublica.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
+                figTVPublica.update_layout(height=550,legend_title=None)
+                figTVPublica.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                title={
+                'text': 'Composición de ingresos de los canales públicos nacionales, regionales y locales',
+                'y':0.92,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'})        
+                figTVPublica.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                figTVPublica.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                figTVPublica.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                st.plotly_chart(figTVPublica,use_container_width=True)
+                
+            
     if select_secResumenDinTic == 'Radio':                   
         st.markdown(r"""<div class="titulo"><h3>Radio</h3></div>""",unsafe_allow_html=True)
         nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
