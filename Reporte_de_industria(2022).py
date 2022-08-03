@@ -102,7 +102,9 @@ def PColoresEmp(id_empresa):
     elif id_empresa=='900084777':
         return 'rgb(0,102,204)' 
     elif id_empresa=='900392611':
-        return 'rgb(255,0,127)'         
+        return 'rgb(255,0,127)' 
+    elif id_empresa=='860014923':
+        return 'rgb(220,11,11)'         
     else:
         pass            
 def periodoformato(x):
@@ -306,6 +308,31 @@ def PlotlyBarras2(df,column,modalidad,unidad,escalamiento,titulo,colores):
     'yanchor': 'top'})        
     fig.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    return fig
+
+def PlotlyBarrasEmp(df,column,unidad,escalamiento,titulo,colores):   
+    fig = make_subplots(rows=1, cols=1) 
+    maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.5
+    for i,empresa in enumerate(df['empresa'].unique().tolist()):
+        fig.add_trace(go.Bar(y=df[df['empresa']==empresa]['anno'],x=df[df['empresa']==empresa][column]/escalamiento
+                             ,orientation='h',marker_color=colores[i],
+                            name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
+        column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
+    fig.update_layout(barmode='group')
+    fig.update_yaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+    fig.update_xaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text': titulo,
+    'y':0.91,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="v",y=1,x=0.95,font_size=12),showlegend=True,barmode='stack',yaxis={'categoryorder':'category descending'})
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',xaxis_tickformat='d')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     return fig
 
@@ -1353,7 +1380,100 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasIngresosTVCom:
                     st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
-                    
+
+    if select_secResumenDinTic == 'Radio':                   
+        st.markdown(r"""<div class="titulo"><h3>Radio</h3></div>""",unsafe_allow_html=True)
+        nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
+        'EMPRESA COLOMBIANA DE RADIO SAS':'Empresa Colombiana<br>de radio','RADIO CADENA NACIONAL SAS':'RCN Radio','DIGITAL ESTEREO SAS':'Digital estereo',
+        'SERVICIO RADIAL INTEGRADO SAS':'Servicio radial<br>integrado','PRODUCCIONES WILLVIN S A':'Producciones Willvin','ORGANIZACION RADIAL OLIMPICA S.A.':'Olimpica organización<br>radial',
+        'CHAR DIAZ SAS':'Char Diaz','VITAL INVERSIONES S.A.':'Vital inversiones','ALIANZA INTEGRAL COM SAS':'Alianza integral','CARACOL TELEVISIÓN S.A.':'Caracol Televisión'}
+        ##Ingresos Radio
+        IngresosRadio=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/radio_ingresos.csv',delimiter=';',encoding='latin-1')
+        IngresosRadio['ingresos ordinarios']=IngresosRadio['ingresos ordinarios'].astype('int64')
+        IngresosRadio['anno']=IngresosRadio['anno'].astype('str')
+        IngresosRadio=IngresosRadio.rename(columns={'empresa  ':'empresa','ingresos ordinarios':'ingresos'})
+        IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
+        ##Número emisoras
+        NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='latin-1')
+        NumeroEmisoras=NumeroEmisoras.rename(columns={'CLASE DE\nEMISORA':'CLASE DE EMISORA'})
+        NumeroEmisoras['DEPARTAMENTO']=NumeroEmisoras['DEPARTAMENTO'].replace({'ARCHIPIELAGO DE SAN ANDRÉS. PROVIDENCIA Y SANTA CATALINA':'SAN ANDRÉS Y PROV.',
+                                                                      'NORTE DE\nSANTANDER':'N.SANTANDER','NORTE DE SANTANDER':'N.SANTANDER'})        
+        #
+        NumeroEmisorasAgg=NumeroEmisoras.groupby(['CLASE DE EMISORA','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
+        NumeroEmisorasAgg=NumeroEmisorasAgg.rename(columns={'CODIGO EMISORA':'Número emisoras'})
+        NumeroEmisorasAgg.loc[NumeroEmisorasAgg['CLASE DE EMISORA']=='COMUNITARIA','BANDA']=None
+        NumeroEmisorasAgg['CLASE DE EMISORA']=NumeroEmisorasAgg['CLASE DE EMISORA'].replace({'INTERÉS PÚBLICO':'INTERÉS<br>PÚBLICO'})
+        #
+        NumeroEmisorasDepComerciales=NumeroEmisoras[NumeroEmisoras['CLASE DE EMISORA']=='COMERCIAL'].groupby(['DEPARTAMENTO','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
+        NumeroEmisorasDepComerciales=NumeroEmisorasDepComerciales.rename(columns={'CODIGO EMISORA':'Número empresas'})
+        NumeroEmisorasDepComunitarias=NumeroEmisoras[NumeroEmisoras['CLASE DE EMISORA']=='COMUNITARIA'].groupby(['DEPARTAMENTO','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
+        NumeroEmisorasDepComunitarias=NumeroEmisorasDepComunitarias.rename(columns={'CODIGO EMISORA':'Número empresas'})
+        
+        ServiciosRadio=st.selectbox('Escoja el servicio de radio',['Ingresos','Número de emisoras'])
+        st.markdown(r"""<hr>""",unsafe_allow_html=True)
+        
+        if ServiciosRadio=='Ingresos':
+            st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'Ingresos en radio por empresa',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
+            'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)']),use_container_width=True)
+
+        if ServiciosRadio=='Número de emisoras':
+
+            col1,col2=st.columns(2)
+            with col1:
+                ParticipacionNEmmisoras=st.button('Participación')
+            with col2:
+                ClasedeEmisoraRadio=st.button('Clase de emisora')
+            
+            if ParticipacionNEmmisoras:
+                figPartNEmis = px.sunburst(NumeroEmisorasAgg, path=['CLASE DE EMISORA', 'BANDA'], values='Número emisoras',color='CLASE DE EMISORA',
+                                  color_discrete_map={'COMUNITARIA':'rgb(122, 68, 242)','COMERCIAL':'rgb(0, 128, 255)','INTERÉS<br>PÚBLICO':'rgb(102,204,0)'
+                                                     })
+                figPartNEmis.update_layout(height=550,legend_title=None)
+                figPartNEmis.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                title={
+                'text':'<b>Participación en el número de emisoras por clase de emisora y banda<br>(2021)',
+                'y':0.9,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'})      
+                figPartNEmis.update_layout(
+                    margin = dict(t=10, l=10, r=10, b=10))
+                st.plotly_chart(figPartNEmis,use_container_width=True)    
+
+            if ClasedeEmisoraRadio:
+                figDepComercial = px.bar(NumeroEmisorasDepComerciales, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)'])
+                figDepComercial.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
+                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                figDepComercial.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
+                figDepComercial.update_layout(height=550,legend_title=None)
+                figDepComercial.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                title={
+                'text': 'Número de emisoras comerciales por departamento y banda',
+                'y':0.95,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'})        
+                figDepComercial.update_layout(legend=dict(orientation="h",y=1,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                figDepComercial.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                figDepComercial.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                st.plotly_chart(figDepComercial,use_container_width=True)
+                #
+                figDepComunitaria = px.bar(NumeroEmisorasDepComunitarias, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(0, 128, 255)'])
+                figDepComunitaria.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
+                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                figDepComunitaria.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
+                figDepComunitaria.update_layout(height=550,legend_title=None)
+                figDepComunitaria.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                title={
+                'text': 'Número de emisoras comunitarias por departamento y banda',
+                'y':0.95,
+                'x':0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'})        
+                figDepComunitaria.update_layout(legend=dict(orientation="h",y=0.95,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                figDepComunitaria.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                figDepComunitaria.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                st.plotly_chart(figDepComunitaria,use_container_width=True)
 
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector de telecomunicaciones")
