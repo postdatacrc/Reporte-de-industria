@@ -45,7 +45,12 @@ nombresComerciales={'ALMACENES EXITO INVERSIONES S.A.S.':'Móvil Éxito',
  'DOMESA DE COLOMBIA S.A.':'Domesa',
  'CADENA COURRIER S.A.S.':'Cadena',
  'DATACURRIER S A S':'Datacurrier',
- 'ENTREGA INMEDIATA SEGURA S.A':'EIS'}
+ 'ENTREGA INMEDIATA SEGURA S.A':'EIS',
+ 'SUPERGIROS S.A':'Supergiros',
+ 'EFECTIVO LTDA':'Efecty',
+ 'MATRIX GIROS Y SERVICIOS SAS':'Matrix',
+ 'MOVIIRED S.A.S.':'Moviired',
+ 'SERVICIOS POSTALES NACIONALES S.A.':'4-72'}
  
 Colores_pie={'Claro':'rgba(255,0,0,0.7)','Telefónica':'rgba(154,205,50,0.7)','Tigo':'rgba(100,149,237,0.7)','Virgin':'rgb(255,102,178)',
          'Móvil Éxito':'rgba(241, 196, 15,0.7)','WOM':'rgb(198,84,206)',
@@ -53,7 +58,8 @@ Colores_pie={'Claro':'rgba(255,0,0,0.7)','Telefónica':'rgba(154,205,50,0.7)','T
 Colores_pie2={'Claro':'rgba(255,0,0,0.7)','Movistar':'rgba(154,205,50,0.7)','Tigo-Une':'rgba(100,149,237,0.7)','Otros':'rgb(192,192,192)','ETB':'rgba(26, 82, 118,0.7)'}
 Colores_pie3={'Colvantes':'rgb(204,0,0)','InterRapidisimo':'rgb(255,128,0)','DHL':'rgb(255,255,0)','Servientrega':'rgb(31,226,109)',
              'Coordinadora':'rgb(51,51,255)','UPS':'rgb(255,181,0)','Otros':'rgb(192,192,192)','Domina':'rgb(19,114,209)','Domesa':'rgb(76,0,153)',
-             'EIS':'rgb(0,102,102)','Cadena':'rgb(255,51,51)','Datacurrier':'rgb(153,255,51)'}
+             'EIS':'rgb(0,102,102)','Cadena':'rgb(255,51,51)','Datacurrier':'rgb(153,255,51)','Efecty':'rgb(255,213,30)','Matrix':'rgb(153,255,51)',
+             '4-72':'rgb(0,0,255)','Supergiros':'rgb(0,102,204)','Moviired':'rgb(255,0,127)'}
 
 
 
@@ -88,7 +94,15 @@ def PColoresEmp(id_empresa):
     elif id_empresa=='860512330':
         return 'rgb(31,226,109)'
     elif id_empresa=='890904713':
-        return 'rgb(51,51,255)'        
+        return 'rgb(51,51,255)'     
+    elif id_empresa=='830131993':
+        return 'rgb(255,213,30)'  
+    elif id_empresa=='900327256':
+        return 'rgb(153,255,51)' 
+    elif id_empresa=='900084777':
+        return 'rgb(0,102,204)' 
+    elif id_empresa=='900392611':
+        return 'rgb(255,0,127)'         
     else:
         pass            
 def periodoformato(x):
@@ -151,6 +165,35 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
     fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
     title={
     'text':column.capitalize() +" por periodo",
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    fig.update_layout(yaxis_tickformat ='d')
+    return fig
+
+def PlotlylineatiempoEmp(df,column,unidad,colores,titulo):
+    fig = make_subplots(rows=1, cols=1)
+    maxdf=df[column].max()+df[column].max()*0.4
+    empresa=df['empresa'].unique().tolist()
+    for i,elem in enumerate(empresa):
+        fig.add_trace(go.Scatter(x=df[df['empresa']==elem]['periodo_formato'],
+        y=df[df['empresa']==elem][column],text=df[df['empresa']=='elem']['empresa'],line=dict(color=colores[i]),
+        mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
+        '<br><b>Empresa</b>:<br><extra></extra>'+elem+
+        '<br><b>Periodo</b>: %{x}<br>'+                         
+        column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text':titulo,
     'y':0.95,
     'x':0.5,
     'xanchor': 'center',
@@ -238,6 +281,30 @@ def PlotyMultiIndexBarra(df,column,unidad,titulo,escalamiento):
     'xanchor': 'center',
     'yanchor': 'top'})        
     fig.update_layout(legend=dict(orientation="h",y=1.1,xanchor='center',x=0.5,font_size=12),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    return fig
+
+def PlotlyBarras2(df,column,modalidad,unidad,escalamiento,titulo,colores):
+    fig = make_subplots(rows=1, cols=1) 
+    maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.5    
+    for i,elem in enumerate(df[modalidad].unique().tolist()):
+        fig.add_trace(go.Bar(x=df[df[modalidad]==elem]['anno'],y=df[df[modalidad]==elem][column]/escalamiento
+                             ,marker_color=colores[i],name=elem,hovertemplate=modalidad.capitalize()+':'+elem+'<br>'+                       
+        column.capitalize()+'-'+unidad+': %{y:.3f}<br>'))      
+    fig.update_layout(barmode='group')
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text': titulo,
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     return fig
@@ -404,7 +471,7 @@ def APIsTVCom():
     from APIs import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
-## Correo
+## Dinámica postal
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsDinPostal():
     from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
@@ -1322,7 +1389,7 @@ if select_seccion =='Dinámica postal':
         EmpMensExpIng=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
         IngresosyEnviosMexpresaEMpEnv=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpNumEnv))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
         IngresosyEnviosMexpresaEMpIng=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpIng))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
-        IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2020'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
+        IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2021'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
         #
         IngresosMenExpEmpInd=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Individuales']
         IngresosMenExpEmpInd['participacion']=round(100*IngresosMenExpEmpInd['Ingresos']/IngresosMenExpEmpInd['Ingresos'].sum(),1)
@@ -1360,21 +1427,119 @@ if select_seccion =='Dinámica postal':
             if BarrasIngresosMenExpresa:
                 st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'Ingresos anuales por empresa'),use_container_width=True) 
             if PieIngresosMenExpresa:
+                col1,col2=st.columns(2)
                 figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
-                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de mensajería expresa individual<br>(2021)')
+                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2021)')
                 figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
+                figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
                 figPieMenExpInd.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                st.plotly_chart(figPieMenExpInd)
+                with col1:
+                    st.plotly_chart(figPieMenExpInd,use_container_width=True)
 
                 figPieMenExpMas = px.pie(IngresosMenExpEmpMas, values='Ingresos', names='empresa', color='empresa',
-                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de mensajería expresa masivos<br>(2021)')
+                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos(2021)')
                 figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
+                figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
                 figPieMenExpMas.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                st.plotly_chart(figPieMenExpMas)    
+                with col2:
+                    st.plotly_chart(figPieMenExpMas,use_container_width=True)    
 
     if select_DinPos=='Giros':
-        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Giros</h4></div>""",unsafe_allow_html=True)
-        IngresosGiros['Ingresos/Valor giros']=round(IngresosGiros['Ingresos']/IngresosGiros['Valor total giros'],4)*100        
-        AgGrid(IngresosGiros)
+        ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros'])
+        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
+        
+        IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
+        
+        ##Ingresos
+        IngresosGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+        IngresosGirosNac=IngresosGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
+        #
+        IngresosGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Ingresos':'sum'}).reset_index()
+        EmpGirosIng=IngresosGirosEmp[IngresosGirosEmp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+        IngresosGirosEmp=IngresosGirosEmp[(IngresosGirosEmp['anno'].isin(['2020','2021']))&(IngresosGirosEmp['id_empresa'].isin(EmpGirosIng))]
+        #
+        IngresosGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+        IngresosGirosPie['participacion']=round(100*IngresosGirosPie['Ingresos']/IngresosGirosPie['Ingresos'].sum(),3)
+        IngresosGirosPie['participacion_2']=round(100*IngresosGirosPie['Valor total giros']/IngresosGirosPie['Valor total giros'].sum(),3)
+        IngresosGirosPie['empresa']=IngresosGirosPie['empresa'].replace(nombresComerciales) 
+        #Ingresos por valor de giro
+        IngresosPorValorGiroEmp=IngresosGiros[IngresosGiros['ambito']=='Nacional'].groupby(['periodo','empresa','id_empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+        IngresosPorValorGiroEmp['Tasa media de comisión']=round(100*IngresosPorValorGiroEmp['Ingresos']/IngresosPorValorGiroEmp['Valor total giros'],3)
+        ##Giros
+        NumeroGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Giros':'sum'}).reset_index()
+        NumeroGirosNac=NumeroGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
+        #
+        NumeroGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Giros':'sum'}).reset_index()
+        EmpGirosNum=NumeroGirosEmp[NumeroGirosEmp['anno']=='2021'].sort_values(by='Giros',ascending=False)['id_empresa'].to_list()[0:4]
+        NumeroGirosEmp=NumeroGirosEmp[(NumeroGirosEmp['anno'].isin(['2020','2021']))&(NumeroGirosEmp['id_empresa'].isin(EmpGirosNum))]
+        #
+        NumeroGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Giros':'sum'}).reset_index()
+        NumeroGirosPie['participacion']=round(100*NumeroGirosPie['Giros']/NumeroGirosPie['Giros'].sum(),3)
+        NumeroGirosPie['empresa']=NumeroGirosPie['empresa'].replace(nombresComerciales)         
+        
+        if ServiciosGiros=='Ingresos':
+            st.markdown('')
+            col1,col2,col3=st.columns(3)
+            with col1:
+                LineaTiempoIngresosGiros=st.button('Modalidad')
+            with col2:
+                BarrasIngresosGiros=st.button('Operadores')  
+            with col3:
+                PieIngresosGiros=st.button('Participaciones')
+                
+            if LineaTiempoIngresosGiros:
+                col1,col2=st.columns(2)                               
+                with col1:
+                    st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Nacionales'],'Ingresos','ambito','Miles de Millones de pesos',1e9,'Ingresos de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
+                with col2:    
+                    st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Internacionales'],'Ingresos','ambito','Millones de pesos',1e6,'Ingresos de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+            if BarrasIngresosGiros:
+                st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
+                IngresosPorValorGiroEmp['periodo_formato']=IngresosPorValorGiroEmp['periodo'].apply(periodoformato)
+                st.plotly_chart(PlotlylineatiempoEmp(IngresosPorValorGiroEmp,'Tasa media de comisión','Porcentaje',['rgb(255,213,30)','rgb(153,255,51)','rgb(255,0,127)','rgb(0,0,255)','rgb(0,102,204)'],'Tasa media de comisión de ámbito nacional'), use_container_width=True)
+            
+            if PieIngresosGiros:
+                figPieGirIng = px.pie(IngresosGirosPie, values='Ingresos', names='empresa', color='empresa',
+                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2021)')
+                figPieGirIng.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                figPieGirIng.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                #
+                figPieGirValorGiro = px.pie(IngresosGirosPie, values='Valor total giros', names='empresa', color='empresa',
+                 color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2021)')
+                figPieGirValorGiro.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                figPieGirValorGiro.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                col1,col2=st.columns(2)
+                with col1:
+                    st.plotly_chart(figPieGirIng,use_container_width=True) 
+                with col2:
+                    st.plotly_chart(figPieGirValorGiro,use_container_width=True)                  
+                    
+        if ServiciosGiros=='Número de giros':
+            st.markdown('')
+            col1,col2,col3=st.columns(3)
+            with col1:
+                LineaTiempoNGiros=st.button('Modalidad')
+            with col2:
+                BarrasNGiros=st.button('Operadores')  
+            with col3:
+                PieNGiros=st.button('Participaciones')                    
+                
+            if LineaTiempoNGiros:
+                col1,col2=st.columns(2)                               
+                with col1:
+                    st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Nacionales'],'Giros','ambito','Millones',1e6,'Número de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
+                with col2:    
+                    st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'Número de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+
+            if BarrasNGiros:
+                st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',9,'Número de giros anuales por empresa'),use_container_width=True)
+
+            if PieNGiros:
+                figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
+                 color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2021)')
+                figPieGirNum.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                figPieGirNum.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                st.plotly_chart(figPieGirNum,use_container_width=True)
