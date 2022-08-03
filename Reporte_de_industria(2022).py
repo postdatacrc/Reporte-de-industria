@@ -695,20 +695,29 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','(COP/Min)',1,'Ingresos/Trafico anual por empresa'),use_container_width=True)  
                                                                                                  
         if ServiciosMóviles=='Internet':
-
+            ##Tráfico
             TraficoInternetMovil=TraficoInternetMovil[TraficoInternetMovil['trafico']>0]
-            TraficoInternetMovil=TraficoInternetMovil.rename(columns={'trafico demanda':'DEMANDA','trafico cargo fijo':'CARGO FIJO','trafico':'TOTAL'})
+            TraficoInternetMovilTotal=TraficoInternetMovil.groupby(['anno','trimestre','id_empresa','empresa','periodo'])['trafico'].sum().reset_index()
+            TraficoInternetMovilTotal['modalidad']='Total'
+            TraficoInternetMovildf=pd.concat([TraficoInternetMovil,TraficoInternetMovilTotal]).sort_values(by=['periodo'])  
+            TraficoInternetMovildf['trafico']=TraficoInternetMovildf['trafico']/1024
+
+            ## Ingresos
             IngresosInternetmovil=IngresosInternetmovil[IngresosInternetmovil['ingresos']>0]
+            IngresosInternetmovilTotal=IngresosInternetmovil.groupby(['anno','trimestre','id_empresa','empresa','periodo'])['ingresos'].sum().reset_index()
+            IngresosInternetmovilTotal['modalidad']='Total'
+            IngresosInternetmovildf=pd.concat([IngresosInternetmovil,IngresosInternetmovilTotal]).sort_values(by=['periodo'])
+
+            ##Accesos
             AccesosInternetmovil=AccesosInternetmovil[AccesosInternetmovil['accesos']>0]
-            AccesosInternetmovil=AccesosInternetmovil.rename(columns={'sum_cantidad_abonados':'ABONADOS','sum_cantidad_suscriptores':'SUSCRIPTORES','accesos':'TOTAL'})
-            AccesosInternetmovil['empresa']=AccesosInternetmovil['empresa'].replace({'COLOMBIA TELECOMUNICACIONES S.A. E.S.P.':'COLOMBIA TELECOMUNICACIONES S.A. ESP',
-            AccesosInternetmovil['empresa'].unique().tolist()[2]:'COLOMBIA MOVIL S.A. E.S.P.','EMPRESA DE TELECOMUNICACIONES DE BOGOTA S.A. ESP':'EMPRESA DE TELECOMUNICACIONES DE BOGOTÁ S.A. ESP.',
-            'AVANTEL S.A.S':'AVANTEL S.A.S.'})
-            
-            TraficoInternetMovil.insert(0,'periodo',TraficoInternetMovil['anno']+'-T'+TraficoInternetMovil['trimestre'])
-            IngresosInternetmovil.insert(0,'periodo',IngresosInternetmovil['anno']+'-T'+IngresosInternetmovil['trimestre'])
-            AccesosInternetmovil.insert(0,'periodo',AccesosInternetmovil['anno']+'-T'+AccesosInternetmovil['trimestre'])   
-            
+            AccesosInternetmovilTotal=AccesosInternetmovil.groupby(['anno','trimestre','id_empresa','empresa','periodo'])['accesos'].sum().reset_index()
+            AccesosInternetmovilTotal['modalidad']='Total'
+            AccesosInternetmovildf=pd.concat([AccesosInternetmovil,AccesosInternetmovilTotal]).sort_values(by=['periodo'])
+            AccesosInternetmovildf['empresa']=AccesosInternetmovildf['empresa'].replace({'COLOMBIA TELECOMUNICACIONES S.A. E.S.P.':'COLOMBIA TELECOMUNICACIONES S.A. ESP',
+            AccesosInternetmovildf['empresa'].unique().tolist()[13]:'COLOMBIA MOVIL S.A. E.S.P.','EMPRESA DE TELECOMUNICACIONES DE BOGOTA S.A. ESP':'EMPRESA DE TELECOMUNICACIONES DE BOGOTÁ S.A. ESP.',
+            'AVANTEL S.A.S':'AVANTEL S.A.S.','SUMA MOVIL S.A.S.':'SUMA'})
+            AccesosInternetmovildf=AccesosInternetmovildf[(AccesosInternetmovildf['anno']>'2017')&(AccesosInternetmovildf['anno']<'2022')]
+                        
             col1,col2 = st.columns(2)
             #with col1:
             st.markdown(r"""<div class='IconoTitulo'><img height="60px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
@@ -717,9 +726,7 @@ Claro aumentó su participación, pasando de 37,7% en
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
                                         
             if ServiciosIntMovil=='Accesos':  
-                AccesosInternetmovil2=pd.melt(AccesosInternetmovil,id_vars=['periodo','anno','trimestre','id_empresa','empresa'],value_vars=['ABONADOS','SUSCRIPTORES',
-                                                                                        'TOTAL'],var_name='modalidad', value_name='accesos')
-
+            
                 col1,col2,col3=st.columns(3)
                 with col1:
                     LineaTiempoAccesosIntmovil=st.button('Modalidad')
@@ -729,17 +736,17 @@ Claro aumentó su participación, pasando de 37,7% en
                     PieAccesosIntmovil=st.button('Participaciones')    
                  
                 if LineaTiempoAccesosIntmovil:
-                    AccesosInternetmovilNac=AccesosInternetmovil2.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
+                    AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
                     AccesosInternetmovilNac['periodo_formato']=AccesosInternetmovilNac['periodo'].apply(periodoformato)
                     st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasAccesosIntmovil:
-                    AccesosInternetmovilEmp=AccesosInternetmovil2[(AccesosInternetmovil2['modalidad']=='TOTAL')&(AccesosInternetmovil2['trimestre']=='4')&(AccesosInternetmovil2['anno'].isin(['2020','2021']))]
+                    AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
                     EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
                     AccesosInternetmovilEmp=AccesosInternetmovilEmp[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)]
                     AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(AccesosInternetmovilEmp,'accesos','Millones',1e6,'Accesos anuales por empresa'),use_container_width=True)
                 if PieAccesosIntmovil:
-                    AccesosInternetmovilPie=AccesosInternetmovil2[(AccesosInternetmovil2['modalidad']=='TOTAL')&(AccesosInternetmovil2['trimestre']=='4')&(AccesosInternetmovil2['anno'].isin(['2021']))]
+                    AccesosInternetmovilPie=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2021']))]
                     AccesosInternetmovilPie=AccesosInternetmovilPie.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                     AccesosInternetmovilPie['empresa']=AccesosInternetmovilPie['empresa'].replace(nombresComerciales)
                     AccesosInternetmovilPie['participacion']=round(100*AccesosInternetmovilPie['accesos']/AccesosInternetmovilPie['accesos'].sum(),1)
@@ -752,69 +759,59 @@ Claro aumentó su participación, pasando de 37,7% en
                 
             if ServiciosIntMovil=='Tráfico':
                 
-                TraficoInternetMovil2=pd.melt(TraficoInternetMovil,id_vars=['periodo','anno','trimestre','id_empresa','empresa'],value_vars=['DEMANDA','CARGO FIJO',
-                                                                                        'TOTAL'],var_name='modalidad', value_name='trafico')
-                TraficoInternetMovil2['trafico']=TraficoInternetMovil2['trafico']/1000                                                                        
+                #TraficoInternetMovildf['trafico']=TraficoInternetMovildf['trafico']/1000                                                                        
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoTraficoIntmovil=st.button('Modalidad')
                 with col2:
                     BarrasTraficoIntmovil=st.button('Operadores')
                 if LineaTiempoTraficoIntmovil:             
-                    TraficoInternetMovilNac=TraficoInternetMovil2.groupby(['periodo','modalidad'])['trafico'].sum().reset_index()
+                    TraficoInternetMovilNac=TraficoInternetMovildf.groupby(['periodo','modalidad'])['trafico'].sum().reset_index()
                     TraficoInternetMovilNac['periodo_formato']=TraficoInternetMovilNac['periodo'].apply(periodoformato)
                     st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasTraficoIntmovil:
-                    TraficoInternetMovilEmp=TraficoInternetMovil2.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='TOTAL')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
+                    TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
+                    TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
                     EmpIntMovilTrafico=TraficoInternetMovilEmp[TraficoInternetMovilEmp['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)]
                     st.plotly_chart(PlotlyBarras(TraficoInternetMovilEmp,'trafico','Millones de GB',1e6,'Tráfico anual por empresa'),use_container_width=True)
 
             if ServiciosIntMovil=='Ingresos':
-                IngresosInternetmovil=IngresosInternetmovil.rename(columns={'ingresos':'TOTAL'})
-                IngresosInternetmovil2=pd.melt(IngresosInternetmovil,id_vars=['periodo','anno','trimestre','id_empresa','empresa'],value_vars=['DEMANDA','CARGO FIJO',
-                                                                                        'TOTAL'],var_name='modalidad', value_name='ingresos')
                 
-                IngresosInternetmovilNac=IngresosInternetmovil2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
+                IngresosInternetmovilNac=IngresosInternetmovildf.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
                 IngresosInternetmovilNac['periodo_formato']=IngresosInternetmovilNac['periodo'].apply(periodoformato)
                 
-                IngresosInternetmovilEmp=IngresosInternetmovil2.groupby(['anno','modalidad','empresa','id_empresa'])['ingresos'].sum().reset_index() 
-                IngresosInternetmovilEmp=IngresosInternetmovilEmp[(IngresosInternetmovilEmp['anno'].isin(['2020','2021']))&(IngresosInternetmovilEmp['modalidad']=='TOTAL')]
+                IngresosInternetmovilEmp=IngresosInternetmovildf.groupby(['anno','modalidad','empresa','id_empresa'])['ingresos'].sum().reset_index() 
+                IngresosInternetmovilEmp=IngresosInternetmovilEmp[(IngresosInternetmovilEmp['anno'].isin(['2020','2021']))&(IngresosInternetmovilEmp['modalidad']=='Total')]
                 EmpIntMovilIngresos=IngresosInternetmovilEmp[IngresosInternetmovilEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                 IngresosInternetmovilEmp=IngresosInternetmovilEmp[IngresosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)]
-                ## Limpieza accesos
-                AccesosInternetmovil2=pd.melt(AccesosInternetmovil,id_vars=['periodo','anno','trimestre','id_empresa','empresa'],value_vars=['ABONADOS','SUSCRIPTORES',
-                                                                                        'TOTAL'],var_name='modalidad', value_name='accesos')                
-                AccesosInternetmovilNac=AccesosInternetmovil2.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
-                AccesosInternetmovilNac['modalidad']=AccesosInternetmovilNac['modalidad'].replace({'ABONADOS':'DEMANDA','SUSCRIPTORES':'CARGO FIJO'})
-                AccesosInternetmovilEmp=AccesosInternetmovil2[(AccesosInternetmovil2['modalidad']=='TOTAL')&(AccesosInternetmovil2['trimestre']=='4')&(AccesosInternetmovil2['anno'].isin(['2020','2021']))&(AccesosInternetmovil2['id_empresa'].isin(EmpIntMovilIngresos))]
+                ## Limpieza accesos              
+                AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
+                AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))&(AccesosInternetmovildf['id_empresa'].isin(EmpIntMovilIngresos))]
                 AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['anno','empresa','modalidad','id_empresa'])['accesos'].sum().reset_index()  
-                AccesosInternetmovilEmp=AccesosInternetmovilEmp[(AccesosInternetmovilEmp['anno'].isin(['2020','2021']))&(AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos))]
 
                 ## Limpieza tráfico
-                TraficoInternetMovil2=pd.melt(TraficoInternetMovil,id_vars=['periodo','anno','trimestre','id_empresa','empresa'],value_vars=['DEMANDA','CARGO FIJO',
-                                                                                        'TOTAL'],var_name='modalidad', value_name='trafico')
-                TraficoInternetMovil2['trafico']=TraficoInternetMovil2['trafico']/1000              
-                TraficoInternetMovilNac=TraficoInternetMovil2.groupby(['periodo','modalidad'])['trafico'].sum().reset_index() 
-                TraficoInternetMovilEmp=TraficoInternetMovil2.groupby(['anno','modalidad','id_empresa','empresa'])['trafico'].sum().reset_index()                 
+           
+                TraficoInternetMovilNac=TraficoInternetMovildf.groupby(['periodo','modalidad'])['trafico'].sum().reset_index() 
+                TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','id_empresa','empresa'])['trafico'].sum().reset_index()                 
                 TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))&(TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilIngresos))]
                 
                 IngPorTraficoIntMovilEmp=IngresosInternetmovilEmp.merge(TraficoInternetMovilEmp,left_on=['anno','modalidad','id_empresa'],right_on=['anno','modalidad','id_empresa'])
                 IngPorTraficoIntMovilEmp['Ingresos/Trafico']=round(IngPorTraficoIntMovilEmp['ingresos']/IngPorTraficoIntMovilEmp['trafico'],2)
-                IngPorTraficoIntMovilEmp=IngPorTraficoIntMovilEmp[IngPorTraficoIntMovilEmp['modalidad']=='TOTAL']
+                IngPorTraficoIntMovilEmp=IngPorTraficoIntMovilEmp[IngPorTraficoIntMovilEmp['modalidad']=='Total']
                 ## Ingresos por acceso
                 IngPorAccesosIntMovil=IngresosInternetmovilNac.merge(AccesosInternetmovilNac,left_on=['periodo','modalidad'],right_on=['periodo','modalidad'])
                 IngPorAccesosIntMovil['Ingresos/Acceso']=round(IngPorAccesosIntMovil['ingresos']/IngPorAccesosIntMovil['accesos'],2)
                 IngPorAccesosIntMovil['periodo_formato']=IngPorAccesosIntMovil['periodo'].apply(periodoformato)
                 IngPorAccesosIntMovilEmp=IngresosInternetmovilEmp.merge(AccesosInternetmovilEmp,left_on=['anno','modalidad','id_empresa'],right_on=['anno','modalidad','id_empresa'])
                 IngPorAccesosIntMovilEmp['Ingresos/Acceso']=round(IngPorAccesosIntMovilEmp['ingresos']/IngPorAccesosIntMovilEmp['accesos'],2)
-                IngPorAccesosIntMovilEmp=IngPorAccesosIntMovilEmp[IngPorAccesosIntMovilEmp['modalidad']=='TOTAL']
+                IngPorAccesosIntMovilEmp=IngPorAccesosIntMovilEmp[IngPorAccesosIntMovilEmp['modalidad']=='Total']
 
                 ## Ingresos por tráfico
                 IngPorTraficoIntMovil=IngresosInternetmovilNac.merge(TraficoInternetMovilNac,left_on=['periodo','modalidad'],right_on=['periodo','modalidad'])
                 IngPorTraficoIntMovil['Ingresos/Trafico']=round(IngPorTraficoIntMovil['ingresos']/IngPorTraficoIntMovil['trafico'],2)
                 IngPorTraficoIntMovil['periodo_formato']=IngPorTraficoIntMovil['periodo'].apply(periodoformato)     
+
                 
                 col1,col2=st.columns(2)
                 with col1:
