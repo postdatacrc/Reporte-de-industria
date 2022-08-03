@@ -363,12 +363,12 @@ st.markdown("""<style type="text/css">
         width: 300px;
         top:100px;
         margin-left: -300px;}
-    h1{ background: #b560f3;
+    h1{ background: #DFF0FE;
         text-align: center;
         padding: 15px;
         font-family: sans-serif;
         font-size:1.60rem;
-        color: white;
+        color: black;
         position:fixed;
         width:100%;
         z-index:9999999;
@@ -433,7 +433,7 @@ st.markdown("""<style type="text/css">
     }
     .edgvbvh9 {
       font-weight: 600;
-      background-color: rgb(163,196,251);
+      background-color: #DFF0FE);
       border: 0px solid rgba(0, 0, 0, 1); 
       color:black;
       padding: 0.6rem 0.6rem;
@@ -528,8 +528,7 @@ select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
        
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
-    
-    
+        
 if select_seccion =='Dinámica telecomunicaciones':
     st.title("Dinámica del sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
@@ -1556,8 +1555,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 figTVPublica.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
                 figTVPublica.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
                 st.plotly_chart(figTVPublica,use_container_width=True)
-                
-            
+                            
     if select_secResumenDinTic == 'Radio':                   
         st.markdown(r"""<div class="titulo"><h3>Radio</h3></div>""",unsafe_allow_html=True)
         nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
