@@ -492,15 +492,18 @@ def ReadApiGirosIngresos():
     consulta_anno='2018,2019,2020,2021'
     consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
              '&filters[anno]=' + consulta_anno + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_giro'\
-             '&group_by=anno,trimestre,ambito,tipo_giro'\
-             '&sum[]=ingresos&sum[]=valor_total_giros' 
+             '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_giro&fields[]=id_empresa&fields[]=empresa'\
+             '&group_by=anno,trimestre,ambito,tipo_giro,id_empresa,empresa'\
+             '&sum[]=ingresos&sum[]=valor_total_giros&sum[]=numero_giros' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     Giros = pd.DataFrame(json_base['result']['records'])
     Giros['periodo']=Giros['anno']+'-T'+Giros['trimestre']
     Giros.sum_ingresos = Giros.sum_ingresos.astype('int64')
     Giros.sum_valor_total_giros = Giros.sum_valor_total_giros.astype('int64')
+    Giros.sum_numero_giros = Giros.sum_numero_giros.astype('int64')
     Giros = Giros.rename(columns={'sum_valor_total_giros':'Valor total giros','sum_ingresos':'Ingresos'})
+    Giros['tipo_giro']=Giros['tipo_giro'].replace({'Giros Nacionales':'Nacionales','Giros Internacionales':'Internacionales'})
+    Giros=Giros.rename(columns={'sum_numero_giros':'Giros'})
     return Giros  
 IngresosGiros=ReadApiGirosIngresos()
