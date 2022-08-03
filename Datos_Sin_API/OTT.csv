@@ -1,121 +1,143 @@
 ﻿periodo;concepto;modelo_negocio;penetracion
-2018Q2;Penetracion modelo de negocio;SVOD;58 %
-2018Q4;Penetracion modelo de negocio;SVOD;63 %
-2019Q2;Penetracion modelo de negocio;SVOD;73 %
-2019Q4;Penetracion modelo de negocio;SVOD;73 %
-2020Q1;Penetracion modelo de negocio;SVOD;75 %
-2020Q2;Penetracion modelo de negocio;SVOD;73 %
-2020Q3;Penetracion modelo de negocio;SVOD;73 %
-2020Q4;Penetracion modelo de negocio;SVOD;73 %
-2021Q1;Penetracion modelo de negocio;SVOD;74 %
-2021Q2;Penetracion modelo de negocio;SVOD;75 %
-2021Q3;Penetracion modelo de negocio;SVOD;74 %
-2021Q4;Penetracion modelo de negocio;SVOD;75 %
-2018Q2;Penetracion modelo de negocio;FVOD;32 %
-2018Q4;Penetracion modelo de negocio;FVOD;32 %
-2019Q2;Penetracion modelo de negocio;FVOD;74 %
-2019Q4;Penetracion modelo de negocio;FVOD;77 %
-2020Q1;Penetracion modelo de negocio;FVOD;74 %
-2020Q2;Penetracion modelo de negocio;FVOD;77 %
-2020Q3;Penetracion modelo de negocio;FVOD;30 %
-2020Q4;Penetracion modelo de negocio;FVOD;30 %
-2021Q1;Penetracion modelo de negocio;FVOD;26 %
-2021Q2;Penetracion modelo de negocio;FVOD;26 %
-2021Q3;Penetracion modelo de negocio;FVOD;27 %
-2021Q4;Penetracion modelo de negocio;FVOD;22 %
+2018Q2;Penetracion modelo de negocio;SVOD;58%
+2018Q4;Penetracion modelo de negocio;SVOD;63%
+2019Q2;Penetracion modelo de negocio;SVOD;73%
+2019Q4;Penetracion modelo de negocio;SVOD;73%
+2020Q1;Penetracion modelo de negocio;SVOD;75%
+2020Q2;Penetracion modelo de negocio;SVOD;73%
+2020Q3;Penetracion modelo de negocio;SVOD;73%
+2020Q4;Penetracion modelo de negocio;SVOD;73%
+2021Q1;Penetracion modelo de negocio;SVOD;74%
+2021Q2;Penetracion modelo de negocio;SVOD;75%
+2021Q3;Penetracion modelo de negocio;SVOD;74%
+2021Q4;Penetracion modelo de negocio;SVOD;75%
+2018Q2;Penetracion modelo de negocio;FVOD;32%
+2018Q4;Penetracion modelo de negocio;FVOD;32%
+2019Q2;Penetracion modelo de negocio;FVOD;74%
+2019Q4;Penetracion modelo de negocio;FVOD;77%
+2020Q1;Penetracion modelo de negocio;FVOD;74%
+2020Q2;Penetracion modelo de negocio;FVOD;77%
+2020Q3;Penetracion modelo de negocio;FVOD;30%
+2020Q4;Penetracion modelo de negocio;FVOD;30%
+2021Q1;Penetracion modelo de negocio;FVOD;26%
+2021Q2;Penetracion modelo de negocio;FVOD;26%
+2021Q3;Penetracion modelo de negocio;FVOD;27%
+2021Q4;Penetracion modelo de negocio;FVOD;22%
 2018Q2;Penetracion modelo de negocio;AVOD;
 2018Q4;Penetracion modelo de negocio;AVOD;
 2019Q2;Penetracion modelo de negocio;AVOD;
 2019Q4;Penetracion modelo de negocio;AVOD;
 2020Q1;Penetracion modelo de negocio;AVOD;
 2020Q2;Penetracion modelo de negocio;AVOD;
-2020Q3;Penetracion modelo de negocio;AVOD;67.52 %
-2020Q4;Penetracion modelo de negocio;AVOD;68.45 %
-2021Q1;Penetracion modelo de negocio;AVOD;66.06 %
-2021Q2;Penetracion modelo de negocio;AVOD;67.44 %
-2021Q3;Penetracion modelo de negocio;AVOD;65.68 %
-2021Q4;Penetracion modelo de negocio;AVOD;65.42 %
-2018Q2;Penetracion modelo de negocio;TV Everywhere;36 %
-2018Q4;Penetracion modelo de negocio;TV Everywhere;34 %
-2019Q2;Penetracion modelo de negocio;TV Everywhere;49 %
-2019Q4;Penetracion modelo de negocio;TV Everywhere;52 %
-2020Q1;Penetracion modelo de negocio;TV Everywhere;50 %
-2020Q2;Penetracion modelo de negocio;TV Everywhere;53 %
-2020Q3;Penetracion modelo de negocio;TV Everywhere;45 %
-2020Q4;Penetracion modelo de negocio;TV Everywhere;41 %
-2021Q1;Penetracion modelo de negocio;TV Everywhere;42 %
-2021Q2;Penetracion modelo de negocio;TV Everywhere;42 %
-2021Q3;Penetracion modelo de negocio;TV Everywhere;39 %
-2021Q4;Penetracion modelo de negocio;TV Everywhere;39 %
-2018Q2;Penetracion modelo de negocio;Ilegal;33 %
-2018Q4;Penetracion modelo de negocio;Ilegal;35 %
-2019Q2;Penetracion modelo de negocio;Ilegal;41 %
-2019Q4;Penetracion modelo de negocio;Ilegal;37 %
-2020Q1;Penetracion modelo de negocio;Ilegal;34 %
-2020Q2;Penetracion modelo de negocio;Ilegal;36 %
-2020Q3;Penetracion modelo de negocio;Ilegal;37 %
-2020Q4;Penetracion modelo de negocio;Ilegal;37 %
-2021Q1;Penetracion modelo de negocio;Ilegal;37 %
-2021Q2;Penetracion modelo de negocio;Ilegal;42 %
-2021Q3;Penetracion modelo de negocio;Ilegal;42 %
-2021Q4;Penetracion modelo de negocio;Ilegal;36 %
-2018Q2;Penetracion modelo de negocio;TVOD;20 %
-2018Q4;Penetracion modelo de negocio;TVOD;18 %
-2019Q2;Penetracion modelo de negocio;TVOD;26 %
-2019Q4;Penetracion modelo de negocio;TVOD;24 %
-2020Q1;Penetracion modelo de negocio;TVOD;27 %
-2020Q2;Penetracion modelo de negocio;TVOD;23 %
-2020Q3;Penetracion modelo de negocio;TVOD;21 %
-2020Q4;Penetracion modelo de negocio;TVOD;19 %
-2021Q1;Penetracion modelo de negocio;TVOD;24 %
-2021Q2;Penetracion modelo de negocio;TVOD;25 %
-2021Q3;Penetracion modelo de negocio;TVOD;22 %
-2021Q4;Penetracion modelo de negocio;TVOD;21 %
+2020Q3;Penetracion modelo de negocio;AVOD;67.52%
+2020Q4;Penetracion modelo de negocio;AVOD;68.45%
+2021Q1;Penetracion modelo de negocio;AVOD;66.06%
+2021Q2;Penetracion modelo de negocio;AVOD;67.44%
+2021Q3;Penetracion modelo de negocio;AVOD;65.68%
+2021Q4;Penetracion modelo de negocio;AVOD;65.42%
+2018Q2;Penetracion modelo de negocio;TV Everywhere;36%
+2018Q4;Penetracion modelo de negocio;TV Everywhere;34%
+2019Q2;Penetracion modelo de negocio;TV Everywhere;49%
+2019Q4;Penetracion modelo de negocio;TV Everywhere;52%
+2020Q1;Penetracion modelo de negocio;TV Everywhere;50%
+2020Q2;Penetracion modelo de negocio;TV Everywhere;53%
+2020Q3;Penetracion modelo de negocio;TV Everywhere;45%
+2020Q4;Penetracion modelo de negocio;TV Everywhere;41%
+2021Q1;Penetracion modelo de negocio;TV Everywhere;42%
+2021Q2;Penetracion modelo de negocio;TV Everywhere;42%
+2021Q3;Penetracion modelo de negocio;TV Everywhere;39%
+2021Q4;Penetracion modelo de negocio;TV Everywhere;39%
+2018Q2;Penetracion modelo de negocio;Ilegal;33%
+2018Q4;Penetracion modelo de negocio;Ilegal;35%
+2019Q2;Penetracion modelo de negocio;Ilegal;41%
+2019Q4;Penetracion modelo de negocio;Ilegal;37%
+2020Q1;Penetracion modelo de negocio;Ilegal;34%
+2020Q2;Penetracion modelo de negocio;Ilegal;36%
+2020Q3;Penetracion modelo de negocio;Ilegal;37%
+2020Q4;Penetracion modelo de negocio;Ilegal;37%
+2021Q1;Penetracion modelo de negocio;Ilegal;37%
+2021Q2;Penetracion modelo de negocio;Ilegal;42%
+2021Q3;Penetracion modelo de negocio;Ilegal;42%
+2021Q4;Penetracion modelo de negocio;Ilegal;36%
+2018Q2;Penetracion modelo de negocio;TVOD;20%
+2018Q4;Penetracion modelo de negocio;TVOD;18%
+2019Q2;Penetracion modelo de negocio;TVOD;26%
+2019Q4;Penetracion modelo de negocio;TVOD;24%
+2020Q1;Penetracion modelo de negocio;TVOD;27%
+2020Q2;Penetracion modelo de negocio;TVOD;23%
+2020Q3;Penetracion modelo de negocio;TVOD;21%
+2020Q4;Penetracion modelo de negocio;TVOD;19%
+2021Q1;Penetracion modelo de negocio;TVOD;24%
+2021Q2;Penetracion modelo de negocio;TVOD;25%
+2021Q3;Penetracion modelo de negocio;TVOD;22%
+2021Q4;Penetracion modelo de negocio;TVOD;21%
 2018Q2;Penetracion modelo de negocio;TV Everywhere pago;
 2018Q4;Penetracion modelo de negocio;TV Everywhere pago;
 2019Q2;Penetracion modelo de negocio;TV Everywhere pago;
 2019Q4;Penetracion modelo de negocio;TV Everywhere pago;
-2020Q1;Penetracion modelo de negocio;TV Everywhere pago;10 %
-2020Q2;Penetracion modelo de negocio;TV Everywhere pago;9 %
-2020Q3;Penetracion modelo de negocio;TV Everywhere pago;6 %
-2020Q4;Penetracion modelo de negocio;TV Everywhere pago;7 %
-2021Q1;Penetracion modelo de negocio;TV Everywhere pago;8 %
-2021Q2;Penetracion modelo de negocio;TV Everywhere pago;10 %
-2021Q3;Penetracion modelo de negocio;TV Everywhere pago;9 %
-2021Q4;Penetracion modelo de negocio;TV Everywhere pago;9 %
-2018Q2;cutters;Cord-Cutters;7.58 %
-2018Q4;cutters;Cord-Cutters;6.24 %
-2019Q2;cutters;Cord-Cutters;9.84 %
-2019Q4;cutters;Cord-Cutters;10.34 %
-2020Q1;cutters;Cord-Cutters;10.65 %
-2020Q2;cutters;Cord-Cutters;12.14 %
-2020Q3;cutters;Cord-Cutters;11.14 %
-2020Q4;cutters;Cord-Cutters;11.98 %
-2021Q1;cutters;Cord-Cutters;12.54 %
-2021Q2;cutters;Cord-Cutters;11.95 %
-2021Q3;cutters;Cord-Cutters;12.16 %
-2021Q4;cutters;Cord-Cutters;10.58 %
-2018Q2;cutters;Cord-Keepers;86.76 %
-2018Q4;cutters;Cord-Keepers;86.94 %
-2019Q2;cutters;Cord-Keepers;86.09 %
-2019Q4;cutters;Cord-Keepers;83.36 %
-2020Q1;cutters;Cord-Keepers;83.69 %
-2020Q2;cutters;Cord-Keepers;81.21 %
-2020Q3;cutters;Cord-Keepers;84.09 %
-2020Q4;cutters;Cord-Keepers;82.27 %
-2021Q1;cutters;Cord-Keepers;81.78 %
-2021Q2;cutters;Cord-Keepers;82.34 %
-2021Q3;cutters;Cord-Keepers;81.00 %
-2021Q4;cutters;Cord-Keepers;83.88 %
-2018Q2;cutters;Cord-Nevers;5.66 %
-2018Q4;cutters;Cord-Nevers;6.82 %
-2019Q2;cutters;Cord-Nevers;4.07 %
-2019Q4;cutters;Cord-Nevers;6.30 %
-2020Q1;cutters;Cord-Nevers;5.66 %
-2020Q2;cutters;Cord-Nevers;6.65 %
-2020Q3;cutters;Cord-Nevers;4.76 %
-2020Q4;cutters;Cord-Nevers;5.75 %
-2021Q1;cutters;Cord-Nevers;5.67 %
-2021Q2;cutters;Cord-Nevers;5.71 %
-2021Q3;cutters;Cord-Nevers;6.84 %
-2021Q4;cutters;Cord-Nevers;5.54 %
+2020Q1;Penetracion modelo de negocio;TV Everywhere pago;10%
+2020Q2;Penetracion modelo de negocio;TV Everywhere pago;9%
+2020Q3;Penetracion modelo de negocio;TV Everywhere pago;6%
+2020Q4;Penetracion modelo de negocio;TV Everywhere pago;7%
+2021Q1;Penetracion modelo de negocio;TV Everywhere pago;8%
+2021Q2;Penetracion modelo de negocio;TV Everywhere pago;10%
+2021Q3;Penetracion modelo de negocio;TV Everywhere pago;9%
+2021Q4;Penetracion modelo de negocio;TV Everywhere pago;9%
+2018Q2;cutters;Cord-Cutters;7.58%
+2018Q4;cutters;Cord-Cutters;6.24%
+2019Q2;cutters;Cord-Cutters;9.84%
+2019Q4;cutters;Cord-Cutters;10.34%
+2020Q1;cutters;Cord-Cutters;10.65%
+2020Q2;cutters;Cord-Cutters;12.14%
+2020Q3;cutters;Cord-Cutters;11.14%
+2020Q4;cutters;Cord-Cutters;11.98%
+2021Q1;cutters;Cord-Cutters;12.54%
+2021Q2;cutters;Cord-Cutters;11.95%
+2021Q3;cutters;Cord-Cutters;12.16%
+2021Q4;cutters;Cord-Cutters;10.58%
+2018Q2;cutters;Cord-Keepers;86.76%
+2018Q4;cutters;Cord-Keepers;86.94%
+2019Q2;cutters;Cord-Keepers;86.09%
+2019Q4;cutters;Cord-Keepers;83.36%
+2020Q1;cutters;Cord-Keepers;83.69%
+2020Q2;cutters;Cord-Keepers;81.21%
+2020Q3;cutters;Cord-Keepers;84.09%
+2020Q4;cutters;Cord-Keepers;82.27%
+2021Q1;cutters;Cord-Keepers;81.78%
+2021Q2;cutters;Cord-Keepers;82.34%
+2021Q3;cutters;Cord-Keepers;81.00%
+2021Q4;cutters;Cord-Keepers;83.88%
+2018Q2;cutters;Cord-Nevers;5.66%
+2018Q4;cutters;Cord-Nevers;6.82%
+2019Q2;cutters;Cord-Nevers;4.07%
+2019Q4;cutters;Cord-Nevers;6.30%
+2020Q1;cutters;Cord-Nevers;5.66%
+2020Q2;cutters;Cord-Nevers;6.65%
+2020Q3;cutters;Cord-Nevers;4.76%
+2020Q4;cutters;Cord-Nevers;5.75%
+2021Q1;cutters;Cord-Nevers;5.67%
+2021Q2;cutters;Cord-Nevers;5.71%
+2021Q3;cutters;Cord-Nevers;6.84%
+2021Q4;cutters;Cord-Nevers;5.54%
+2020Q4;Motivos cutterss;Es muy caro.;0.438184787
+2020Q4;Motivos cutterss;No lo estaba utilizando.;0.365446415
+2020Q4;Motivos cutterss;Puedo ver los mismos contenidos en internet y gratis.;0.255902646
+2020Q4;Motivos cutterss;Lo reemplacé por la TDA (Televisión Digital Abierta), que es gratuita.;0.244286089
+2020Q4;Motivos cutterss;Estaba obligado a pagar por muchos canales que luego no miraba realmente.;0.17559996
+2020Q4;Motivos cutterss;Lo reemplacé por Servicios Pagos de contenidos online (películas, series, eventos,).;0.146094221
+2020Q4;Motivos cutterss;El servicio al cliente es muy malo.;0.125199184
+2020Q4;Motivos cutterss;Me mudé y en mi nuevo hogar ya no quiero tener ese gasto.;0.101035902
+2020Q4;Motivos cutterss;No me gustaban los canales/contenidos que ofrecían;0.081578467
+2020Q4;Motivos cutterss;Para acceder a contenidos premium o en HD hay que pagar muchos paquetes adicionales.;0.036164397
+2020Q4;Motivos cutterss;Ya no me interesa mirar Películas, Series, ni ningún otro contenido.;0.021520713
+2021Q4;Motivos cutterss;Es muy caro.;0.420658449
+2021Q4;Motivos cutterss;No lo estaba utilizando.;0.356997972
+2021Q4;Motivos cutterss;Estaba obligado a pagar por muchos canales que luego no miraba realmente.;0.189889218
+2021Q4;Motivos cutterss;Puedo ver los mismos contenidos en internet y gratis.;0.179825246
+2021Q4;Motivos cutterss;El servicio al cliente es muy malo.;0.176392573
+2021Q4;Motivos cutterss;Me mudé y en mi nuevo hogar ya no quiero tener ese gasto.;0.169761273
+2021Q4;Motivos cutterss;Lo reemplacé por Servicios Pagos de contenidos online (películas, series, eventos,).;0.148619129
+2021Q4;Motivos cutterss;Lo reemplacé por la TDA (Televisión Digital Abierta), que es gratuita.;0.11795912
+2021Q4;Motivos cutterss;Para acceder a contenidos premium o en HD hay que pagar muchos paquetes adicionales.;0.103370261
+2021Q4;Motivos cutterss;Ya no me interesa mirar Películas, Series, ni ningún otro contenido.;0.061710095
+2021Q4;Motivos cutterss;No me gustaban los canales/contenidos que ofrecían;0.060071774
