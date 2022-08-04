@@ -542,7 +542,7 @@ if select_seccion =='Resumen ejecutivo':
 if select_seccion =='Dinámica telecomunicaciones':
     st.title("Dinámica del sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
-    'Servicios móviles','Servicios fijos','Contenidos audiovisuales','Servicios de radiodifusión sonora'])
+    'Servicios móviles','Servicios fijos','Servicios OTT','Servicios de radiodifusión'])
     
     if select_secResumenDinTic == 'Información general':
         st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
@@ -599,8 +599,15 @@ Claro aumentó su participación, pasando de 37,7% en
         if ServiciosMóviles=='Telefonía':
             dfAbonadosTelMovil=[];
             EmpresasTelMovil=['830122566','800153993','830114921','899999115']
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
-            #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)          
+            col1,col2=st.columns(2)
+            with col1:                
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+            with col2:                
+                with st.expander("Datos relevantes de Telefonía móvil"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+     
             AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['abonados']>0]
             AbonadosTelMovil.insert(0,'periodo',AbonadosTelMovil['anno']+'-T'+AbonadosTelMovil['trimestre'])
             #
@@ -611,16 +618,18 @@ Claro aumentó su participación, pasando de 37,7% en
             IngresosTelMovil.insert(0,'periodo',IngresosTelMovil['anno']+'-T'+IngresosTelMovil['trimestre'])
 
             ServiciosTelMovil=st.selectbox('Escoja el ámbito de Telefonía móvil',['Abonados','Tráfico','Ingresos'])
-            
+                      
             if ServiciosTelMovil=='Abonados':
+                
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoAbonadosTelmovil=st.button('Modalidad')
+                    LineaTiempoAbonadosTelmovil=st.button('Modalidad',key='1')
                 with col2:
-                    BarrasAbonadosTelmovil=st.button('Operadores')
+                    BarrasAbonadosTelmovil=st.button('Operadores',key='2')
                 with col3:
-                    PieAbonadosTelmovil=st.button('Participaciones')
-                    
+                    PieAbonadosTelmovil=st.button('Participaciones',key='3')
+
+                
                 if LineaTiempoAbonadosTelmovil:    
                     AboTrimTelMovil=AbonadosTelMovil.groupby(['periodo','empresa','id_empresa'])['abonados'].sum().reset_index()
                     AboTrimTelMovilA=AbonadosTelMovil.groupby(['periodo','modalidad'])['abonados'].sum().reset_index()
@@ -769,10 +778,16 @@ Claro aumentó su participación, pasando de 37,7% en
             AccesosInternetmovildf=AccesosInternetmovildf[(AccesosInternetmovildf['anno']>'2017')&(AccesosInternetmovildf['anno']<'2022')]
                         
             col1,col2 = st.columns(2)
-            #with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
-            #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)        
-            #with col2:
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
+       
+            with col2:             
+                with st.expander("Datos relevantes de Internet móvil"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+            
+            
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
                                         
             if ServiciosIntMovil=='Accesos':  
@@ -889,8 +904,16 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(IngPorTraficoIntMovilEmp,'Ingresos/Trafico','Pesos/GB',1,'Ingresos/Tráfico anual por empresa'),use_container_width=True)
  
         if ServiciosMóviles=='Mensajería':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/sms.png'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
-
+        
+            col1,col2=st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/sms.png'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
+            with col2:             
+                with st.expander("Datos relevantes de Mensajería móvil"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+            
             ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
             
             if ServiciosMenMovil=='Tráfico':
@@ -953,10 +976,19 @@ Claro aumentó su participación, pasando de 37,7% en
         st.markdown(r"""<div class="titulo"><h3>Servicios fijos</h3></div>""",unsafe_allow_html=True)
         st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
 
-        ServiciosFijos=st.radio('Servicios',['Telefonía fija','Internet fijo'],horizontal=True)
+        ServiciosFijos=st.radio('Servicios',['Telefonía fija','Internet fijo', 'TV por suscripción','TV comunitaria'],horizontal=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True)   
         if ServiciosFijos == 'Internet fijo':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
+
+            col1,col2 = st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
+            with col2:             
+                with st.expander("Datos relevantes de Internet fijo"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+
             
             AccesosCorpIntFijo=AccesosCorpIntFijo[AccesosCorpIntFijo['accesos']>0]
             AccesosCorpIntFijo=AccesosCorpIntFijo.rename(columns={'accesos':'CORPORATIVOS'})
@@ -1079,7 +1111,16 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
  
         if ServiciosFijos == 'Telefonía fija':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
+
+            col1,col2=st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
+            with col2:             
+                with st.expander("Datos relevantes de Telefonía fija"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+
 
             ServiciosTelFija=st.selectbox('Escoja el servicio de Internet fijo',['Líneas','Tráfico','Ingresos','Ingresos por tráfico','Ingresos por líneas'])
             st.markdown('Escoja la dimensión del análisis')
@@ -1241,15 +1282,17 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasIngresosporlineaTelFija:
                     st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'Ingresos/Líneas anuales de Telefonía local por empresa'),use_container_width=True)
 
-    if select_secResumenDinTic == 'Contenidos audiovisuales':
-        st.markdown(r"""<div class="titulo"><h3>Contenidos audiovisuales</h3></div>""",unsafe_allow_html=True)
-        st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
+        if ServiciosFijos == 'TV por suscripción':
 
-        ServiciosAudiovisuales=st.radio('Servicios',['TV abierta','TV por suscripción','TV comunitaria','OTT'],horizontal=True)
-        st.markdown(r"""<hr>""",unsafe_allow_html=True)
-        
-        if ServiciosAudiovisuales == 'TV por suscripción':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+            col1,col2=st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+            with col2:             
+                with st.expander("Datos relevantes de TV por suscripción"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+
             ##Suscriptores
             SuscriptoresTVSusNac=SuscriptoresTVSus.groupby(['periodo'])['suscriptores'].sum().reset_index()
             #
@@ -1339,13 +1382,20 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasIngresosTVSus:
                     st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Suscriptores anuales por empresa'),use_container_width=True)
                     st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'Ingresos/Suscriptores anuales por empresa'),use_container_width=True)
-                
-        if ServiciosAudiovisuales == 'TV comunitaria':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-comunitaria.png'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
+
+        if ServiciosFijos == 'TV comunitaria':
+            
+            col1,col2=st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-comunitaria.png'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
+            with col2:             
+                with st.expander("Datos relevantes de TV comunitaria"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
 
             ServiciosTVCom=st.selectbox('Escoja el servicio de TV comunitaria',['Asociados','Ingresos'])
-           
-            
+
             ##Asociados
             AsociadosTVComunitaria['periodo']=AsociadosTVComunitaria['anno']+'-T'+AsociadosTVComunitaria['trimestre']
             AsociadosTVComunitariaNac=AsociadosTVComunitaria.groupby(['periodo'])['asociados'].sum().reset_index()
@@ -1400,78 +1450,204 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasIngresosTVCom:
                     st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
 
-        if ServiciosAudiovisuales == 'OTT':
+    if select_secResumenDinTic == 'Servicios OTT':
+        st.markdown(r"""<div class="titulo"><h3>Servicios OTT</h3></div>""",unsafe_allow_html=True)
+        st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
+
+        col1,col2=st.columns(2)
+        with col1:
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/ott.png'/><h4 style="text-align:left">Servicios Over the top (OTT)</h4></div>""",unsafe_allow_html=True)   
-            st.markdown('')
-            OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/OTT.csv',delimiter=';')
-            OTT['periodo']=OTT['periodo'].replace({r'Q':'-T'},regex=True)
-            OTT['penetracion']=OTT['penetracion'].replace({r'%':''},regex=True).astype('float')
-            OTTAgg=OTT[(OTT['concepto']=='Penetracion modelo de negocio')&(OTT['periodo'].isin(['2018-T4','2019-T4','2020-T4','2021-T4']))].groupby(['periodo','modelo_negocio'])['penetracion'].sum().reset_index()
-            OTT2=OTTAgg[OTTAgg['modelo_negocio'].isin(['AVOD','FVOD'])]
-            OTTAgg2=OTT2.groupby(['periodo'])['penetracion'].sum().reset_index()
-            OTTAgg2['modelo_negocio']='FVOD-AVOD'
-            OTTdf=pd.concat([OTTAgg,OTTAgg2])
-            OTTdf=OTTdf[OTTdf['modelo_negocio'].isin(['AVOD','FVOD'])==False]
-            OTTdf['modelo_negocio']=OTTdf['modelo_negocio'].replace({'TV Everywhere pago':'TV Everywhere<br>pago'})
-            #
-            OTTMotivos=OTT[OTT['concepto']=='Motivos cutterss']
-            OTTMotivos=OTTMotivos.rename(columns={'modelo_negocio':'motivos'})
-            Motivos21T4=OTTMotivos[OTTMotivos['periodo']=='2021-T4'].sort_values(by='penetracion',ascending=False)['motivos'].values.tolist()[0:5]
-            OTTMotivos=OTTMotivos[OTTMotivos['motivos'].isin(Motivos21T4)]
-            OTTMotivos['penetracion']=OTTMotivos['penetracion']*100
-            reshape_motivos={'Es muy caro.':'Servicio muy caro','No lo estaba utilizando.':'No lo utilizaba',
-                            'Estaba obligado a pagar por muchos canales que luego no miraba realmente.':'Obligado a pagar<br>canales que no<br>miraba',
-                            'Puedo ver los mismos contenidos en internet y gratis.':'Mismo contenigo gratis<br>en internet',
-                            'El servicio al cliente es muy malo.':'Pésimo servicio al cliente'}
-            OTTMotivos['motivos']=OTTMotivos['motivos'].replace(reshape_motivos)
+        with col2:             
+            with st.expander("Datos relevantes de OTT"):
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+        st.markdown('')
+        OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/OTT.csv',delimiter=';')
+        OTT['periodo']=OTT['periodo'].replace({r'Q':'-T'},regex=True)
+        OTT['penetracion']=OTT['penetracion'].replace({r'%':''},regex=True).astype('float')
+        OTTAgg=OTT[(OTT['concepto']=='Penetracion modelo de negocio')&(OTT['periodo'].isin(['2018-T4','2019-T4','2020-T4','2021-T4']))].groupby(['periodo','modelo_negocio'])['penetracion'].sum().reset_index()
+        OTT2=OTTAgg[OTTAgg['modelo_negocio'].isin(['AVOD','FVOD'])]
+        OTTAgg2=OTT2.groupby(['periodo'])['penetracion'].sum().reset_index()
+        OTTAgg2['modelo_negocio']='FVOD-AVOD'
+        OTTdf=pd.concat([OTTAgg,OTTAgg2])
+        OTTdf=OTTdf[OTTdf['modelo_negocio'].isin(['AVOD','FVOD'])==False]
+        OTTdf['modelo_negocio']=OTTdf['modelo_negocio'].replace({'TV Everywhere pago':'TV Everywhere<br>pago'})
+        #
+        OTTMotivos=OTT[OTT['concepto']=='Motivos cutterss']
+        OTTMotivos=OTTMotivos.rename(columns={'modelo_negocio':'motivos'})
+        Motivos21T4=OTTMotivos[OTTMotivos['periodo']=='2021-T4'].sort_values(by='penetracion',ascending=False)['motivos'].values.tolist()[0:5]
+        OTTMotivos=OTTMotivos[OTTMotivos['motivos'].isin(Motivos21T4)]
+        OTTMotivos['penetracion']=OTTMotivos['penetracion']*100
+        reshape_motivos={'Es muy caro.':'Servicio muy caro','No lo estaba utilizando.':'No lo utilizaba',
+                        'Estaba obligado a pagar por muchos canales que luego no miraba realmente.':'Obligado a pagar<br>canales que no<br>miraba',
+                        'Puedo ver los mismos contenidos en internet y gratis.':'Mismo contenigo gratis<br>en internet',
+                        'El servicio al cliente es muy malo.':'Pésimo servicio al cliente'}
+        OTTMotivos['motivos']=OTTMotivos['motivos'].replace(reshape_motivos)
+        
+                    
+        col1,col2=st.columns(2)
+        with col1:
+            ModeloOTT=st.button('Modelo de negocio')
+        with col2:
+            MotivosOTT=st.button('Motivos corte servicio')
+
+        if ModeloOTT:
+            figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
+            figModeloOTT.update_layout(barmode='group')
+            figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+            zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+            figModeloOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
+            figModeloOTT.update_layout(height=550,legend_title=None)
+            figModeloOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+            title={
+            'text': 'Penetración suscriptores OTT por modelo de servicio',
+            'y':0.98,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'})        
+            figModeloOTT.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
+            figModeloOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+            figModeloOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+            st.plotly_chart(figModeloOTT,use_container_width=True)
             
-                        
+        if MotivosOTT:
+            figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
+            figMotivosOTT.update_layout(barmode='group')
+            figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text='Porcentaje',row=1, col=1,
+            zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+            figMotivosOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=None, row=1, col=1)
+            figMotivosOTT.update_layout(height=550,legend_title=None)
+            figMotivosOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+            title={
+            'text': 'Motivos más comunes de cancelación del servicio',
+            'y':0.98,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'})        
+            figMotivosOTT.update_layout(legend=dict(orientation="v",y=0.87,x=0.8,font_size=14),showlegend=True)
+            figMotivosOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+            figMotivosOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+            st.plotly_chart(figMotivosOTT,use_container_width=True)
+                                          
+    if select_secResumenDinTic == 'Servicios de radiodifusión':                   
+        st.markdown(r"""<div class="titulo"><h3>Servicios de radiodifusión</h3></div>""",unsafe_allow_html=True)
+        
+        ServiciosRadiodifusion=st.radio('Servicios',['TV abierta','Radio'],horizontal=True)
+        
+        if ServiciosRadiodifusion=='Radio':
+
             col1,col2=st.columns(2)
             with col1:
-                ModeloOTT=st.button('Modelo de negocio')
-            with col2:
-                MotivosOTT=st.button('Motivos corte servicio')
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
+            with col2:             
+                with st.expander("Datos relevantes de Radio"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
 
-            if ModeloOTT:
-                figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
-                figModeloOTT.update_layout(barmode='group')
-                figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
-                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                figModeloOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
-                figModeloOTT.update_layout(height=550,legend_title=None)
-                figModeloOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
-                title={
-                'text': 'Penetración suscriptores OTT por modelo de servicio',
-                'y':0.98,
-                'x':0.5,
-                'xanchor': 'center',
-                'yanchor': 'top'})        
-                figModeloOTT.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
-                figModeloOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
-                figModeloOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-                st.plotly_chart(figModeloOTT,use_container_width=True)
+            nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
+            'EMPRESA COLOMBIANA DE RADIO SAS':'Empresa Colombiana<br>de radio','RADIO CADENA NACIONAL SAS':'RCN Radio','DIGITAL ESTEREO SAS':'Digital estereo',
+            'SERVICIO RADIAL INTEGRADO SAS':'Servicio radial<br>integrado','PRODUCCIONES WILLVIN S A':'Producciones Willvin','ORGANIZACION RADIAL OLIMPICA S.A.':'Olimpica organización<br>radial',
+            'CHAR DIAZ SAS':'Char Diaz','VITAL INVERSIONES S.A.':'Vital inversiones','ALIANZA INTEGRAL COM SAS':'Alianza integral','CARACOL TELEVISIÓN S.A.':'Caracol Televisión'}
+            ##Ingresos Radio
+            IngresosRadio=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/radio_ingresos.csv',delimiter=';',encoding='latin-1')
+            IngresosRadio['ingresos ordinarios']=IngresosRadio['ingresos ordinarios'].astype('int64')
+            IngresosRadio['anno']=IngresosRadio['anno'].astype('str')
+            IngresosRadio=IngresosRadio.rename(columns={'empresa  ':'empresa','ingresos ordinarios':'ingresos'})
+            IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
+            ##Número emisoras
+            NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='latin-1')
+            NumeroEmisoras=NumeroEmisoras.rename(columns={'CLASE DE\nEMISORA':'CLASE DE EMISORA'})
+            NumeroEmisoras['DEPARTAMENTO']=NumeroEmisoras['DEPARTAMENTO'].replace({'ARCHIPIELAGO DE SAN ANDRÉS. PROVIDENCIA Y SANTA CATALINA':'SAN ANDRÉS Y PROV.',
+                                                                          'NORTE DE\nSANTANDER':'N.SANTANDER','NORTE DE SANTANDER':'N.SANTANDER'})        
+            #
+            NumeroEmisorasAgg=NumeroEmisoras.groupby(['CLASE DE EMISORA','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
+            NumeroEmisorasAgg=NumeroEmisorasAgg.rename(columns={'CODIGO EMISORA':'Número emisoras'})
+            NumeroEmisorasAgg.loc[NumeroEmisorasAgg['CLASE DE EMISORA']=='COMUNITARIA','BANDA']=None
+            NumeroEmisorasAgg['CLASE DE EMISORA']=NumeroEmisorasAgg['CLASE DE EMISORA'].replace({'INTERÉS PÚBLICO':'INTERÉS<br>PÚBLICO'})
+            #
+            NumeroEmisorasDepComerciales=NumeroEmisoras[NumeroEmisoras['CLASE DE EMISORA']=='COMERCIAL'].groupby(['DEPARTAMENTO','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
+            NumeroEmisorasDepComerciales=NumeroEmisorasDepComerciales.rename(columns={'CODIGO EMISORA':'Número empresas'})
+            NumeroEmisorasDepComunitarias=NumeroEmisoras[NumeroEmisoras['CLASE DE EMISORA']=='COMUNITARIA'].groupby(['DEPARTAMENTO','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
+            NumeroEmisorasDepComunitarias=NumeroEmisorasDepComunitarias.rename(columns={'CODIGO EMISORA':'Número empresas'})
+            
+            ServiciosRadio=st.selectbox('Escoja el servicio de radio',['Ingresos','Número de emisoras'])
+            st.markdown(r"""<hr>""",unsafe_allow_html=True)
+            
+            if ServiciosRadio=='Ingresos':
+                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'Ingresos en radio por empresa',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
+                'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)']),use_container_width=True)
+       
+      
+            if ServiciosRadio=='Número de emisoras':
+
+                col1,col2=st.columns(2)
+                with col1:
+                    ParticipacionNEmmisoras=st.button('Participación')
+                with col2:
+                    ClasedeEmisoraRadio=st.button('Clase de emisora')
                 
-            if MotivosOTT:
-                figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
-                figMotivosOTT.update_layout(barmode='group')
-                figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text='Porcentaje',row=1, col=1,
-                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                figMotivosOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=None, row=1, col=1)
-                figMotivosOTT.update_layout(height=550,legend_title=None)
-                figMotivosOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
-                title={
-                'text': 'Motivos más comunes de cancelación del servicio',
-                'y':0.98,
-                'x':0.5,
-                'xanchor': 'center',
-                'yanchor': 'top'})        
-                figMotivosOTT.update_layout(legend=dict(orientation="v",y=0.87,x=0.8,font_size=14),showlegend=True)
-                figMotivosOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
-                figMotivosOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-                st.plotly_chart(figMotivosOTT,use_container_width=True)
-              
-        if ServiciosAudiovisuales == 'TV abierta':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-abierta.png'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
+                if ParticipacionNEmmisoras:
+                    figPartNEmis = px.sunburst(NumeroEmisorasAgg, path=['CLASE DE EMISORA', 'BANDA'], values='Número emisoras',color='CLASE DE EMISORA',
+                                      color_discrete_map={'COMUNITARIA':'rgb(122, 68, 242)','COMERCIAL':'rgb(0, 128, 255)','INTERÉS<br>PÚBLICO':'rgb(102,204,0)'
+                                                         })
+                    figPartNEmis.update_layout(height=550,legend_title=None)
+                    figPartNEmis.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    title={
+                    'text':'<b>Participación en el número de emisoras por clase de emisora y banda<br>(2021)',
+                    'y':0.9,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'})      
+                    figPartNEmis.update_layout(
+                        margin = dict(t=10, l=10, r=10, b=10))
+                    st.plotly_chart(figPartNEmis,use_container_width=True)    
+
+                if ClasedeEmisoraRadio:
+                    figDepComercial = px.bar(NumeroEmisorasDepComerciales, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)'])
+                    figDepComercial.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
+                    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                    figDepComercial.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
+                    figDepComercial.update_layout(height=550,legend_title=None)
+                    figDepComercial.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    title={
+                    'text': 'Número de emisoras comerciales por departamento y banda',
+                    'y':0.95,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'})        
+                    figDepComercial.update_layout(legend=dict(orientation="h",y=1,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                    figDepComercial.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                    figDepComercial.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                    st.plotly_chart(figDepComercial,use_container_width=True)
+                    #
+                    figDepComunitaria = px.bar(NumeroEmisorasDepComunitarias, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(0, 128, 255)'])
+                    figDepComunitaria.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
+                    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                    figDepComunitaria.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
+                    figDepComunitaria.update_layout(height=550,legend_title=None)
+                    figDepComunitaria.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    title={
+                    'text': 'Número de emisoras comunitarias por departamento y banda',
+                    'y':0.95,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'})        
+                    figDepComunitaria.update_layout(legend=dict(orientation="h",y=0.95,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                    figDepComunitaria.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                    figDepComunitaria.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                    st.plotly_chart(figDepComunitaria,use_container_width=True)
+
+        if ServiciosRadiodifusion=='TV abierta':
+            col1,col2=st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-abierta.png'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
+            with col2:             
+                with st.expander("Datos relevantes de TV abierta"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
             st.markdown('') 
             
             IngresosTVabierta=st.selectbox('Escoja el servicio de TV abierta',['Ingresos por servicio','Ingresos TV pública'])
@@ -1564,113 +1740,24 @@ Claro aumentó su participación, pasando de 37,7% en
                 figTVPublica.update_layout(legend=dict(orientation="h",y=1.05,xanchor='center',x=0.5,font_size=12),showlegend=True)
                 figTVPublica.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
                 figTVPublica.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-                st.plotly_chart(figTVPublica,use_container_width=True)
-                            
-    if select_secResumenDinTic == 'Servicios de radiodifusión sonora':                   
-        st.markdown(r"""<div class="titulo"><h3>Servicios de radiodifusión sonora</h3></div>""",unsafe_allow_html=True)
-        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
-
-        nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
-        'EMPRESA COLOMBIANA DE RADIO SAS':'Empresa Colombiana<br>de radio','RADIO CADENA NACIONAL SAS':'RCN Radio','DIGITAL ESTEREO SAS':'Digital estereo',
-        'SERVICIO RADIAL INTEGRADO SAS':'Servicio radial<br>integrado','PRODUCCIONES WILLVIN S A':'Producciones Willvin','ORGANIZACION RADIAL OLIMPICA S.A.':'Olimpica organización<br>radial',
-        'CHAR DIAZ SAS':'Char Diaz','VITAL INVERSIONES S.A.':'Vital inversiones','ALIANZA INTEGRAL COM SAS':'Alianza integral','CARACOL TELEVISIÓN S.A.':'Caracol Televisión'}
-        ##Ingresos Radio
-        IngresosRadio=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/radio_ingresos.csv',delimiter=';',encoding='latin-1')
-        IngresosRadio['ingresos ordinarios']=IngresosRadio['ingresos ordinarios'].astype('int64')
-        IngresosRadio['anno']=IngresosRadio['anno'].astype('str')
-        IngresosRadio=IngresosRadio.rename(columns={'empresa  ':'empresa','ingresos ordinarios':'ingresos'})
-        IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
-        ##Número emisoras
-        NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='latin-1')
-        NumeroEmisoras=NumeroEmisoras.rename(columns={'CLASE DE\nEMISORA':'CLASE DE EMISORA'})
-        NumeroEmisoras['DEPARTAMENTO']=NumeroEmisoras['DEPARTAMENTO'].replace({'ARCHIPIELAGO DE SAN ANDRÉS. PROVIDENCIA Y SANTA CATALINA':'SAN ANDRÉS Y PROV.',
-                                                                      'NORTE DE\nSANTANDER':'N.SANTANDER','NORTE DE SANTANDER':'N.SANTANDER'})        
-        #
-        NumeroEmisorasAgg=NumeroEmisoras.groupby(['CLASE DE EMISORA','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
-        NumeroEmisorasAgg=NumeroEmisorasAgg.rename(columns={'CODIGO EMISORA':'Número emisoras'})
-        NumeroEmisorasAgg.loc[NumeroEmisorasAgg['CLASE DE EMISORA']=='COMUNITARIA','BANDA']=None
-        NumeroEmisorasAgg['CLASE DE EMISORA']=NumeroEmisorasAgg['CLASE DE EMISORA'].replace({'INTERÉS PÚBLICO':'INTERÉS<br>PÚBLICO'})
-        #
-        NumeroEmisorasDepComerciales=NumeroEmisoras[NumeroEmisoras['CLASE DE EMISORA']=='COMERCIAL'].groupby(['DEPARTAMENTO','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
-        NumeroEmisorasDepComerciales=NumeroEmisorasDepComerciales.rename(columns={'CODIGO EMISORA':'Número empresas'})
-        NumeroEmisorasDepComunitarias=NumeroEmisoras[NumeroEmisoras['CLASE DE EMISORA']=='COMUNITARIA'].groupby(['DEPARTAMENTO','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
-        NumeroEmisorasDepComunitarias=NumeroEmisorasDepComunitarias.rename(columns={'CODIGO EMISORA':'Número empresas'})
-        
-        ServiciosRadio=st.selectbox('Escoja el servicio de radio',['Ingresos','Número de emisoras'])
-        st.markdown(r"""<hr>""",unsafe_allow_html=True)
-        
-        if ServiciosRadio=='Ingresos':
-            st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'Ingresos en radio por empresa',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
-            'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)']),use_container_width=True)
-
-        if ServiciosRadio=='Número de emisoras':
-
-            col1,col2=st.columns(2)
-            with col1:
-                ParticipacionNEmmisoras=st.button('Participación')
-            with col2:
-                ClasedeEmisoraRadio=st.button('Clase de emisora')
-            
-            if ParticipacionNEmmisoras:
-                figPartNEmis = px.sunburst(NumeroEmisorasAgg, path=['CLASE DE EMISORA', 'BANDA'], values='Número emisoras',color='CLASE DE EMISORA',
-                                  color_discrete_map={'COMUNITARIA':'rgb(122, 68, 242)','COMERCIAL':'rgb(0, 128, 255)','INTERÉS<br>PÚBLICO':'rgb(102,204,0)'
-                                                     })
-                figPartNEmis.update_layout(height=550,legend_title=None)
-                figPartNEmis.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
-                title={
-                'text':'<b>Participación en el número de emisoras por clase de emisora y banda<br>(2021)',
-                'y':0.9,
-                'x':0.5,
-                'xanchor': 'center',
-                'yanchor': 'top'})      
-                figPartNEmis.update_layout(
-                    margin = dict(t=10, l=10, r=10, b=10))
-                st.plotly_chart(figPartNEmis,use_container_width=True)    
-
-            if ClasedeEmisoraRadio:
-                figDepComercial = px.bar(NumeroEmisorasDepComerciales, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)'])
-                figDepComercial.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
-                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                figDepComercial.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
-                figDepComercial.update_layout(height=550,legend_title=None)
-                figDepComercial.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
-                title={
-                'text': 'Número de emisoras comerciales por departamento y banda',
-                'y':0.95,
-                'x':0.5,
-                'xanchor': 'center',
-                'yanchor': 'top'})        
-                figDepComercial.update_layout(legend=dict(orientation="h",y=1,xanchor='center',x=0.5,font_size=12),showlegend=True)
-                figDepComercial.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
-                figDepComercial.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-                st.plotly_chart(figDepComercial,use_container_width=True)
-                #
-                figDepComunitaria = px.bar(NumeroEmisorasDepComunitarias, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(0, 128, 255)'])
-                figDepComunitaria.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
-                zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                figDepComunitaria.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
-                figDepComunitaria.update_layout(height=550,legend_title=None)
-                figDepComunitaria.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
-                title={
-                'text': 'Número de emisoras comunitarias por departamento y banda',
-                'y':0.95,
-                'x':0.5,
-                'xanchor': 'center',
-                'yanchor': 'top'})        
-                figDepComunitaria.update_layout(legend=dict(orientation="h",y=0.95,xanchor='center',x=0.5,font_size=12),showlegend=True)
-                figDepComunitaria.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
-                figDepComunitaria.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-                st.plotly_chart(figDepComunitaria,use_container_width=True)
+                st.plotly_chart(figTVPublica,use_container_width=True)        
 
 if select_seccion =='Dinámica postal':
     st.title("Dinámica del sector de telecomunicaciones")
     st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
-    select_DinPos = st.selectbox('Seleccione el sector de los servicios postales a consultar',['Correo',
-    'Mensajería expresa','Giros'])      
+    select_DinPos = st.radio('Seleccione el sector de los servicios postales a consultar',['Correo',
+    'Mensajería expresa','Giros'],horizontal=True)      
     st.markdown(r"""<hr>""",unsafe_allow_html=True)
 
     if select_DinPos=='Correo':
-        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
+        col1,col2=st.columns(2)
+        with col1:
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
+        with col2:             
+            with st.expander("Datos relevantes de Correo"):
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
 
         ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
         ##Número de envíos e ingresos
@@ -1683,7 +1770,15 @@ if select_seccion =='Dinámica postal':
             st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
 
     if select_DinPos=='Mensajería expresa':
-        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
+
+        col1,col2=st.columns(2)
+        with col1:
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
+        with col2:             
+            with st.expander("Datos relevantes de Internet móvil"):
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
 
         ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
         ##Número de envíos e ingresos
@@ -1750,7 +1845,15 @@ if select_seccion =='Dinámica postal':
 
     if select_DinPos=='Giros':
         ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros'])
-        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
+
+        col1,col2=st.columns(2)
+        with col1:
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
+        with col2:             
+            with st.expander("Datos relevantes de Giros"):
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
         
         IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
         
