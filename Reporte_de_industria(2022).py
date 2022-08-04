@@ -1567,7 +1567,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.plotly_chart(figTVPublica,use_container_width=True)
                             
     if select_secResumenDinTic == 'Servicios de radiodifusión sonora':                   
-        st.markdown(r"""<div class="titulo"><h3>Servicios radiales</h3></div>""",unsafe_allow_html=True)
+        st.markdown(r"""<div class="titulo"><h3>Servicios de radiodifusión sonora</h3></div>""",unsafe_allow_html=True)
         st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
 
         nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
