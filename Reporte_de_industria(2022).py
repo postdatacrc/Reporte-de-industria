@@ -363,7 +363,7 @@ st.markdown("""<style type="text/css">
         width: 300px;
         top:100px;
         margin-left: -300px;}
-    h1{ background: #DFF0FE;
+    h1{ background: rgb(215,235,252);
         text-align: center;
         padding: 15px;
         font-family: sans-serif;
@@ -410,12 +410,12 @@ st.markdown("""<style type="text/css">
         padding: 10px;
         text-decoration: underline;
         text-decoration-style: double;
-        color: #27348b;
+        color: #7a44f2;
     }    
     .titulo {
       background: #fffdf7;
       display: flex;
-      color: #4c83f3;
+      color: #7a44f2;
       font-size:25px;
       padding:10px;
     }
@@ -433,7 +433,7 @@ st.markdown("""<style type="text/css">
     }
     .edgvbvh9 {
       font-weight: 600;
-      background-color: #DFF0FE);
+      background-color: rgb(215,235,252);
       border: 0px solid rgba(0, 0, 0, 1); 
       color:black;
       padding: 0.6rem 0.6rem;
@@ -524,7 +524,10 @@ st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
-                                    ['Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
+                                    ['Introducción','Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
+
+if select_seccion == 'Introducción':
+    st.title("Introducción")    
        
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
