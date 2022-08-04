@@ -542,7 +542,7 @@ if select_seccion =='Resumen ejecutivo':
 if select_seccion =='Dinámica telecomunicaciones':
     st.title("Dinámica del sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
-    'Servicios móviles','Servicios fijos','Contenidos audiovisuales','Servicios radiales'])
+    'Servicios móviles','Servicios fijos','Contenidos audiovisuales','Servicios de radiodifusión sonora'])
     
     if select_secResumenDinTic == 'Información general':
         st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
@@ -1566,7 +1566,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 figTVPublica.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
                 st.plotly_chart(figTVPublica,use_container_width=True)
                             
-    if select_secResumenDinTic == 'Servicios radiales':                   
+    if select_secResumenDinTic == 'Servicios de radiodifusión sonora':                   
         st.markdown(r"""<div class="titulo"><h3>Servicios radiales</h3></div>""",unsafe_allow_html=True)
         st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
 
