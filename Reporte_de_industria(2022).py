@@ -466,6 +466,11 @@ st.markdown("""
             <img src="https://www.postdata.gov.co/sites/default/files/postdata-logo.png" alt="Inicio" style="height:40px">
         </a>
     </div>
+    <div class="imagen-flotar" style="height: 80px; left: 300px; padding:2px">
+        <a class="imagen-flotar" href="https://www.crcom.gov.co" title="CRC">
+            <img src="https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/banner-reporte-de-industria-980x76.png" alt="CRC" style="">
+        </a>
+    </div>    
 </div>""",unsafe_allow_html=True)
 
 
@@ -528,7 +533,8 @@ select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
 
 if select_seccion == 'Introducción':
     st.title("Introducción")    
-       
+    st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
+    
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
         
