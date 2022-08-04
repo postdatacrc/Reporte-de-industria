@@ -534,6 +534,7 @@ select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
 if select_seccion == 'Introducción':
     st.title("Introducción")    
     st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
+    st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se descatan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
@@ -541,7 +542,7 @@ if select_seccion =='Resumen ejecutivo':
 if select_seccion =='Dinámica telecomunicaciones':
     st.title("Dinámica del sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
-    'Servicios móviles','Servicios fijos','Contenidos audiovisuales','Radio'])
+    'Servicios móviles','Servicios fijos','Contenidos audiovisuales','Servicios radiales'])
     
     if select_secResumenDinTic == 'Información general':
         st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
@@ -598,7 +599,7 @@ Claro aumentó su participación, pasando de 37,7% en
         if ServiciosMóviles=='Telefonía':
             dfAbonadosTelMovil=[];
             EmpresasTelMovil=['830122566','800153993','830114921','899999115']
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
             #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true",width=100)          
             AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['abonados']>0]
             AbonadosTelMovil.insert(0,'periodo',AbonadosTelMovil['anno']+'-T'+AbonadosTelMovil['trimestre'])
@@ -769,7 +770,7 @@ Claro aumentó su participación, pasando de 37,7% en
                         
             col1,col2 = st.columns(2)
             #with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="60px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
             #st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/InternetTelMovil.jpg?raw=true",width=100)        
             #with col2:
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
@@ -888,7 +889,7 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(IngPorTraficoIntMovilEmp,'Ingresos/Trafico','Pesos/GB',1,'Ingresos/Tráfico anual por empresa'),use_container_width=True)
  
         if ServiciosMóviles=='Mensajería':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/sms.png'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
 
             ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
             
@@ -955,7 +956,7 @@ Claro aumentó su participación, pasando de 37,7% en
         ServiciosFijos=st.radio('Servicios',['Telefonía fija','Internet fijo'],horizontal=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True)   
         if ServiciosFijos == 'Internet fijo':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
             
             AccesosCorpIntFijo=AccesosCorpIntFijo[AccesosCorpIntFijo['accesos']>0]
             AccesosCorpIntFijo=AccesosCorpIntFijo.rename(columns={'accesos':'CORPORATIVOS'})
@@ -1078,7 +1079,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
  
         if ServiciosFijos == 'Telefonía fija':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
 
             ServiciosTelFija=st.selectbox('Escoja el servicio de Internet fijo',['Líneas','Tráfico','Ingresos','Ingresos por tráfico','Ingresos por líneas'])
             st.markdown('Escoja la dimensión del análisis')
@@ -1248,7 +1249,7 @@ Claro aumentó su participación, pasando de 37,7% en
         st.markdown(r"""<hr>""",unsafe_allow_html=True)
         
         if ServiciosAudiovisuales == 'TV por suscripción':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
             ##Suscriptores
             SuscriptoresTVSusNac=SuscriptoresTVSus.groupby(['periodo'])['suscriptores'].sum().reset_index()
             #
@@ -1340,7 +1341,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'Ingresos/Suscriptores anuales por empresa'),use_container_width=True)
                 
         if ServiciosAudiovisuales == 'TV comunitaria':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-comunitaria.png'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
 
             ServiciosTVCom=st.selectbox('Escoja el servicio de TV comunitaria',['Asociados','Ingresos'])
            
@@ -1400,7 +1401,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
 
         if ServiciosAudiovisuales == 'OTT':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">Serivicios Over the top (OTT)</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/ott.png'/><h4 style="text-align:left">Servicios Over the top (OTT)</h4></div>""",unsafe_allow_html=True)   
             st.markdown('')
             OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/OTT.csv',delimiter=';')
             OTT['periodo']=OTT['periodo'].replace({r'Q':'-T'},regex=True)
@@ -1470,7 +1471,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.plotly_chart(figMotivosOTT,use_container_width=True)
               
         if ServiciosAudiovisuales == 'TV abierta':
-            st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-abierta.png'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
             st.markdown('') 
             
             IngresosTVabierta=st.selectbox('Escoja el servicio de TV abierta',['Ingresos por servicio','Ingresos TV pública'])
@@ -1565,8 +1566,10 @@ Claro aumentó su participación, pasando de 37,7% en
                 figTVPublica.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
                 st.plotly_chart(figTVPublica,use_container_width=True)
                             
-    if select_secResumenDinTic == 'Radio':                   
-        st.markdown(r"""<div class="titulo"><h3>Radio</h3></div>""",unsafe_allow_html=True)
+    if select_secResumenDinTic == 'Servicios radiales':                   
+        st.markdown(r"""<div class="titulo"><h3>Servicios radiales</h3></div>""",unsafe_allow_html=True)
+        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
+
         nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
         'EMPRESA COLOMBIANA DE RADIO SAS':'Empresa Colombiana<br>de radio','RADIO CADENA NACIONAL SAS':'RCN Radio','DIGITAL ESTEREO SAS':'Digital estereo',
         'SERVICIO RADIAL INTEGRADO SAS':'Servicio radial<br>integrado','PRODUCCIONES WILLVIN S A':'Producciones Willvin','ORGANIZACION RADIAL OLIMPICA S.A.':'Olimpica organización<br>radial',
@@ -1667,7 +1670,7 @@ if select_seccion =='Dinámica postal':
     st.markdown(r"""<hr>""",unsafe_allow_html=True)
 
     if select_DinPos=='Correo':
-        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
+        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
 
         ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
         ##Número de envíos e ingresos
@@ -1680,7 +1683,7 @@ if select_seccion =='Dinámica postal':
             st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
 
     if select_DinPos=='Mensajería expresa':
-        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
+        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
 
         ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
         ##Número de envíos e ingresos
@@ -1747,7 +1750,7 @@ if select_seccion =='Dinámica postal':
 
     if select_DinPos=='Giros':
         ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros'])
-        st.markdown(r"""<div class='IconoTitulo'><img height="50px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/SMSTelMovil.jpg?raw=true'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
+        st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
         
         IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
         
