@@ -120,7 +120,7 @@ def PColoresEmp(id_empresa):
 def periodoformato(x):
     return "{1}-{0}".format(*x.split('-')).replace('-','<br>')
 
-def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
+def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
     fig = make_subplots(rows=1, cols=1)
     if 'modalidad' in df.columns.tolist():
         maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3  
@@ -147,19 +147,22 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores):
     fig.update_layout(height=550,legend_title=None)
     fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
     title={
-    'text':column.capitalize() +" por periodo",
+    'text':titulo,
     'y':0.95,
     'x':0.5,
     'xanchor': 'center',
     'yanchor': 'top'})        
     fig.update_layout(legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
-    #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     fig.update_layout(yaxis_tickformat ='d')
+    fig.add_annotation(
+    showarrow=False,
+    text=textofuente,
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)
     return fig
 
-def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
+def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores,titulo,textofuente):
     fig = make_subplots(rows=1, cols=1)
     maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3  
     tecnologia=df['CodTec'].unique().tolist()
@@ -176,7 +179,7 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
     fig.update_layout(height=550,legend_title=None)
     fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
     title={
-    'text':column.capitalize() +" por periodo",
+    'text':titulo,
     'y':0.95,
     'x':0.5,
     'xanchor': 'center',
@@ -186,9 +189,13 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores):
     #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     fig.update_layout(yaxis_tickformat ='d')
+    fig.add_annotation(
+    showarrow=False,
+    text=textofuente,
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)    
     return fig
 
-def PlotlylineatiempoEmp(df,column,unidad,colores,titulo):
+def PlotlylineatiempoEmp(df,column,unidad,colores,titulo,textofuente):
     fig = make_subplots(rows=1, cols=1)
     maxdf=df[column].max()+df[column].max()*0.4
     empresa=df['empresa'].unique().tolist()
@@ -215,9 +222,13 @@ def PlotlylineatiempoEmp(df,column,unidad,colores,titulo):
     #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     fig.update_layout(yaxis_tickformat ='d')
+    fig.add_annotation(
+    showarrow=False,
+    text=textofuente,
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)
     return fig
  
-def PlotlylineatiempoDep(df,column,unidad):
+def PlotlylineatiempoDep(df,column,unidad,titulo,textofuente):
     fig = make_subplots(rows=1, cols=1)
     departamentos=df['departamento'].unique().tolist()
     for i,elem in enumerate(departamentos):
@@ -233,7 +244,7 @@ def PlotlylineatiempoDep(df,column,unidad):
     fig.update_layout(height=550,legend_title=None)
     fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
     title={
-    'text':column.capitalize() +" por periodo",
+    'text':titulo,
     'y':0.95,
     'x':0.5,
     'xanchor': 'center',
@@ -243,6 +254,10 @@ def PlotlylineatiempoDep(df,column,unidad):
     #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
     fig.update_layout(yaxis_tickformat ='d')
+    fig.add_annotation(
+    showarrow=False,
+    text=textofuente,
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)    
     return fig
  
 def PlotlyBarras(df,column,unidad,escalamiento,titulo):   
@@ -551,7 +566,7 @@ if select_seccion =='Resumen ejecutivo':
         
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
-    select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
+    select_secResumenDinTic = st.sidebar.selectbox('Seleccione el sector a consultar',['Información general',
     'Servicios móviles','Servicios fijos','Servicios de radiodifusión','Servicios OTT'])
     
     if select_secResumenDinTic == 'Información general':
@@ -666,7 +681,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     AboTrimTelMovilB['modalidad']='TOTAL'
                     AboTrimTelMovilTOTAL=pd.concat([AboTrimTelMovilA,AboTrimTelMovilB]).sort_values(by=['periodo'])
                     AboTrimTelMovilTOTAL['periodo_formato']=AboTrimTelMovilTOTAL['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovilTOTAL,'abonados','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovilTOTAL,'abonados','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Abonados Telefonía móvil por periodo',''), use_container_width=True)
                 if BarrasAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
@@ -705,7 +720,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     TrafTrimTelMovilB['modalidad']='TOTAL'
                     TrafTrimTelMovilTOTAL=pd.concat([TrafTrimTelMovilA,TrafTrimTelMovilB]).sort_values(by=['periodo'])
                     TrafTrimTelMovilTOTAL['periodo_formato']=TrafTrimTelMovilTOTAL['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Telefonía móvil por periodo',''), use_container_width=True)
                 if BarrasTraficoTelmovil:
                     TrafAnualTelMovl=TraficoTelMovil.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     EmpTelMovilTrafico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
@@ -752,12 +767,12 @@ Claro aumentó su participación, pasando de 37,7% en
                 IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
 
                 if LineaTiempoIngresosTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía móvil por periodo',''), use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(Plotlylineatiempo(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                        st.plotly_chart(Plotlylineatiempo(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por abonado',''), use_container_width=True)
                     with col2:
-                        st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelMovil2,'Ingresos/Trafico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                        st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelMovil2,'Ingresos/Trafico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
   
                 if BarrasIngresosTelmovil:
                     IngresosTelMovil3=pd.melt(IngresosTelMovil,id_vars=['anno','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
@@ -784,9 +799,9 @@ Claro aumentó su participación, pasando de 37,7% en
                     
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','Pesos',1,'Ingresos/Abonado anual por empresa'),use_container_width=True)  
+                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','Pesos',1,'Ingresos por abonado y por empresa'),use_container_width=True)  
                     with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','Pesos/Min',1,'Ingresos/Trafico anual por empresa'),use_container_width=True)  
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','Pesos/Min',1,'Ingresos por tráfico y por empresa'),use_container_width=True)  
                                                                                                  
         if ServiciosMóviles=='Internet':
             ##Tráfico
@@ -838,7 +853,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 if LineaTiempoAccesosIntmovil:
                     AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
                     AccesosInternetmovilNac['periodo_formato']=AccesosInternetmovilNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet móvil por periodo',''), use_container_width=True)
                 if BarrasAccesosIntmovil:
                     AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
                     EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
@@ -869,7 +884,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 if LineaTiempoTraficoIntmovil:             
                     TraficoInternetMovilNac=TraficoInternetMovildf.groupby(['periodo','modalidad'])['trafico'].sum().reset_index()
                     TraficoInternetMovilNac['periodo_formato']=TraficoInternetMovilNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Internet móvil por periodo',''), use_container_width=True)
                 if BarrasTraficoIntmovil:
                     TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
@@ -926,22 +941,22 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoIngresosIntmovil:
                                                                                                     
-                    st.plotly_chart(Plotlylineatiempo(IngresosInternetmovilNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetmovilNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet móvil por periodo',''), use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(Plotlylineatiempo(IngPorAccesosIntMovil,'Ingresos/Acceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                        st.plotly_chart(Plotlylineatiempo(IngPorAccesosIntMovil,'Ingresos/Acceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso',''), use_container_width=True)
                     with col2:    
-                        st.plotly_chart(Plotlylineatiempo(IngPorTraficoIntMovil,'Ingresos/Trafico','Pesos/GB',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                        st.plotly_chart(Plotlylineatiempo(IngPorTraficoIntMovil,'Ingresos/Trafico','Pesos/GB',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
  
                 if BarrasIngresosIntmovil:
                     st.plotly_chart(PlotlyBarras(IngresosInternetmovilEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
                         IngPorAccesosIntMovilEmp=IngPorAccesosIntMovilEmp.rename(columns={'empresa_x':'empresa'})
-                        st.plotly_chart(PlotlyBarras(IngPorAccesosIntMovilEmp,'Ingresos/Acceso','Pesos',1,'Ingresos/Accesos anuales por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngPorAccesosIntMovilEmp,'Ingresos/Acceso','Pesos',1,'Ingresos por acceso y por empresa'),use_container_width=True)
                     with col2:
                         IngPorTraficoIntMovilEmp=IngPorTraficoIntMovilEmp.rename(columns={'empresa_x':'empresa'})
-                        st.plotly_chart(PlotlyBarras(IngPorTraficoIntMovilEmp,'Ingresos/Trafico','Pesos/GB',1,'Ingresos/Tráfico anual por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngPorTraficoIntMovilEmp,'Ingresos/Trafico','Pesos/GB',1,'Ingresos por tráfico y por empresa'),use_container_width=True)
  
         if ServiciosMóviles=='Mensajería':
         
@@ -968,13 +983,13 @@ Claro aumentó su participación, pasando de 37,7% en
                     TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
                     TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico (SMS)'].sum().reset_index()
                     TraficoSMSTelMovilAgg['periodo_formato']=TraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo',''), use_container_width=True)
                 if BarrasTraficoSMSTelmovil:
                     TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
                     TraficoSMSTelMovilEmpresa=TraficoSMSTelMovil.groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index() 
                     EmpMenMovilTraficoSMS=TraficoSMSTelMovilEmpresa[TraficoSMSTelMovilEmpresa['anno']=='2021'].sort_values(by='tráfico (SMS)',ascending=False)['id_empresa'].to_list()[0:4]
                     TraficoSMSTelMovilEmpresa=TraficoSMSTelMovilEmpresa[(TraficoSMSTelMovilEmpresa['id_empresa'].isin(EmpMenMovilTraficoSMS))&(TraficoSMSTelMovilEmpresa['anno'].isin(['2020','2021']))]
-                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','Millones de mensajes',1e6,'Tráfico (SMS) anual por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','Millones de mensajes',1e6,'Tráfico anual por empresa'),use_container_width=True)  
                 
             if ServiciosMenMovil=='Ingresos':
                 IngresosSMSTelMovil['periodo']=IngresosSMSTelMovil['anno']+'-T'+IngresosSMSTelMovil['trimestre']
@@ -1006,11 +1021,11 @@ Claro aumentó su participación, pasando de 37,7% en
 
                 ## 
                 if LineaTiempoIngresosSMSTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosSMSTelMovilAgg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoSMSTelMovilAgg,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosSMSTelMovilAgg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Mensajería móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoSMSTelMovilAgg,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
                 if BarrasIngresosSMSTelmovil:                    
-                    st.plotly_chart(PlotlyBarras(IngresosSMSTelMovilEmpresa,'ingresos','Miles de Millones de pesos',1e9,'Ingresos (SMS) anuales por empresa'),use_container_width=True)  
-                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos/Tráfico (SMS) anual por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(IngresosSMSTelMovilEmpresa,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico y por empresa'),use_container_width=True)  
                         
     if select_secResumenDinTic == 'Servicios fijos': 
         st.markdown(r"""<div class="titulo"><h3>Servicios fijos</h3></div>""",unsafe_allow_html=True)
@@ -1018,6 +1033,7 @@ Claro aumentó su participación, pasando de 37,7% en
 
         ServiciosFijos=st.radio('Servicios',['Telefonía fija','Internet fijo', 'TV por suscripción','TV comunitaria'],horizontal=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True)   
+        
         if ServiciosFijos == 'Internet fijo':
 
             col1,col2 = st.columns(2)
@@ -1115,7 +1131,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoAccesosIntFijo:
                     AccesosInternetFijoNac2['periodo_formato']=AccesosInternetFijoNac2['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet fijo por periodo',''), use_container_width=True)
                 if BarrasAccesosIntFijo:
                     st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','',1,'Accesos anuales por empresa'),use_container_width=True)
                 if PieAccesosIntFijo:
@@ -1127,7 +1143,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(figPieIntFijo)
                 if TecnologiaAccesosIntFijo:
                     AccesosInternetFijoTecAgg['periodo_formato']=AccesosInternetFijoTecAgg['periodo'].apply(periodoformato)
-                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)']), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)'],'Accesos Internet fijo por tecnología y periodo',''), use_container_width=True)
 
             if ServiciosIntFijo=='Ingresos':
                 col1,col2=st.columns(2)
@@ -1145,15 +1161,15 @@ Claro aumentó su participación, pasando de 37,7% en
                 if LineaTiempoIngresosIntFijo: 
                     IngresosInternetFijoNac['periodo_formato']=IngresosInternetFijoNac['periodo'].apply(periodoformato)
                     IngresosPorAccesoIntFijo['periodo_formato']=IngresosPorAccesoIntFijo['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet fijo por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso',''), use_container_width=True)
                 if BarrasIngresosIntFijo:
                     EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'empresa']='Otros'
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'id_empresa']='Otros'
                     IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
- 
+                    st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
+                                        
         if ServiciosFijos == 'Telefonía fija':
 
             col1,col2=st.columns(2)
@@ -1166,7 +1182,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
 
 
-            ServiciosTelFija=st.selectbox('Escoja el servicio de Internet fijo',['Líneas','Tráfico','Ingresos','Ingresos por tráfico','Ingresos por líneas'])
+            ServiciosTelFija=st.selectbox('Escoja el servicio de Telefonía fija',['Líneas','Tráfico','Ingresos','Ingresos por tráfico','Ingresos por líneas'])
             st.markdown('Escoja la dimensión del análisis')
             
             ## Líneas
@@ -1179,7 +1195,9 @@ Claro aumentó su participación, pasando de 37,7% en
             LineasTelefoníaLocalEmp=LineasTelefoníaLocal.groupby(['anno','trimestre','id_empresa','empresa'])['lineas'].sum().reset_index()
             LineasTelefoníaLocalEmp=LineasTelefoníaLocalEmp[(LineasTelefoníaLocalEmp['anno'].isin(['2020','2021']))&(LineasTelefoníaLocalEmp['trimestre']=='4')]
             EmpTelfijaLineas=LineasTelefoníaLocalEmp[LineasTelefoníaLocalEmp['anno']=='2021'].sort_values(by='lineas',ascending=False)['id_empresa'].to_list()[0:4]
-            LineasTelefoníaLocalEmp=LineasTelefoníaLocalEmp[LineasTelefoníaLocalEmp['id_empresa'].isin(EmpTelfijaLineas)]
+            LineasTelefoníaLocalEmp.loc[LineasTelefoníaLocalEmp['id_empresa'].isin(EmpTelfijaLineas)==False,'empresa']='Otros'
+            LineasTelefoníaLocalEmp.loc[LineasTelefoníaLocalEmp['id_empresa'].isin(EmpTelfijaLineas)==False,'id_empresa']='Otros'            
+            LineasTelefoníaLocalEmp=LineasTelefoníaLocalEmp.groupby(['anno','empresa','id_empresa'])['lineas'].sum().reset_index()
             #
             LineasTelefoníaLocalPie=LineasTelefoníaLocal.groupby(['periodo','id_empresa','empresa'])['lineas'].sum().reset_index()
             LineasTelefoníaLocalPie=LineasTelefoníaLocalPie[LineasTelefoníaLocalPie['periodo']=='2021-T4']
@@ -1192,30 +1210,44 @@ Claro aumentó su participación, pasando de 37,7% en
             
             TraficoTelefoniaFijaEmpTL=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['modalidad']=='Local']
             EmpTelfijaLocal=TraficoTelefoniaFijaEmpTL[TraficoTelefoniaFijaEmpTL['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
-            TraficoTelefoniaFijaEmpTL=TraficoTelefoniaFijaEmpTL[TraficoTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocal)]            
+            TraficoTelefoniaFijaEmpTL.loc[TraficoTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocal)==False,'empresa']='Otros'
+            TraficoTelefoniaFijaEmpTL.loc[TraficoTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocal)==False,'id_empresa']='Otros'
+            TraficoTelefoniaFijaEmpTL=TraficoTelefoniaFijaEmpTL.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()           
             
             TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['modalidad']=='Larga distancia nacional']
             EmpTelfijaLDN=TraficoTelefoniaFijaEmpTLDN[TraficoTelefoniaFijaEmpTLDN['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
-            TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmpTLDN[TraficoTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDN)]            
+            TraficoTelefoniaFijaEmpTLDN.loc[TraficoTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDN)==False,'empresa']='Otros'
+            TraficoTelefoniaFijaEmpTLDN.loc[TraficoTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDN)==False,'id_empresa']='Otros'
+            TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmpTLDN.groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()            
+            #TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmpTLDN[TraficoTelefoniaFijaEmpTLDN['empresa']!='Otros']
             
             TraficoTelefoniaFijaEmpTLDI=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['modalidad']=='Larga distancia internacional']
             EmpTelfijaLDI=TraficoTelefoniaFijaEmpTLDI[TraficoTelefoniaFijaEmpTLDI['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
-            TraficoTelefoniaFijaEmpTLDI=TraficoTelefoniaFijaEmpTLDI[TraficoTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDI)]
+            TraficoTelefoniaFijaEmpTLDI.loc[TraficoTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDI)==False,'empresa']='Otros'
+            TraficoTelefoniaFijaEmpTLDI.loc[TraficoTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDI)==False,'id_empresa']='Otros'
+            TraficoTelefoniaFijaEmpTLDI=TraficoTelefoniaFijaEmpTLDI.groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()  
+            
             ##Ingresos 
             IngresosTelefoniaFijaNac=IngresosTelefoniaFija.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
             IngresosTelefoniaFijaEmp=IngresosTelefoniaFija[IngresosTelefoniaFija['anno'].isin(['2020','2021'])].groupby(['anno','modalidad','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             IngresosTelefoniaFijaEmpTL=IngresosTelefoniaFijaEmp[IngresosTelefoniaFijaEmp['modalidad']=='Local']
             EmpTelfijaLocalIng=IngresosTelefoniaFijaEmpTL[IngresosTelefoniaFijaEmpTL['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-            IngresosTelefoniaFijaEmpTL=IngresosTelefoniaFijaEmpTL[IngresosTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocalIng)]            
+            IngresosTelefoniaFijaEmpTL.loc[IngresosTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocalIng)==False,'empresa']='Otros'
+            IngresosTelefoniaFijaEmpTL.loc[IngresosTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocalIng)==False,'id_empresa']='Otros'
+            IngresosTelefoniaFijaEmpTL=IngresosTelefoniaFijaEmpTL.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()         
             
             IngresosTelefoniaFijaEmpTLDN=IngresosTelefoniaFijaEmp[IngresosTelefoniaFijaEmp['modalidad']=='Larga distancia nacional']
             EmpTelfijaLDNIng=IngresosTelefoniaFijaEmpTLDN[IngresosTelefoniaFijaEmpTLDN['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-            IngresosTelefoniaFijaEmpTLDN=IngresosTelefoniaFijaEmpTLDN[IngresosTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDNIng)]            
+            IngresosTelefoniaFijaEmpTLDN.loc[IngresosTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDNIng)==False,'empresa']='Otros'
+            IngresosTelefoniaFijaEmpTLDN.loc[IngresosTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDNIng)==False,'id_empresa']='Otros'
+            IngresosTelefoniaFijaEmpTLDN=IngresosTelefoniaFijaEmpTLDN.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             IngresosTelefoniaFijaEmpTLDI=IngresosTelefoniaFijaEmp[IngresosTelefoniaFijaEmp['modalidad']=='Larga distancia internacional']
             EmpTelfijaLDIIng=IngresosTelefoniaFijaEmpTLDI[IngresosTelefoniaFijaEmpTLDI['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-            IngresosTelefoniaFijaEmpTLDI=IngresosTelefoniaFijaEmpTLDI[IngresosTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDIIng)]
+            IngresosTelefoniaFijaEmpTLDI.loc[IngresosTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDIIng)==False,'empresa']='Otros'
+            IngresosTelefoniaFijaEmpTLDI.loc[IngresosTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDIIng)==False,'id_empresa']='Otros'
+            IngresosTelefoniaFijaEmpTLDI=IngresosTelefoniaFijaEmpTLDI.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             ## Ingresos por tráfico
             IngresosPorTraficoTelFijo=IngresosTelefoniaFijaNac.merge(TraficoTelefoniaFijaNac,left_on=['periodo','modalidad'],right_on=['periodo','modalidad'])
@@ -1248,7 +1280,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoLineasTelFija:
                     LineasTelefoníaLocalNac['periodo_formato']=LineasTelefoníaLocalNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(LineasTelefoníaLocalNac,'lineas','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(LineasTelefoníaLocalNac,'lineas','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Líneas Telefonía fija por periodo',''), use_container_width=True)
                 if BarrasLineasTelFija:
                     st.plotly_chart(PlotlyBarras(LineasTelefoníaLocalEmp,'lineas','',1,'Líneas anuales por empresa'),use_container_width=True)
                 if PieLineasTelFija:
@@ -1268,7 +1300,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     
                 if LineaTiempoTraficoTelFija:
                     TraficoTelefoniaFijaNac['periodo_formato']=TraficoTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico telefonía fija por periodo',''), use_container_width=True)
                 if BarrasTraficoTelFija:
                     st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTL,'trafico','Millones de minutos',1e6,'Tráfico anual de Telefonía local por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
@@ -1286,7 +1318,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoIngresosTelFija:
                     IngresosTelefoniaFijaNac['periodo_formato']=IngresosTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía fija por periodo',''), use_container_width=True)
                 if BarrasIngresosTelFija:
                     st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTL,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía local por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
@@ -1304,14 +1336,14 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoIngresosportraficoTelFija:
                     IngresosPorTraficoTelFijo['periodo_formato']=IngresosPorTraficoTelFijo['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelFijo,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelFijo,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
                 if BarrasIngresosportraficoTelFija:
-                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLocalEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos/Tráfico anual de Telefonía local por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLocalEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía local por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDNEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos/Tráfico anual de Telefonía LDN por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDNEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía LDN por empresa'),use_container_width=True)
                     with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos/Tráfico anual de Telefonía LDI por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía LDI por empresa'),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos por líneas':
                 col1,col2=st.columns(2)
@@ -1322,9 +1354,9 @@ Claro aumentó su participación, pasando de 37,7% en
 
                 if LineaTiempoIngresosporlineaTelFija:
                     IngresosPorLineaTelLocal['periodo_formato']=IngresosPorLineaTelLocal['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por líneas',''), use_container_width=True)
                 if BarrasIngresosporlineaTelFija:
-                    st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'Ingresos/Líneas anuales de Telefonía local por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'Ingresos por líneas de Telefonía local por empresa'),use_container_width=True)
 
         if ServiciosFijos == 'TV por suscripción':
 
@@ -1390,7 +1422,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoSuscriptoresTVSus:
                     SuscriptoresTVSusNac['periodo_formato']=SuscriptoresTVSusNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Suscriptores TV por suscripción por periodo',''), use_container_width=True)
             
                 if BarrasSuscriptoresTVSus:
                     st.plotly_chart(PlotlyBarras(SuscriptoresTVSusEmp,'suscriptores','',1,'Suscriptores anuales por empresa'),use_container_width=True)
@@ -1405,7 +1437,7 @@ Claro aumentó su participación, pasando de 37,7% en
 
                 if TecnologiaSuscriptoresTVSus:
                     SuscriptoresTVSusTec['periodo_formato']=SuscriptoresTVSusTec['periodo'].apply(periodoformato)
-                    st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)']), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)'],'Suscriptores TV por suscripción por tecnología y periodo',''), use_container_width=True)
 
             if ServiciosTVporSus=='Ingresos':
 
@@ -1419,9 +1451,9 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoIngresosTVSus:
                     IngresosTVSusNac['periodo_formato']=IngresosTVSusNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV por suscripción por periodo',''), use_container_width=True)
                     IngresosPorSuscriptoresTV['periodo_formato']=IngresosPorSuscriptoresTV['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por suscriptor',''), use_container_width=True)
 
                 if BarrasIngresosTVSus:
                     st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Suscriptores anuales por empresa'),use_container_width=True)
@@ -1469,7 +1501,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if DimensionTVCom=='Evolución temporal':  
                     AsociadosTVComunitariaNac['periodo_formato']=AsociadosTVComunitariaNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Asociados TV comunitaria por periodo',''), use_container_width=True)
                 if DimensionTVCom=='Operadores':
                     st.plotly_chart(PlotlyBarras(AsociadosTVComunitariaEmp,'asociados','',1,'Asociados anuales por empresa'),use_container_width=True)
                 if DimensionTVCom=='Departamentos':
@@ -1478,7 +1510,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     with col2:
                         OpcionesDPTO=st.multiselect('Seleccione los departamentos para visualizar la evolución del número de asociados',DepartamentosAsoTVCom)
                         AsociadosTVComunitariaDep2=AsociadosTVComunitariaDep[AsociadosTVComunitariaDep['departamento'].isin(OpcionesDPTO)]
-                    st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados',''), use_container_width=True)   
+                    st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados','',''), use_container_width=True)   
 
             if ServiciosTVCom=='Ingresos':
 
@@ -1490,7 +1522,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoIngresosTVCom:
                     IngresosTVComunitariaIngNac['periodo_formato']=IngresosTVComunitariaIngNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV comunitaria por periodo',''), use_container_width=True)
                 if BarrasIngresosTVCom:
                     st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
 
@@ -1788,209 +1820,229 @@ Claro aumentó su participación, pasando de 37,7% en
 
 if select_seccion =='Postal':
     st.title("Sector Postal")
-    st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
-    select_DinPos = st.radio('Seleccione el sector de los servicios postales a consultar',['Correo',
-    'Mensajería expresa','Giros'],horizontal=True)      
-    st.markdown(r"""<hr>""",unsafe_allow_html=True)
 
-    if select_DinPos=='Correo':
-        col1,col2=st.columns(2)
+    select_secResumenPos = st.sidebar.selectbox('Seleccione la información a consultar',['Información general',
+    'Servicios postales'])
+
+    if select_secResumenPos=='Información general':
+
+        st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
+        col1, col2, col3 = st.columns(3)
         with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
-        with col2:             
-            with st.expander("Datos relevantes de Correo"):
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/></div>""",unsafe_allow_html=True) 
+        with col2:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/></div>""",unsafe_allow_html=True) 
+        with col3:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/></div>""",unsafe_allow_html=True) 
 
-        ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
-        ##Número de envíos e ingresos
-        IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
+        col1.metric("Correo", "85.8 M", "-18.3%")
+        col2.metric("Mensajería expresa", "281.5 M", "0.6%")
+        col3.metric("Giros", "127.7M", "-5.3%")      
 
-        if ServiciosCorreo=='Número de envíos':
-            st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
-        
-        if ServiciosCorreo=='Ingresos':
-            st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+    if select_secResumenPos=='Servicios postales':
+        st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
+        select_DinPos = st.radio('Seleccione el sector de los servicios postales a consultar',['Correo',
+        'Mensajería expresa','Giros'],horizontal=True)      
+        st.markdown(r"""<hr>""",unsafe_allow_html=True)
 
-    if select_DinPos=='Mensajería expresa':
-
-        col1,col2=st.columns(2)
-        with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
-        with col2:             
-            with st.expander("Datos relevantes de Internet móvil"):
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-
-        ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
-        ##Número de envíos e ingresos
-        IngresosyEnviosMexpresaNac=IngresosyEnviosMExpresa.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
-        IngresosyEnviosMexpresaEMp=IngresosyEnviosMExpresa.groupby(['anno','id_empresa','empresa']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()    
-        EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
-        EmpMensExpIng=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-        IngresosyEnviosMexpresaEMpEnv=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpNumEnv))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
-        IngresosyEnviosMexpresaEMpIng=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpIng))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
-        IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2021'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
-        #
-        IngresosMenExpEmpInd=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Individuales']
-        IngresosMenExpEmpInd['participacion']=round(100*IngresosMenExpEmpInd['Ingresos']/IngresosMenExpEmpInd['Ingresos'].sum(),1)
-        IngresosMenExpEmpInd.loc[IngresosMenExpEmpInd['participacion']<=5,'empresa']='Otros'
-        IngresosMenExpEmpInd['empresa']=IngresosMenExpEmpInd['empresa'].replace(nombresComerciales)
-        IngresosMenExpEmpMas=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Masivos']
-        IngresosMenExpEmpMas['participacion']=round(100*IngresosMenExpEmpMas['Ingresos']/IngresosMenExpEmpMas['Ingresos'].sum(),1)
-        IngresosMenExpEmpMas.loc[IngresosMenExpEmpMas['participacion']<=5,'empresa']='Otros'
-        IngresosMenExpEmpMas['empresa']=IngresosMenExpEmpMas['empresa'].replace(nombresComerciales)
-        
-        if ServiciosCorreo=='Número de envíos':
+        if select_DinPos=='Correo':
             col1,col2=st.columns(2)
             with col1:
-                LineaTiempoEnviosMenExpresa=st.button('Modalidad')
-            with col2:
-                BarrasEnviosMenExpresa=st.button('Operadores')
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
+            with col2:             
+                with st.expander("Datos relevantes de Correo"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+
+            ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
+            ##Número de envíos e ingresos
+            IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
+
+            if ServiciosCorreo=='Número de envíos':
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
             
-            if LineaTiempoEnviosMenExpresa:
-                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
-            
-            if BarrasEnviosMenExpresa:
-               st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'Envíos anuales por empresa'),use_container_width=True) 
-                
-        if ServiciosCorreo=='Ingresos':
-            col1,col2,col3=st.columns(3)
+            if ServiciosCorreo=='Ingresos':
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+
+        if select_DinPos=='Mensajería expresa':
+
+            col1,col2=st.columns(2)
             with col1:
-                LineaTiempoIngresosMenExpresa=st.button('Modalidad')
-            with col2:
-                BarrasIngresosMenExpresa=st.button('Operadores')  
-            with col3:
-                PieIngresosMenExpresa=st.button('Participaciones')
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
+            with col2:             
+                with st.expander("Datos relevantes de Internet móvil"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+
+            ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
+            ##Número de envíos e ingresos
+            IngresosyEnviosMexpresaNac=IngresosyEnviosMExpresa.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
+            IngresosyEnviosMexpresaEMp=IngresosyEnviosMExpresa.groupby(['anno','id_empresa','empresa']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()    
+            EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
+            EmpMensExpIng=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosyEnviosMexpresaEMpEnv=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpNumEnv))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
+            IngresosyEnviosMexpresaEMpIng=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpIng))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
+            IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2021'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
+            #
+            IngresosMenExpEmpInd=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Individuales']
+            IngresosMenExpEmpInd['participacion']=round(100*IngresosMenExpEmpInd['Ingresos']/IngresosMenExpEmpInd['Ingresos'].sum(),1)
+            IngresosMenExpEmpInd.loc[IngresosMenExpEmpInd['participacion']<=5,'empresa']='Otros'
+            IngresosMenExpEmpInd['empresa']=IngresosMenExpEmpInd['empresa'].replace(nombresComerciales)
+            IngresosMenExpEmpMas=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Masivos']
+            IngresosMenExpEmpMas['participacion']=round(100*IngresosMenExpEmpMas['Ingresos']/IngresosMenExpEmpMas['Ingresos'].sum(),1)
+            IngresosMenExpEmpMas.loc[IngresosMenExpEmpMas['participacion']<=5,'empresa']='Otros'
+            IngresosMenExpEmpMas['empresa']=IngresosMenExpEmpMas['empresa'].replace(nombresComerciales)
             
-            if LineaTiempoIngresosMenExpresa:    
-                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
-            if BarrasIngresosMenExpresa:
-                st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'Ingresos anuales por empresa'),use_container_width=True) 
-            if PieIngresosMenExpresa:
-                col1,col2=st.columns(2)
-                figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
-                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2021)')
-                figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                figPieMenExpInd.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                with col1:
-                    st.plotly_chart(figPieMenExpInd,use_container_width=True)
-
-                figPieMenExpMas = px.pie(IngresosMenExpEmpMas, values='Ingresos', names='empresa', color='empresa',
-                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos(2021)')
-                figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                figPieMenExpMas.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                with col2:
-                    st.plotly_chart(figPieMenExpMas,use_container_width=True)    
-
-    if select_DinPos=='Giros':
-        ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros'])
-
-        col1,col2=st.columns(2)
-        with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
-        with col2:             
-            with st.expander("Datos relevantes de Giros"):
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-        
-        IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
-        
-        ##Ingresos
-        IngresosGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
-        IngresosGirosNac=IngresosGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
-        #
-        IngresosGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Ingresos':'sum'}).reset_index()
-        EmpGirosIng=IngresosGirosEmp[IngresosGirosEmp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-        IngresosGirosEmp=IngresosGirosEmp[(IngresosGirosEmp['anno'].isin(['2020','2021']))&(IngresosGirosEmp['id_empresa'].isin(EmpGirosIng))]
-        #
-        IngresosGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
-        IngresosGirosPie['participacion']=round(100*IngresosGirosPie['Ingresos']/IngresosGirosPie['Ingresos'].sum(),3)
-        IngresosGirosPie['participacion_2']=round(100*IngresosGirosPie['Valor total giros']/IngresosGirosPie['Valor total giros'].sum(),3)
-        IngresosGirosPie['empresa']=IngresosGirosPie['empresa'].replace(nombresComerciales) 
-        #Ingresos por valor de giro
-        IngresosPorValorGiroEmp=IngresosGiros[IngresosGiros['ambito']=='Nacional'].groupby(['periodo','empresa','id_empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
-        IngresosPorValorGiroEmp['Tasa media de comisión']=round(100*IngresosPorValorGiroEmp['Ingresos']/IngresosPorValorGiroEmp['Valor total giros'],3)
-        ##Giros
-        NumeroGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Giros':'sum'}).reset_index()
-        NumeroGirosNac=NumeroGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
-        #
-        NumeroGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Giros':'sum'}).reset_index()
-        EmpGirosNum=NumeroGirosEmp[NumeroGirosEmp['anno']=='2021'].sort_values(by='Giros',ascending=False)['id_empresa'].to_list()[0:4]
-        NumeroGirosEmp=NumeroGirosEmp[(NumeroGirosEmp['anno'].isin(['2020','2021']))&(NumeroGirosEmp['id_empresa'].isin(EmpGirosNum))]
-        #
-        NumeroGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Giros':'sum'}).reset_index()
-        NumeroGirosPie['participacion']=round(100*NumeroGirosPie['Giros']/NumeroGirosPie['Giros'].sum(),3)
-        NumeroGirosPie['empresa']=NumeroGirosPie['empresa'].replace(nombresComerciales)         
-        
-        if ServiciosGiros=='Ingresos':
-            st.markdown('')
-            col1,col2,col3=st.columns(3)
-            with col1:
-                LineaTiempoIngresosGiros=st.button('Modalidad')
-            with col2:
-                BarrasIngresosGiros=st.button('Operadores')  
-            with col3:
-                PieIngresosGiros=st.button('Participaciones')
-                
-            if LineaTiempoIngresosGiros:
-                col1,col2=st.columns(2)                               
-                with col1:
-                    st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Nacionales'],'Ingresos','ambito','Miles de Millones de pesos',1e9,'Ingresos de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
-                with col2:    
-                    st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Internacionales'],'Ingresos','ambito','Millones de pesos',1e6,'Ingresos de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
-            if BarrasIngresosGiros:
-                st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
-                IngresosPorValorGiroEmp['periodo_formato']=IngresosPorValorGiroEmp['periodo'].apply(periodoformato)
-                st.plotly_chart(PlotlylineatiempoEmp(IngresosPorValorGiroEmp,'Tasa media de comisión','Porcentaje',['rgb(255,213,30)','rgb(153,255,51)','rgb(255,0,127)','rgb(0,0,255)','rgb(0,102,204)'],'Tasa media de comisión de ámbito nacional'), use_container_width=True)
-            
-            if PieIngresosGiros:
-                figPieGirIng = px.pie(IngresosGirosPie, values='Ingresos', names='empresa', color='empresa',
-                             color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2021)')
-                figPieGirIng.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                figPieGirIng.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                #
-                figPieGirValorGiro = px.pie(IngresosGirosPie, values='Valor total giros', names='empresa', color='empresa',
-                 color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2021)')
-                figPieGirValorGiro.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                figPieGirValorGiro.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+            if ServiciosCorreo=='Número de envíos':
                 col1,col2=st.columns(2)
                 with col1:
-                    st.plotly_chart(figPieGirIng,use_container_width=True) 
+                    LineaTiempoEnviosMenExpresa=st.button('Modalidad')
                 with col2:
-                    st.plotly_chart(figPieGirValorGiro,use_container_width=True)                  
+                    BarrasEnviosMenExpresa=st.button('Operadores')
+                
+                if LineaTiempoEnviosMenExpresa:
+                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
+                
+                if BarrasEnviosMenExpresa:
+                   st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'Envíos anuales por empresa'),use_container_width=True) 
                     
-        if ServiciosGiros=='Número de giros':
-            st.markdown('')
-            col1,col2,col3=st.columns(3)
-            with col1:
-                LineaTiempoNGiros=st.button('Modalidad')
-            with col2:
-                BarrasNGiros=st.button('Operadores')  
-            with col3:
-                PieNGiros=st.button('Participaciones')                    
-                
-            if LineaTiempoNGiros:
-                col1,col2=st.columns(2)                               
+            if ServiciosCorreo=='Ingresos':
+                col1,col2,col3=st.columns(3)
                 with col1:
-                    st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Nacionales'],'Giros','ambito','Millones',1e6,'Número de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
-                with col2:    
-                    st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'Número de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+                    LineaTiempoIngresosMenExpresa=st.button('Modalidad')
+                with col2:
+                    BarrasIngresosMenExpresa=st.button('Operadores')  
+                with col3:
+                    PieIngresosMenExpresa=st.button('Participaciones')
+                
+                if LineaTiempoIngresosMenExpresa:    
+                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+                if BarrasIngresosMenExpresa:
+                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'Ingresos anuales por empresa'),use_container_width=True) 
+                if PieIngresosMenExpresa:
+                    col1,col2=st.columns(2)
+                    figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
+                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2021)')
+                    figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                    figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieMenExpInd.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    with col1:
+                        st.plotly_chart(figPieMenExpInd,use_container_width=True)
 
-            if BarrasNGiros:
-                st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',9,'Número de giros anuales por empresa'),use_container_width=True)
+                    figPieMenExpMas = px.pie(IngresosMenExpEmpMas, values='Ingresos', names='empresa', color='empresa',
+                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos(2021)')
+                    figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                    figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieMenExpMas.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    with col2:
+                        st.plotly_chart(figPieMenExpMas,use_container_width=True)    
 
-            if PieNGiros:
-                figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
-                 color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2021)')
-                figPieGirNum.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                figPieGirNum.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                st.plotly_chart(figPieGirNum,use_container_width=True)
+        if select_DinPos=='Giros':
+            ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros'])
+
+            col1,col2=st.columns(2)
+            with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
+            with col2:             
+                with st.expander("Datos relevantes de Giros"):
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+            
+            IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
+            
+            ##Ingresos
+            IngresosGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+            IngresosGirosNac=IngresosGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
+            #
+            IngresosGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Ingresos':'sum'}).reset_index()
+            EmpGirosIng=IngresosGirosEmp[IngresosGirosEmp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosGirosEmp=IngresosGirosEmp[(IngresosGirosEmp['anno'].isin(['2020','2021']))&(IngresosGirosEmp['id_empresa'].isin(EmpGirosIng))]
+            #
+            IngresosGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+            IngresosGirosPie['participacion']=round(100*IngresosGirosPie['Ingresos']/IngresosGirosPie['Ingresos'].sum(),3)
+            IngresosGirosPie['participacion_2']=round(100*IngresosGirosPie['Valor total giros']/IngresosGirosPie['Valor total giros'].sum(),3)
+            IngresosGirosPie['empresa']=IngresosGirosPie['empresa'].replace(nombresComerciales) 
+            #Ingresos por valor de giro
+            IngresosPorValorGiroEmp=IngresosGiros[IngresosGiros['ambito']=='Nacional'].groupby(['periodo','empresa','id_empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+            IngresosPorValorGiroEmp['Tasa media de comisión']=round(100*IngresosPorValorGiroEmp['Ingresos']/IngresosPorValorGiroEmp['Valor total giros'],3)
+            ##Giros
+            NumeroGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Giros':'sum'}).reset_index()
+            NumeroGirosNac=NumeroGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
+            #
+            NumeroGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Giros':'sum'}).reset_index()
+            EmpGirosNum=NumeroGirosEmp[NumeroGirosEmp['anno']=='2021'].sort_values(by='Giros',ascending=False)['id_empresa'].to_list()[0:4]
+            NumeroGirosEmp=NumeroGirosEmp[(NumeroGirosEmp['anno'].isin(['2020','2021']))&(NumeroGirosEmp['id_empresa'].isin(EmpGirosNum))]
+            #
+            NumeroGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Giros':'sum'}).reset_index()
+            NumeroGirosPie['participacion']=round(100*NumeroGirosPie['Giros']/NumeroGirosPie['Giros'].sum(),3)
+            NumeroGirosPie['empresa']=NumeroGirosPie['empresa'].replace(nombresComerciales)         
+            
+            if ServiciosGiros=='Ingresos':
+                st.markdown('')
+                col1,col2,col3=st.columns(3)
+                with col1:
+                    LineaTiempoIngresosGiros=st.button('Modalidad')
+                with col2:
+                    BarrasIngresosGiros=st.button('Operadores')  
+                with col3:
+                    PieIngresosGiros=st.button('Participaciones')
+                    
+                if LineaTiempoIngresosGiros:
+                    col1,col2=st.columns(2)                               
+                    with col1:
+                        st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Nacionales'],'Ingresos','ambito','Miles de Millones de pesos',1e9,'Ingresos de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
+                    with col2:    
+                        st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Internacionales'],'Ingresos','ambito','Millones de pesos',1e6,'Ingresos de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+                if BarrasIngresosGiros:
+                    st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
+                    IngresosPorValorGiroEmp['periodo_formato']=IngresosPorValorGiroEmp['periodo'].apply(periodoformato)
+                    st.plotly_chart(PlotlylineatiempoEmp(IngresosPorValorGiroEmp,'Tasa media de comisión','Porcentaje',['rgb(255,213,30)','rgb(153,255,51)','rgb(255,0,127)','rgb(0,0,255)','rgb(0,102,204)'],'Tasa media de comisión de ámbito nacional',''), use_container_width=True)
+                
+                if PieIngresosGiros:
+                    figPieGirIng = px.pie(IngresosGirosPie, values='Ingresos', names='empresa', color='empresa',
+                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2021)')
+                    figPieGirIng.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                    figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieGirIng.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    #
+                    figPieGirValorGiro = px.pie(IngresosGirosPie, values='Valor total giros', names='empresa', color='empresa',
+                     color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2021)')
+                    figPieGirValorGiro.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                    figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieGirValorGiro.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    col1,col2=st.columns(2)
+                    with col1:
+                        st.plotly_chart(figPieGirIng,use_container_width=True) 
+                    with col2:
+                        st.plotly_chart(figPieGirValorGiro,use_container_width=True)                  
+                        
+            if ServiciosGiros=='Número de giros':
+                st.markdown('')
+                col1,col2,col3=st.columns(3)
+                with col1:
+                    LineaTiempoNGiros=st.button('Modalidad')
+                with col2:
+                    BarrasNGiros=st.button('Operadores')  
+                with col3:
+                    PieNGiros=st.button('Participaciones')                    
+                    
+                if LineaTiempoNGiros:
+                    col1,col2=st.columns(2)                               
+                    with col1:
+                        st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Nacionales'],'Giros','ambito','Millones',1e6,'Número de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
+                    with col2:    
+                        st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'Número de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+
+                if BarrasNGiros:
+                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',9,'Número de giros anuales por empresa'),use_container_width=True)
+
+                if PieNGiros:
+                    figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
+                     color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2021)')
+                    figPieGirNum.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
+                    figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieGirNum.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieGirNum,use_container_width=True)
