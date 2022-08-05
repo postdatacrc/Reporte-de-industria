@@ -552,7 +552,7 @@ if select_seccion =='Resumen ejecutivo':
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
-    'Servicios móviles','Servicios fijos','Servicios OTT','Servicios de radiodifusión'])
+    'Servicios móviles','Servicios fijos','Servicios de radiodifusión','Servicios OTT'])
     
     if select_secResumenDinTic == 'Información general':
         st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
@@ -560,18 +560,18 @@ if select_seccion =='Telecomunicaciones':
         with col1:
             st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
         with col2:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/></div>""",unsafe_allow_html=True) 
         with col3:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/></div>""",unsafe_allow_html=True) 
         with col4:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/></div>""",unsafe_allow_html=True) 
         with col5:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
-        col1.metric("Internet móvil", "75 M", "5%")
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/></div>""",unsafe_allow_html=True) 
+        col1.metric("Internet móvil", "37.96 M", "16.8%")
         col2.metric("Telefonía móvil", "75.06 M", "10.9%")
-        col3.metric("Internet fijo", "86%", "4%")
-        col4.metric("Telefonía fija", "86%", "4%")
-        col5.metric("TV por suscripción", "86%", "4%")
+        col3.metric("Internet fijo", "8.43M", "7.7%")
+        col4.metric("Telefonía fija", "7.55M", "7.86%")
+        col5.metric("TV por suscripción", "6.17M", "1.74%")
         
         col1, col2, = st.columns([4,6])
         with col1:
