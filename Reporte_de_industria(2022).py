@@ -112,7 +112,9 @@ def PColoresEmp(id_empresa):
     elif id_empresa=='901032662':
         return 'rgb(220,20,60)' 
     elif id_empresa=='830029703':
-        return 'rgb(102,204,0)'           
+        return 'rgb(102,204,0)'  
+    elif id_empresa=='Otros':
+        return 'rgb(192,192,192)'          
     else:
         pass            
 def periodoformato(x):
@@ -418,6 +420,7 @@ st.markdown("""<style type="text/css">
       color: #7a44f2;
       font-size:25px;
       padding:10px;
+      text-align:center;
     }
     .titulo:before,
     .titulo:after {
@@ -455,6 +458,13 @@ st.markdown("""<style type="text/css">
         display:inline-block;
         vertical-align:middle;
     }    
+    .css-17m3m1o{text-align:left}
+    .st-b4 {display: inline-flex}
+    .stRadio{text-align:center}
+    ul {
+    list-style-type: square;
+    text-align:left;
+    }
     </style>""", unsafe_allow_html=True)  
 st.markdown("""
 <div class="barra-superior">
@@ -529,24 +539,40 @@ st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
-                                    ['Introducción','Resumen ejecutivo','Dinámica telecomunicaciones','Dinámica postal'])
+                                    ['Introducción','Resumen ejecutivo','Telecomunicaciones','Postal'])
 
 if select_seccion == 'Introducción':
     st.title("Introducción")    
     st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
-    st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se descatan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
+    st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
 if select_seccion =='Resumen ejecutivo':
     st.title("Resumen ejecutivo")
         
-if select_seccion =='Dinámica telecomunicaciones':
-    st.title("Dinámica del sector de telecomunicaciones")
+if select_seccion =='Telecomunicaciones':
+    st.title("Sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el el sector a consultar',['Información general',
     'Servicios móviles','Servicios fijos','Servicios OTT','Servicios de radiodifusión'])
     
     if select_secResumenDinTic == 'Información general':
         st.markdown(r"""<div class="titulo"><h3>Información general</h3></div>""",unsafe_allow_html=True)
-        st.write("")
+        col1, col2, col3,col4,col5 = st.columns(5)
+        with col1:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+        with col2:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+        with col3:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+        with col4:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+        with col5:
+            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+        col1.metric("Internet móvil", "75 M", "5%")
+        col2.metric("Telefonía móvil", "75.06 M", "10.9%")
+        col3.metric("Internet fijo", "86%", "4%")
+        col4.metric("Telefonía fija", "86%", "4%")
+        col5.metric("TV por suscripción", "86%", "4%")
+        
         col1, col2, = st.columns([4,6])
         with col1:
             st.markdown(r"""<div style="text-align: justify">
@@ -591,7 +617,7 @@ Claro aumentó su participación, pasando de 37,7% en
         st.markdown(r"""<div class="titulo"><h3>Servicios móviles</h3></div>""",unsafe_allow_html=True)
         st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
         
-        ServiciosMóviles=st.radio('Servicios',['Telefonía','Internet','Mensajería'],horizontal=True)
+        ServiciosMóviles=st.radio('Servicio',['Telefonía','Internet','Mensajería'],horizontal=True)
             
         st.markdown(r"""<hr>""",unsafe_allow_html=True)    
             
@@ -604,9 +630,12 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
             with col2:                
                 with st.expander("Datos relevantes de Telefonía móvil"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry</li>
+                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry</li>
+                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry</li>
+                    </ul>""",unsafe_allow_html=True)
+
      
             AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['abonados']>0]
             AbonadosTelMovil.insert(0,'periodo',AbonadosTelMovil['anno']+'-T'+AbonadosTelMovil['trimestre'])
@@ -641,8 +670,10 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
-                    EmpTelMovilAbonados=AboAnualTelMovl[AboAnualTelMovl['anno']=='2021'].sort_values(by='abonados',ascending=False)['id_empresa'].to_list()[0:4]
-                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados))&(AboAnualTelMovl['anno'].isin(['2020','2021']))]
+                    EmpTelMovilAbonados=AboAnualTelMovl[AboAnualTelMovl['anno']=='2021'].sort_values(by='abonados',ascending=False)['id_empresa'].to_list()[0:5]
+                    AboAnualTelMovl.loc[AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados)==False,'empresa']='Otros'
+                    AboAnualTelMovl.loc[AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados)==False,'id_empresa']='Otros'
+                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(AboAnualTelMovl,'abonados','Millones',1e6,'Abonados anuales por empresa'),use_container_width=True)
                 if PieAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
@@ -677,8 +708,10 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasTraficoTelmovil:
                     TrafAnualTelMovl=TraficoTelMovil.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    EmpTelMovilTragfico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
-                    TrafAnualTelMovl=TrafAnualTelMovl[(TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTragfico))&(TrafAnualTelMovl['anno'].isin(['2020','2021']))]
+                    EmpTelMovilTrafico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
+                    TrafAnualTelMovl.loc[TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTrafico)==False,'empresa']='Otros'
+                    TrafAnualTelMovl.loc[TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTrafico)==False,'id_empresa']='Otros'                    
+                    TrafAnualTelMovl=TrafAnualTelMovl[(TrafAnualTelMovl['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(TrafAnualTelMovl,'trafico','Miles de Millones de minutos',1e9,'Tráfico anual por empresa'),use_container_width=True)  
             
             if ServiciosTelMovil=='Ingresos':
@@ -732,8 +765,10 @@ Claro aumentó su participación, pasando de 37,7% en
                     IngresosTelMovil3=IngresosTelMovil3[IngresosTelMovil3['modalidad']=='ingresos_totales']                                                                  
                     IngresosTelMovil3Agg=IngresosTelMovil3.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()   
                     EmpTelMovilIngresos=IngresosTelMovil3Agg[IngresosTelMovil3Agg['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-                    IngresosTelMovil3Agg=IngresosTelMovil3Agg[(IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos))&(IngresosTelMovil3Agg['anno'].isin(['2020','2021']))]
-                    st.plotly_chart(PlotlyBarras(IngresosTelMovil3Agg,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
+                    IngresosTelMovil3Agg.loc[IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos)==False,'empresa']='Otros'
+                    IngresosTelMovil3Agg.loc[IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos)==False,'id_empresa']='Otros'                    
+                    IngresosTelMovil3Agg=IngresosTelMovil3Agg[(IngresosTelMovil3Agg['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                    st.plotly_chart(PlotlyBarras(IngresosTelMovil3Agg,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
                     ##
                     IngresosPorAbonadoTelMovil=IngresosPorAbonadoTelMovil[(IngresosPorAbonadoTelMovil['trimestre']=='4')&(IngresosPorAbonadoTelMovil['modalidad']=='TOTAL')]
                     IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil.groupby(['anno','empresa_x','id_empresa']).agg({'ingresos':'sum','abonados':'sum'}).reset_index()
@@ -749,9 +784,9 @@ Claro aumentó su participación, pasando de 37,7% en
                     
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','(COP)',1,'Ingresos/Abonado anual por empresa'),use_container_width=True)  
+                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','Pesos',1,'Ingresos/Abonado anual por empresa'),use_container_width=True)  
                     with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','(COP/Min)',1,'Ingresos/Trafico anual por empresa'),use_container_width=True)  
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','Pesos/Min',1,'Ingresos/Trafico anual por empresa'),use_container_width=True)  
                                                                                                  
         if ServiciosMóviles=='Internet':
             ##Tráfico
@@ -807,7 +842,8 @@ Claro aumentó su participación, pasando de 37,7% en
                 if BarrasAccesosIntmovil:
                     AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
                     EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
-                    AccesosInternetmovilEmp=AccesosInternetmovilEmp[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)]
+                    AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)==False,'empresa']='Otros'
+                    AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)==False,'id_empresa']='Otros'     
                     AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(AccesosInternetmovilEmp,'accesos','Millones',1e6,'Accesos anuales por empresa'),use_container_width=True)
                 if PieAccesosIntmovil:
@@ -838,7 +874,9 @@ Claro aumentó su participación, pasando de 37,7% en
                     TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
                     EmpIntMovilTrafico=TraficoInternetMovilEmp[TraficoInternetMovilEmp['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
-                    TraficoInternetMovilEmp=TraficoInternetMovilEmp[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)]
+                    TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)==False,'empresa']='Otros'
+                    TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)==False,'id_empresa']='Otros'     
+                    TraficoInternetMovilEmp=TraficoInternetMovilEmp.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(TraficoInternetMovilEmp,'trafico','Millones de GB',1e6,'Tráfico anual por empresa'),use_container_width=True)
 
             if ServiciosIntMovil=='Ingresos':
@@ -849,7 +887,9 @@ Claro aumentó su participación, pasando de 37,7% en
                 IngresosInternetmovilEmp=IngresosInternetmovildf.groupby(['anno','modalidad','empresa','id_empresa'])['ingresos'].sum().reset_index() 
                 IngresosInternetmovilEmp=IngresosInternetmovilEmp[(IngresosInternetmovilEmp['anno'].isin(['2020','2021']))&(IngresosInternetmovilEmp['modalidad']=='Total')]
                 EmpIntMovilIngresos=IngresosInternetmovilEmp[IngresosInternetmovilEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-                IngresosInternetmovilEmp=IngresosInternetmovilEmp[IngresosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)]
+                IngresosInternetmovilEmp.loc[IngresosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'empresa']='Otros'
+                IngresosInternetmovilEmp.loc[IngresosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'id_empresa']='Otros'     
+                IngresosInternetmovilEmp=IngresosInternetmovilEmp.groupby(['anno','empresa','id_empresa','modalidad'])['ingresos'].sum().reset_index()
                 ## Limpieza accesos              
                 AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
                 AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))&(AccesosInternetmovildf['id_empresa'].isin(EmpIntMovilIngresos))]
@@ -999,8 +1039,8 @@ Claro aumentó su participación, pasando de 37,7% en
             ##
             AccesosCorpIntFijoNac=AccesosCorpIntFijo.groupby(['periodo'])['CORPORATIVOS'].sum().reset_index()
             AccesosResIntFijoNac=AccesosResIntFijo.groupby(['periodo'])['RESIDENCIALES'].sum().reset_index()
-            AccesosCorpIntFijoEmp=AccesosCorpIntFijo.groupby(['anno','id_empresa','empresa'])['CORPORATIVOS'].sum().reset_index()
-            AccesosResIntFijoEmp=AccesosResIntFijo.groupby(['anno','id_empresa','empresa'])['RESIDENCIALES'].sum().reset_index()
+            AccesosCorpIntFijoEmp=AccesosCorpIntFijo.groupby(['anno','trimestre','id_empresa','empresa'])['CORPORATIVOS'].sum().reset_index()
+            AccesosResIntFijoEmp=AccesosResIntFijo.groupby(['anno','trimestre','id_empresa','empresa'])['RESIDENCIALES'].sum().reset_index()
             ##
             AccesosCorpIntFijoPie=AccesosCorpIntFijo.groupby(['periodo','id_empresa','empresa'])['CORPORATIVOS'].sum().reset_index()
             AccesosCorpIntFijoPie['modalidad']='CORPORATIVO'
@@ -1042,15 +1082,17 @@ Claro aumentó su participación, pasando de 37,7% en
                 AccesosInternetFijoNac2=pd.melt(AccesosInternetFijoNac,id_vars=['periodo'],value_vars=['CORPORATIVOS',
                 'RESIDENCIALES','TOTAL'],var_name='modalidad',value_name='accesos')
                 ##
-                AccesosInternetFijoEmp=AccesosCorpIntFijoEmp.merge(AccesosResIntFijoEmp,left_on=['anno','id_empresa'],right_on=['anno','id_empresa'])
+                AccesosInternetFijoEmp=AccesosCorpIntFijoEmp.merge(AccesosResIntFijoEmp,left_on=['anno','trimestre','id_empresa'],right_on=['anno','trimestre','id_empresa'])
                 AccesosInternetFijoEmp['TOTAL']=AccesosInternetFijoEmp['CORPORATIVOS']+AccesosInternetFijoEmp['RESIDENCIALES']
                 AccesosInternetFijoEmp=AccesosInternetFijoEmp.rename(columns={'empresa_x':'empresa'})
                 AccesosInternetFijoEmp=AccesosInternetFijoEmp.drop(columns=['empresa_y'])
-                AccesosInternetFijoEmp2=pd.melt(AccesosInternetFijoEmp,id_vars=['anno','id_empresa','empresa'],value_vars=['CORPORATIVOS',
+                AccesosInternetFijoEmp2=pd.melt(AccesosInternetFijoEmp,id_vars=['anno','trimestre','id_empresa','empresa'],value_vars=['CORPORATIVOS',
                 'RESIDENCIALES','TOTAL'],var_name='modalidad',value_name='accesos')
-                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['modalidad']=='TOTAL']    
-                EmpIntFijoAccesos=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
-                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['id_empresa'].isin(EmpIntFijoAccesos))&(AccesosInternetFijoEmp2['anno'].isin(['2020','2021']))]
+                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['modalidad']=='TOTAL')&(AccesosInternetFijoEmp2['trimestre']=='4')]    
+                EmpIntFijoAccesos=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:8]
+                AccesosInternetFijoEmp2.loc[AccesosInternetFijoEmp2['id_empresa'].isin(EmpIntFijoAccesos)==False,'empresa']='Otros'
+                AccesosInternetFijoEmp2.loc[AccesosInternetFijoEmp2['id_empresa'].isin(EmpIntFijoAccesos)==False,'id_empresa']='Otros'
+                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                 ##
                 AccesosInternetFijoPie=pd.concat([AccesosCorpIntFijoPie,AccesosResIntFijoPie])
                 AccesosInternetFijoPieAgg=AccesosInternetFijoPie.groupby(['periodo','id_empresa','empresa'])['accesos'].sum().reset_index()
@@ -1075,7 +1117,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     AccesosInternetFijoNac2['periodo_formato']=AccesosInternetFijoNac2['periodo'].apply(periodoformato)
                     st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasAccesosIntFijo:
-                    st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','Millones',1e6,'Accesos anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','',1,'Accesos anuales por empresa'),use_container_width=True)
                 if PieAccesosIntFijo:
                     figPieIntFijo = px.pie(AccesosInternetFijoPieAgg, values='accesos', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2021-T4)')
@@ -1107,7 +1149,9 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)']), use_container_width=True)
                 if BarrasIngresosIntFijo:
                     EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-                    IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos))&(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))]
+                    IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'empresa']='Otros'
+                    IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'id_empresa']='Otros'
+                    IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','(Miles de Millones de COP)',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
  
         if ServiciosFijos == 'Telefonía fija':
@@ -1742,8 +1786,8 @@ Claro aumentó su participación, pasando de 37,7% en
                 figTVPublica.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
                 st.plotly_chart(figTVPublica,use_container_width=True)        
 
-if select_seccion =='Dinámica postal':
-    st.title("Dinámica del sector de telecomunicaciones")
+if select_seccion =='Postal':
+    st.title("Sector Postal")
     st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
     select_DinPos = st.radio('Seleccione el sector de los servicios postales a consultar',['Correo',
     'Mensajería expresa','Giros'],horizontal=True)      
