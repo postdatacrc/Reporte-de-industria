@@ -159,7 +159,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
     fig.add_annotation(
     showarrow=False,
     text=textofuente,
-    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.2)
     return fig
 
 def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofuente):
@@ -210,12 +210,12 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores,titulo,textofuent
     maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3  
     tecnologia=df['CodTec'].unique().tolist()
     for i,elem in enumerate(tecnologia):
-        fig.add_trace(go.Bar(x=df[df['CodTec']==elem]['periodo'],
-        y=df[df['CodTec']==elem][column]/escalamiento,text=df[df['CodTec']=='elem']['CodTec'],marker_color=colores[i],
+        fig.add_trace(go.Scatter(x=df[df['CodTec']==elem]['periodo_formato'],
+        y=df[df['CodTec']==elem][column]/escalamiento,text=df[df['CodTec']=='elem']['CodTec'],line=dict(color=colores[i]),
         name=elem,hovertemplate =
         '<br><b>Tecnología</b>:<br><extra></extra>'+elem+
         '<br><b>Periodo</b>: %{x}<br>'+                         
-        column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
+        column.capitalize()+' '+unidad+': %{y:.2f}<br>',mode='lines+markers',marker=dict(size=7)))
     fig.update_layout(barmode='group')    
     fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
     fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
@@ -386,7 +386,7 @@ def PlotlyBarrasEmp(df,column,unidad,escalamiento,titulo,colores):
         fig.add_trace(go.Bar(y=df[df['empresa']==empresa]['anno'],x=df[df['empresa']==empresa][column]/escalamiento
                              ,orientation='h',marker_color=colores[i],
                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
-        column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
+        column.capitalize()+' '+unidad+': %{x:.3f}<br>'))
     fig.update_layout(barmode='group')
     fig.update_yaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
@@ -595,7 +595,7 @@ def TVabierta():
     return TVabierta
 TVabierta=TVabierta()
     
-st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria CRC </b> """,unsafe_allow_html=True)
+st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria </b> """,unsafe_allow_html=True)
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
@@ -635,7 +635,7 @@ if select_seccion =='Telecomunicaciones':
         col4.metric("Internet fijo", "8.43M", "7.7%")
         col5.metric("Telefonía fija", "7.55M", "7.86%")
         col6.metric("TV por suscripción", "6.17M", "1.74%")
-        
+        st.markdown("<p style='font-size:10px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2020 </p>",unsafe_allow_html=True)
         col1, col2, = st.columns([4,6])
         with col1:
             st.markdown(r"""<div style="text-align: justify">
@@ -680,7 +680,7 @@ Claro aumentó su participación, pasando de 37,7% en
         st.markdown(r"""<div class="titulo"><h3>Servicios móviles</h3></div>""",unsafe_allow_html=True)
         st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
         
-        ServiciosMóviles=st.radio('',['Telefonía','Internet','Mensajería'],horizontal=True)
+        ServiciosMóviles=st.radio('',['Telefonía','Mensajería','Internet'],horizontal=True)
             
         st.markdown(r"""<hr>""",unsafe_allow_html=True)    
             
@@ -694,9 +694,9 @@ Claro aumentó su participación, pasando de 37,7% en
             with col2:                
                 with st.expander("Datos relevantes de Telefonía móvil"):
                     st.markdown(r"""<ul>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry</li>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry</li>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry</li>
+                    <li>En abonados, se observó un incremento de más de 5 millones entre el primer y cuarto trimestre de 2021, para un total de 75.06 millones.</li>
+                    <li>En tráfico, en el 2021 se obtuvo un valor de 161.7 miles de millones de minutos, lo que corresponde a un decrecimiento del 7.7% respecto al valor de 2020.</li>
+                    <li>En 2021, el servicio de telefonía móvil generó ingresos por un valor de 2,446.58 miles de millones de pesos, lo que equivale a un reducción de 296.21 mil millones de pesos respecto a 2020.</li>
                     </ul>""",unsafe_allow_html=True)
 
      
@@ -715,9 +715,9 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoAbonadosTelmovil=st.button('Modalidad',key='1')
+                    LineaTiempoAbonadosTelmovil=st.button('Evolución temporal',key='1')
                 with col2:
-                    BarrasAbonadosTelmovil=st.button('Operadores',key='2')
+                    BarrasAbonadosTelmovil=st.button('Información por operadores',key='2')
                 with col3:
                     PieAbonadosTelmovil=st.button('Participaciones',key='3')
 
@@ -729,7 +729,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     AboTrimTelMovilB['modalidad']='TOTAL'
                     AboTrimTelMovilTOTAL=pd.concat([AboTrimTelMovilA,AboTrimTelMovilB]).sort_values(by=['periodo'])
                     AboTrimTelMovilTOTAL['periodo_formato']=AboTrimTelMovilTOTAL['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovilTOTAL,'abonados','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Abonados Telefonía móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovilTOTAL,'abonados','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Abonados Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
@@ -755,9 +755,9 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoTraficoTelmovil=st.button('Modalidad')
+                    LineaTiempoTraficoTelmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasTraficoTelmovil=st.button('Operadores')
+                    BarrasTraficoTelmovil=st.button('Información por operadores')
                     
                 if LineaTiempoTraficoTelmovil:    
                     TraficoTelMovil=TraficoTelMovil.rename(columns={'tipo_trafico':'modalidad'})
@@ -768,7 +768,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     TrafTrimTelMovilB['modalidad']='TOTAL'
                     TrafTrimTelMovilTOTAL=pd.concat([TrafTrimTelMovilA,TrafTrimTelMovilB]).sort_values(by=['periodo'])
                     TrafTrimTelMovilTOTAL['periodo_formato']=TrafTrimTelMovilTOTAL['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Telefonía móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoTelmovil:
                     TrafAnualTelMovl=TraficoTelMovil.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     EmpTelMovilTrafico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:5]
@@ -781,9 +781,9 @@ Claro aumentó su participación, pasando de 37,7% en
                     
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoIngresosTelmovil=st.button('Modalidad')
+                    LineaTiempoIngresosTelmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosTelmovil=st.button('Operadores')
+                    BarrasIngresosTelmovil=st.button('Información por operadores')
                 
                 IngresosTelMovil=IngresosTelMovil.astype({'ingresos_totales':'int64','ingresos_prepago':'int64','ingresos_pospago':'int64'})
                 IngresosTelMovil2=pd.melt(IngresosTelMovil,id_vars=['periodo','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
@@ -815,7 +815,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
 
                 if LineaTiempoIngresosTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
                         st.plotly_chart(PlotlyIngresosPorAcceso(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por abonado',''), use_container_width=True)
@@ -881,27 +881,31 @@ Claro aumentó su participación, pasando de 37,7% en
        
             with col2:             
                 with st.expander("Datos relevantes de Internet móvil"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Entre el cuarto trimestre de 2020 y 2021, los accesos de Internet móvil se incrementaron en más de 5.4 millones, alcanzando 37.96 millones al cierre de 2021</li>
+                    <li>El tráfico alcanzó un valor de 1895 millones de GB, lo que corresponde a un crecimiento de 84.8% frente a 2020.</li>     
+                    <li>Los ingresos ascendieron a 7962.47 miles de millones de pesos, equivalente a un crecimiento de 6.4% frente al año anterior.</li>        
+                    </ul>""",unsafe_allow_html=True)
             
             
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
+            st.markdown("""<p style="font-size:12px"><b>Nota:</b>Los servicios de Internet móvil por demanda corresponden a aquellos que se obtienen sin que medie la contratación de un plan para tal fin, mientras que los servicios de Internet móvil por cargo fijo se dan a través de la contratación de un plan que se paga de forma periódica.</p>""",unsafe_allow_html=True)
+
                                         
             if ServiciosIntMovil=='Accesos':  
             
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoAccesosIntmovil=st.button('Modalidad')
+                    LineaTiempoAccesosIntmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasAccesosIntmovil=st.button('Operadores')
+                    BarrasAccesosIntmovil=st.button('Información por operadores')
                 with col3:
                     PieAccesosIntmovil=st.button('Participaciones')    
                  
                 if LineaTiempoAccesosIntmovil:
                     AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
                     AccesosInternetmovilNac['periodo_formato']=AccesosInternetmovilNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAccesosIntmovil:
                     AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
                     EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
@@ -926,13 +930,13 @@ Claro aumentó su participación, pasando de 37,7% en
                 #TraficoInternetMovildf['trafico']=TraficoInternetMovildf['trafico']/1000                                                                        
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoTraficoIntmovil=st.button('Modalidad')
+                    LineaTiempoTraficoIntmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasTraficoIntmovil=st.button('Operadores')
+                    BarrasTraficoIntmovil=st.button('Información por operadores')
                 if LineaTiempoTraficoIntmovil:             
                     TraficoInternetMovilNac=TraficoInternetMovildf.groupby(['periodo','modalidad'])['trafico'].sum().reset_index()
                     TraficoInternetMovilNac['periodo_formato']=TraficoInternetMovilNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Internet móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Internet móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoIntmovil:
                     TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
@@ -995,13 +999,13 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoIngresosIntmovil=st.button('Modalidad')
+                    LineaTiempoIngresosIntmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosIntmovil=st.button('Operadores')            
+                    BarrasIngresosIntmovil=st.button('Información por operadores')            
                 
                 if LineaTiempoIngresosIntmovil:
                                                                                                     
-                    st.plotly_chart(Plotlylineatiempo(IngresosInternetmovilNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetmovilNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
                         st.plotly_chart(PlotlyIngresosPorAcceso(IngPorAccesosIntMovil,'Ingresos/Acceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso',''), use_container_width=True)
@@ -1043,7 +1047,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
                     TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico (SMS)'].sum().reset_index()
                     TraficoSMSTelMovilAgg['periodo_formato']=TraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoSMSTelmovil:
                     TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
                     TraficoSMSTelMovilEmpresa=TraficoSMSTelMovil.groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index() 
@@ -1081,8 +1085,8 @@ Claro aumentó su participación, pasando de 37,7% en
 
                 ## 
                 if LineaTiempoIngresosSMSTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosSMSTelMovilAgg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Mensajería móvil por periodo',''), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoSMSTelMovilAgg,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosSMSTelMovilAgg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoSMSTelMovilAgg,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosSMSTelmovil:                    
                     st.plotly_chart(PlotlyBarras(IngresosSMSTelMovilEmpresa,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
                     st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico y por empresa'),use_container_width=True)  
@@ -1101,9 +1105,10 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de Internet fijo"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>En 2021 se alcanzaron 8.43 millones de accesos, de los cuales el 91% pertenecen al segemento residencial. Esto corresponde a 600000 accesos más que en 2020.</li>
+                    <li>En 2021 los PRST alcanzaron 6177.1 miles millones de pesos, que representa un crecimiento de 14.6% respecto al año anterior</li>
+                    </ul>""",unsafe_allow_html=True)
 
             
             AccesosCorpIntFijo=AccesosCorpIntFijo[AccesosCorpIntFijo['accesos']>0]
@@ -1145,9 +1150,9 @@ Claro aumentó su participación, pasando de 37,7% en
             if ServiciosIntFijo=='Accesos':
                 col1,col2,col3,col4=st.columns(4)
                 with col1:
-                    LineaTiempoAccesosIntFijo=st.button('Modalidad')
+                    LineaTiempoAccesosIntFijo=st.button('Evolución temporal')
                 with col2:
-                    BarrasAccesosIntFijo=st.button('Operadores')
+                    BarrasAccesosIntFijo=st.button('Información por operadores')
                 with col3:
                     PieAccesosIntFijo=st.button('Participaciones')
                 with col4:
@@ -1188,10 +1193,11 @@ Claro aumentó su participación, pasando de 37,7% en
                 AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([2,101]),'xDSL',AccesosInternetFijoTec['CodTec'])
                 AccesosInternetFijoTec['CodTec']=np.where(AccesosInternetFijoTec.id_tecnologia.isin([3,10,31,115]),'Otras',AccesosInternetFijoTec['CodTec'])
                 AccesosInternetFijoTecAgg=AccesosInternetFijoTec.groupby(['periodo','CodTec'])['accesos'].sum().reset_index()
+                AccesosInternetFijoTecAgg=AccesosInternetFijoTecAgg[AccesosInternetFijoTecAgg['CodTec']!='Otras']
                 
                 if LineaTiempoAccesosIntFijo:
                     AccesosInternetFijoNac2['periodo_formato']=AccesosInternetFijoNac2['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet fijo por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet fijo por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAccesosIntFijo:
                     st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','',1,'Accesos anuales por empresa'),use_container_width=True)
                 if PieAccesosIntFijo:
@@ -1201,16 +1207,18 @@ Claro aumentó su participación, pasando de 37,7% en
                     figPieIntFijo.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieIntFijo.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieIntFijo)
+                    st.markdown("""<center><p style="font-size:12px"><b>Nota:</b>Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
+                    
                 if TecnologiaAccesosIntFijo:
                     AccesosInternetFijoTecAgg['periodo_formato']=AccesosInternetFijoTecAgg['periodo'].apply(periodoformato)
-                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160, 160, 160)','rgb(51, 153, 255)','rgb(153,51,255)'],'Accesos Internet fijo por tecnología y periodo',''), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Accesos Internet fijo por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosIntFijo=='Ingresos':
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosIntFijo=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosIntFijo=st.button('Operadores')
+                    BarrasIngresosIntFijo=st.button('Información por operadores')
 
                 ## Ingresos/Accceso total
                 AccesosInternetFijoNac=AccesosCorpIntFijoNac.merge(AccesosResIntFijoNac,left_on=['periodo'],right_on=['periodo'])
@@ -1221,8 +1229,8 @@ Claro aumentó su participación, pasando de 37,7% en
                 if LineaTiempoIngresosIntFijo: 
                     IngresosInternetFijoNac['periodo_formato']=IngresosInternetFijoNac['periodo'].apply(periodoformato)
                     IngresosPorAccesoIntFijo['periodo_formato']=IngresosPorAccesoIntFijo['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet fijo por periodo',''), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet fijo por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosIntFijo:
                     EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'empresa']='Otros'
@@ -1332,15 +1340,15 @@ Claro aumentó su participación, pasando de 37,7% en
             if ServiciosTelFija=='Líneas':
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoLineasTelFija=st.button('Modalidad')
+                    LineaTiempoLineasTelFija=st.button('Evolución temporal')
                 with col2:
-                    BarrasLineasTelFija=st.button('Operadores')
+                    BarrasLineasTelFija=st.button('Información por operadores')
                 with col3:
                     PieLineasTelFija=st.button('Participaciones')            
                 
                 if LineaTiempoLineasTelFija:
                     LineasTelefoníaLocalNac['periodo_formato']=LineasTelefoníaLocalNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(LineasTelefoníaLocalNac,'lineas','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Líneas Telefonía fija por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(LineasTelefoníaLocalNac,'lineas','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Líneas Telefonía fija por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasLineasTelFija:
                     st.plotly_chart(PlotlyBarras(LineasTelefoníaLocalEmp,'lineas','',1,'Líneas anuales por empresa'),use_container_width=True)
                 if PieLineasTelFija:
@@ -1354,13 +1362,13 @@ Claro aumentó su participación, pasando de 37,7% en
             if ServiciosTelFija=='Tráfico':
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoTraficoTelFija=st.button('Modalidad')
+                    LineaTiempoTraficoTelFija=st.button('Evolución temporal')
                 with col2:
-                    BarrasTraficoTelFija=st.button('Operadores')   
+                    BarrasTraficoTelFija=st.button('Información por operadores')   
                     
                 if LineaTiempoTraficoTelFija:
                     TraficoTelefoniaFijaNac['periodo_formato']=TraficoTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico telefonía fija por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico telefonía fija por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoTelFija:
                     st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTL,'trafico','Millones de minutos',1e6,'Tráfico anual de Telefonía local por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
@@ -1372,13 +1380,13 @@ Claro aumentó su participación, pasando de 37,7% en
             if ServiciosTelFija=='Ingresos':
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoIngresosTelFija=st.button('Modalidad')
+                    LineaTiempoIngresosTelFija=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosTelFija=st.button('Operadores')   
+                    BarrasIngresosTelFija=st.button('Información por operadores')   
                 
                 if LineaTiempoIngresosTelFija:
                     IngresosTelefoniaFijaNac['periodo_formato']=IngresosTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía fija por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía fija por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosTelFija:
                     st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTL,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía local por empresa'),use_container_width=True)
                     col1,col2=st.columns(2)
@@ -1390,9 +1398,9 @@ Claro aumentó su participación, pasando de 37,7% en
             if ServiciosTelFija=='Ingresos por tráfico':
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoIngresosportraficoTelFija=st.button('Modalidad')
+                    LineaTiempoIngresosportraficoTelFija=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosportraficoTelFija=st.button('Operadores') 
+                    BarrasIngresosportraficoTelFija=st.button('Información por operadores') 
                 
                 if LineaTiempoIngresosportraficoTelFija:
                     IngresosPorTraficoTelFijo['periodo_formato']=IngresosPorTraficoTelFijo['periodo'].apply(periodoformato)                    
@@ -1408,13 +1416,13 @@ Claro aumentó su participación, pasando de 37,7% en
             if ServiciosTelFija=='Ingresos por líneas':
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoIngresosporlineaTelFija=st.button('Modalidad')
+                    LineaTiempoIngresosporlineaTelFija=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosporlineaTelFija=st.button('Operadores')  
+                    BarrasIngresosporlineaTelFija=st.button('Información por operadores')  
 
                 if LineaTiempoIngresosporlineaTelFija:
                     IngresosPorLineaTelLocal['periodo_formato']=IngresosPorLineaTelLocal['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por líneas',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por líneas','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosporlineaTelFija:
                     st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'Ingresos por líneas de Telefonía local por empresa'),use_container_width=True)
 
@@ -1425,9 +1433,10 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de TV por suscripción"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Los ingresos en 2021 fueron de 3402.9 miles de millones de pesos, 137.9 mil millones más que el año anterior</li>    
+                    <li>En materia de suscriptores, al cuarto trimestre de 2021 superó 6.17 millones, 106 mil más que en el mismo periodo de 2020</li>    
+                    </ul>""",unsafe_allow_html=True)
 
             ##Suscriptores
             SuscriptoresTVSusNac=SuscriptoresTVSus.groupby(['periodo'])['suscriptores'].sum().reset_index()
@@ -1486,7 +1495,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col1:
                     LineaTiempoSuscriptoresTVSus=st.button('Evolución temporal')
                 with col2:
-                    BarrasSuscriptoresTVSus=st.button('Operadores')
+                    BarrasSuscriptoresTVSus=st.button('Información por operadores')
                 with col3:
                     PieSuscriptoresTVSus=st.button('Participaciones')
                 with col4:
@@ -1494,7 +1503,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if LineaTiempoSuscriptoresTVSus:
                     SuscriptoresTVSusNac['periodo_formato']=SuscriptoresTVSusNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Suscriptores TV por suscripción por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Suscriptores TV por suscripción por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
             
                 if BarrasSuscriptoresTVSus:
                     st.plotly_chart(PlotlyBarras(SuscriptoresTVSusEmp,'suscriptores','',1,'Suscriptores anuales por empresa'),use_container_width=True)
@@ -1505,12 +1514,13 @@ Claro aumentó su participación, pasando de 37,7% en
                     figPieTVSus.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTVSus.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTVSus.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
-                    st.plotly_chart(figPieTVSus)   
+                    st.plotly_chart(figPieTVSus,use_container_width=True)   
+                    st.markdown("""<center><p style="font-size:12px"><b>Nota:</b>Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
 
                 if TecnologiaSuscriptoresTVSus:
                     SuscriptoresTVSusTec=SuscriptoresTVSusTec[SuscriptoresTVSusTec['CodTec']!='Otro']
                     SuscriptoresTVSusTec['periodo_formato']=SuscriptoresTVSusTec['periodo'].apply(periodoformato)
-                    st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Suscriptores TV por suscripción por tecnología y periodo',''), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Suscriptores TV por suscripción por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosTVporSus=='Ingresos':
 
@@ -1518,15 +1528,15 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col1:
                     LineaTiempoIngresosTVSus=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosTVSus=st.button('Operadores')
+                    BarrasIngresosTVSus=st.button('Información por operadores')
                 # with col3:
                     # ConceptoIngresosTVSus=st.button('Concepto')
                 
                 if LineaTiempoIngresosTVSus:
                     IngresosTVSusNac['periodo_formato']=IngresosTVSusNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV por suscripción por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV por suscripción por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                     IngresosPorSuscriptoresTV['periodo_formato']=IngresosPorSuscriptoresTV['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por suscriptor',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por suscriptor','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
                 if BarrasIngresosTVSus:
                     st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
@@ -1576,7 +1586,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 
                 if DimensionTVCom=='Evolución temporal':  
                     AsociadosTVComunitariaNac['periodo_formato']=AsociadosTVComunitariaNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Asociados TV comunitaria por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Asociados TV comunitaria por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if DimensionTVCom=='Operadores':
                     st.plotly_chart(PlotlyBarras(AsociadosTVComunitariaEmp,'asociados','',1,'Asociados anuales por empresa'),use_container_width=True)
                 if DimensionTVCom=='Departamentos':
@@ -1585,19 +1595,20 @@ Claro aumentó su participación, pasando de 37,7% en
                     with col2:
                         OpcionesDPTO=st.multiselect('Seleccione los departamentos para visualizar la evolución del número de asociados',DepartamentosAsoTVCom)
                         AsociadosTVComunitariaDep2=AsociadosTVComunitariaDep[AsociadosTVComunitariaDep['departamento'].isin(OpcionesDPTO)]
-                    st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados','','Asociados por departamento por periodo',''), use_container_width=True)   
+                    st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados','','Asociados por departamento por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)   
 
             if ServiciosTVCom=='Ingresos':
 
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoIngresosTVCom=st.button('Modalidad')
+                    LineaTiempoIngresosTVCom=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosTVCom=st.button('Operadores')
+                    BarrasIngresosTVCom=st.button('Información por operadores')
                 
                 if LineaTiempoIngresosTVCom:
                     IngresosTVComunitariaIngNac['periodo_formato']=IngresosTVComunitariaIngNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV comunitaria por periodo',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV comunitaria por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.markdown("<b>Nota</b>: Los ingresos operacionales corresponden al total de los ingresos por concepto de la prestación del servicio de televisión, en referencia, por parte del proveedor en el periodo de reporte. No incluye ingresos por pauta publicitaria ni los que se producen por otros conceptos no operacionales, tales como ingresos financieros, rendimientos de inversiones o utilidades en venta de activos fijos, entre otros.",unsafe_allow_html=True)
                 if BarrasIngresosTVCom:
                     st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
 
@@ -1632,7 +1643,7 @@ Claro aumentó su participación, pasando de 37,7% en
         OTTMotivos['penetracion']=OTTMotivos['penetracion']*100
         reshape_motivos={'Es muy caro.':'Servicio muy caro','No lo estaba utilizando.':'No lo utilizaba',
                         'Estaba obligado a pagar por muchos canales que luego no miraba realmente.':'Obligado a pagar<br>canales que no<br>miraba',
-                        'Puedo ver los mismos contenidos en internet y gratis.':'Mismo contenigo gratis<br>en internet',
+                        'Puedo ver los mismos contenidos en internet y gratis.':'Mismo contenido gratis<br>en internet',
                         'El servicio al cliente es muy malo.':'Pésimo servicio al cliente'}
         OTTMotivos['motivos']=OTTMotivos['motivos'].replace(reshape_motivos)
         
@@ -1648,7 +1659,7 @@ Claro aumentó su participación, pasando de 37,7% en
             figModeloOTT.update_layout(barmode='group')
             figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
             zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-            figModeloOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
+            figModeloOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje (%)', row=1, col=1)
             figModeloOTT.update_layout(height=550,legend_title=None)
             figModeloOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
             title={
@@ -1665,7 +1676,7 @@ Claro aumentó su participación, pasando de 37,7% en
         if MotivosOTT:
             figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
             figMotivosOTT.update_layout(barmode='group')
-            figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text='Porcentaje',row=1, col=1,
+            figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text='Porcentaje (%)',row=1, col=1,
             zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
             figMotivosOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=None, row=1, col=1)
             figMotivosOTT.update_layout(height=550,legend_title=None)
@@ -1684,7 +1695,7 @@ Claro aumentó su participación, pasando de 37,7% en
     if select_secResumenDinTic == 'Servicios de radiodifusión':                   
         st.markdown(r"""<div class="titulo"><h3>Servicios de radiodifusión</h3></div>""",unsafe_allow_html=True)
         
-        ServiciosRadiodifusion=st.radio('Servicios',['TV abierta','Radio'],horizontal=True)
+        ServiciosRadiodifusion=st.radio('',['TV abierta','Radio'],horizontal=True)
         
         if ServiciosRadiodifusion=='Radio':
 
@@ -1821,9 +1832,9 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown('Escoja la dimensión del análisis')  
                 col1,col2=st.columns(2)
                 with col1:
-                    ModalidadTVabierta=st.button('Modalidad')
+                    ModalidadTVabierta=st.button('Evolución temporal')
                 with col2:
-                    OperadoresTVabierta=st.button('Operadores')
+                    OperadoresTVabierta=st.button('Información por operadores')
 
                 if ModalidadTVabierta:
                     figTVabiertaMod=make_subplots(rows=1,cols=2)
@@ -1851,7 +1862,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     'x':0.5,
                     'xanchor': 'center',
                     'yanchor': 'top'})        
-                    figTVabiertaMod.update_layout(legend=dict(orientation="h",y=1.12,x=0.1,font_size=12),showlegend=True)
+                    figTVabiertaMod.update_layout(legend=dict(orientation="h",y=1.12,x=0.2,font_size=12),showlegend=True)
                     figTVabiertaMod.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
                     figTVabiertaMod.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
                     st.plotly_chart(figTVabiertaMod,use_container_width=True)
@@ -1915,10 +1926,13 @@ if select_seccion =='Postal':
         col2.metric("Correo", "85.8 M", "-18.3%")
         col3.metric("Mensajería expresa", "281.5 M", "0.6%")
         col4.metric("Giros", "127.7M", "-5.3%")      
+        st.markdown("<p style='font-size:10px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2020 </p>",unsafe_allow_html=True)
+
 
     if select_secResumenPos=='Servicios postales':
         st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
-        select_DinPos = st.radio('Seleccione el sector de los servicios postales a consultar',['Correo',
+        st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
+        select_DinPos = st.radio('',['Correo',
         'Mensajería expresa','Giros'],horizontal=True)      
         st.markdown(r"""<hr>""",unsafe_allow_html=True)
 
@@ -1975,9 +1989,9 @@ if select_seccion =='Postal':
             if ServiciosCorreo=='Número de envíos':
                 col1,col2=st.columns(2)
                 with col1:
-                    LineaTiempoEnviosMenExpresa=st.button('Modalidad')
+                    LineaTiempoEnviosMenExpresa=st.button('Evolución temporal')
                 with col2:
-                    BarrasEnviosMenExpresa=st.button('Operadores')
+                    BarrasEnviosMenExpresa=st.button('Información por operadores')
                 
                 if LineaTiempoEnviosMenExpresa:
                     st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
@@ -1988,9 +2002,9 @@ if select_seccion =='Postal':
             if ServiciosCorreo=='Ingresos':
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoIngresosMenExpresa=st.button('Modalidad')
+                    LineaTiempoIngresosMenExpresa=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosMenExpresa=st.button('Operadores')  
+                    BarrasIngresosMenExpresa=st.button('Información por operadores')  
                 with col3:
                     PieIngresosMenExpresa=st.button('Participaciones')
                 
@@ -2061,9 +2075,9 @@ if select_seccion =='Postal':
                 st.markdown('')
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoIngresosGiros=st.button('Modalidad')
+                    LineaTiempoIngresosGiros=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosGiros=st.button('Operadores')  
+                    BarrasIngresosGiros=st.button('Información por operadores')  
                 with col3:
                     PieIngresosGiros=st.button('Participaciones')
                     
@@ -2076,7 +2090,7 @@ if select_seccion =='Postal':
                 if BarrasIngresosGiros:
                     st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
                     IngresosPorValorGiroEmp['periodo_formato']=IngresosPorValorGiroEmp['periodo'].apply(periodoformato)
-                    st.plotly_chart(PlotlylineatiempoEmp(IngresosPorValorGiroEmp,'Tasa media de comisión','Porcentaje',['rgb(255,213,30)','rgb(153,255,51)','rgb(255,0,127)','rgb(0,0,255)','rgb(0,102,204)'],'Tasa media de comisión de ámbito nacional',''), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoEmp(IngresosPorValorGiroEmp,'Tasa media de comisión','Porcentaje',['rgb(255,213,30)','rgb(153,255,51)','rgb(255,0,127)','rgb(0,0,255)','rgb(0,102,204)'],'Tasa media de comisión de ámbito nacional','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 
                 if PieIngresosGiros:
                     figPieGirIng = px.pie(IngresosGirosPie, values='Ingresos', names='empresa', color='empresa',
@@ -2100,9 +2114,9 @@ if select_seccion =='Postal':
                 st.markdown('')
                 col1,col2,col3=st.columns(3)
                 with col1:
-                    LineaTiempoNGiros=st.button('Modalidad')
+                    LineaTiempoNGiros=st.button('Evolución temporal')
                 with col2:
-                    BarrasNGiros=st.button('Operadores')  
+                    BarrasNGiros=st.button('Información por operadores')  
                 with col3:
                     PieNGiros=st.button('Participaciones')                    
                     
