@@ -1144,7 +1144,7 @@ Claro aumentó su participación, pasando de 37,7% en
             IngresosInternetFijoNacProm=IngresosInternetFijo.groupby(['periodo'])['ingresos'].mean().reset_index()
             IngresosInternetFijoEmp=IngresosInternetFijo.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
             
-            ServiciosIntFijo=st.selectbox('Escoja el servicio de Internet fijo',['Accesos','Ingresos'])
+            ServiciosIntFijo=st.selectbox('Escoja el servicio de Internet fijo',['Accesos','Ingresos','Velocidades'])
             st.markdown('Escoja la dimensión del análisis')
             
             if ServiciosIntFijo=='Accesos':
@@ -1237,6 +1237,27 @@ Claro aumentó su participación, pasando de 37,7% en
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'id_empresa']='Otros'
                     IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
+
+            if ServiciosIntFijo=='Velocidades':
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoVelIntFijo=st.button('Evolución temporal')
+                with col2:
+                    TecnologíaIntFijo=st.button('Tecnología')
+                        
+                VelIntFijo_Tec=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/Vel_IntFijoTec.csv' ,delimiter=';')            
+                VelIntFijo_Mod=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/Vel_IntFijoMod.csv' ,delimiter=';')            
+
+                if TecnologíaIntFijo:
+                    VelIntFijo_Tec['periodo_formato']=VelIntFijo_Tec['periodo'].apply(periodoformato)
+                    VelIntFijo_Tec=VelIntFijo_Tec.rename(columns={'codtec':'CodTec'})
+                    st.plotly_chart(PlotlylineatiempoTec(VelIntFijo_Tec,'Velocidad descarga promedio','Mbps',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160,160,160)','rgb(51, 153, 255)','rgb(153,51,255)'],'Velocidad promedio de descarga de Internet fijo por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                
+                if LineaTiempoVelIntFijo:
+                    VelIntFijo_Mod['periodo_formato']=VelIntFijo_Mod['periodo'].apply(periodoformato)                    
+                    st.plotly_chart(Plotlylineatiempo(VelIntFijo_Mod,'Velocidad descarga promedio','Mbps',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Velocidad promedio de descarga de Internet fijo por modalidad y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+
+                    
                                         
         if ServiciosFijos == 'Telefonía fija':
 
@@ -1454,7 +1475,8 @@ Claro aumentó su participación, pasando de 37,7% en
             SuscriptoresTVSusPie.loc[SuscriptoresTVSusPie['participacion']<=1,'empresa']='Otros'
             SuscriptoresTVSusPie['empresa']=SuscriptoresTVSusPie['empresa'].replace(nombresComerciales) 
             #
-            SuscriptoresTVSusTec=SuscriptoresTVSus[SuscriptoresTVSus['anno']=='2021'].groupby(['periodo','id_tecnologia','tecnologia'])['suscriptores'].sum().reset_index()
+            SuscriptoresTVSus['tecnologia']=SuscriptoresTVSus['tecnologia'].replace({'IPTV por Fibra':'IPTV'})
+            SuscriptoresTVSusTec=SuscriptoresTVSus[SuscriptoresTVSus['anno']=='2021'].groupby(['periodo','tecnologia'])['suscriptores'].sum().reset_index()
             SuscriptoresTVSusTec=SuscriptoresTVSusTec.rename(columns={'tecnologia':'CodTec'})
             ##Ingresos
             IngresosTVSus['concepto']=IngresosTVSus['concepto'].replace({'Cargo fijo plan básico de televisión por suscripción':'Cargo fijo plan básico',
