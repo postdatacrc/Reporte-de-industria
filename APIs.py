@@ -55,6 +55,8 @@ def ReadApiTelMovilIngresos():
     return VOZ_ING
 IngresosTelMovil=ReadApiTelMovilIngresos()
 
+########################################################### Mensajería Móvil
+
 ## TraficoSMS
 def ReadApiTelMovilTraficoSMS():
     resourceid = '8a0fcc94-a241-47ce-8245-569e54a22fd4'
@@ -87,6 +89,39 @@ def ReadApiTelMovilIngresosSMS():
     VOZ_TRAF = VOZ_TRAF.rename(columns={'sum_ingresos':'ingresos'})
     return VOZ_TRAF
 IngresosSMSTelMovil=ReadApiTelMovilIngresosSMS()
+
+def ReadApiTelMovilTraficoCodigosCortos():
+    resourceid = '7c2910ca-29d4-4ee3-99ae-4fc2f09eeb86'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + '2018,2019,2020,2021' + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+             '&group_by=anno,trimestre,id_empresa,empresa'\
+             '&sum[]=trafico_terminado&sum[]=trafico_originado' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
+    VOZ_TRAF.sum_trafico_terminado = VOZ_TRAF.sum_trafico_terminado.astype('int64')
+    VOZ_TRAF.sum_trafico_originado = VOZ_TRAF.sum_trafico_originado.astype('int64')
+    VOZ_TRAF = VOZ_TRAF.rename(columns={'sum_trafico_terminado':'trafico terminado','sum_trafico_originado':'trafico originado'})
+    VOZ_TRAF['periodo']=VOZ_TRAF['anno']+'-T'+VOZ_TRAF['trimestre']
+    return VOZ_TRAF
+TraficoSMSCodigosCortos=ReadApiTelMovilTraficoCodigosCortos()
+
+def ReadApiTelMovilIngresosCodigosCortos():
+    resourceid = '2c9bba15-a735-41c0-9068-7bb8d280ee99'
+    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             '&filters[anno]=' + '2018,2019,2020,2021' + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+             '&group_by=anno,trimestre,id_empresa,empresa'\
+             '&sum[]=ingresos_sms' 
+    response_base = urlopen(consulta + '&limit=10000000') 
+    json_base = json.loads(response_base.read())
+    VOZ_ING = pd.DataFrame(json_base['result']['records'])
+    VOZ_ING.sum_ingresos_sms = VOZ_ING.sum_ingresos_sms.astype('int64')
+    VOZ_ING = VOZ_ING.rename(columns={'sum_ingresos_sms':'ingresos'})
+    VOZ_ING['periodo']=VOZ_ING['anno']+'-T'+VOZ_ING['trimestre']
+    return VOZ_ING
+IngresosSMSCodigosCortos=ReadApiTelMovilIngresosCodigosCortos()
 
 ########################################################### Internet móvil
 
