@@ -131,7 +131,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
             mode='lines+markers',name=elem,marker=dict(size=7),hovertemplate =
             '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
             '<br><b>Periodo</b>: %{x}<br>'+                         
-            column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
+            column.capitalize()+'-'+unidad+': %{y:.3f}<br>'))
         fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
@@ -549,9 +549,9 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 ## Telefonía móvil
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
-    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
-    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil
-AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil = APISTelMovil()
+    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos
+    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos
+AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
@@ -1034,6 +1034,33 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
             
             ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
+
+            TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
+            TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico (SMS)'].sum().reset_index()
+            TraficoSMSCodigosCortosAgg=TraficoSMSCodigosCortos.groupby(['periodo']).agg({'trafico terminado':'sum','trafico originado':'sum'}).reset_index()
+            TraficoSMSCodigosCortosAgg['trafico']=TraficoSMSCodigosCortosAgg['trafico terminado']+TraficoSMSCodigosCortosAgg['trafico originado']
+            TraficoSMSCodigosCortosAgg=TraficoSMSCodigosCortosAgg.drop(columns=['trafico terminado','trafico originado'],axis=1)
+            TraficoMensajeriaMovil=TraficoSMSTelMovilAgg.merge(TraficoSMSCodigosCortosAgg,left_on=['periodo'],right_on=['periodo'])
+            TraficoMensajeriaMovil2=pd.melt(TraficoMensajeriaMovil,id_vars=['periodo'],value_vars=['tráfico (SMS)',
+                            'trafico'],var_name='modalidad',value_name='tráfico')
+            TraficoMensajeriaMovil2['modalidad']=TraficoMensajeriaMovil2['modalidad'].replace({'tráfico (SMS)':'SMS intercambiados entre usuarios','trafico':'Códigos cortos'})                
+            TraficoMensajeriaMovil2['periodo_formato']=TraficoMensajeriaMovil2['periodo'].apply(periodoformato)
+            TraficoSMSTelMovilAgg['periodo_formato']=TraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
+            #        
+            TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
+            TraficoSMSTelMovilEmpresa=TraficoSMSTelMovil.groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index() 
+            EmpMenMovilTraficoSMS=TraficoSMSTelMovilEmpresa[TraficoSMSTelMovilEmpresa['anno']=='2021'].sort_values(by='tráfico (SMS)',ascending=False)['id_empresa'].to_list()[0:4]
+            TraficoSMSTelMovilEmpresa.loc[TraficoSMSTelMovilEmpresa['id_empresa'].isin(EmpMenMovilTraficoSMS)==False,'empresa']='Otros'
+            TraficoSMSTelMovilEmpresa.loc[TraficoSMSTelMovilEmpresa['id_empresa'].isin(EmpMenMovilTraficoSMS)==False,'id_empresa']='Otros'
+            TraficoSMSTelMovilEmpresa=TraficoSMSTelMovilEmpresa[(TraficoSMSTelMovilEmpresa['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index()
+            #
+            TraficoSMSCodigosCortosEmp=TraficoSMSCodigosCortos.groupby(['anno','empresa','id_empresa']).agg({'trafico terminado':'sum','trafico originado':'sum'}).reset_index()
+            TraficoSMSCodigosCortosEmp['tráfico']=TraficoSMSCodigosCortosEmp['trafico terminado']+TraficoSMSCodigosCortosEmp['trafico originado']
+            EmpMenMovilCodigosCortos=TraficoSMSCodigosCortosEmp[TraficoSMSCodigosCortosEmp['anno']=='2021'].sort_values(by='tráfico',ascending=False)['id_empresa'].to_list()[0:4]
+            TraficoSMSCodigosCortosEmp.loc[TraficoSMSCodigosCortosEmp['id_empresa'].isin(EmpMenMovilCodigosCortos)==False,'empresa']='Otros'
+            TraficoSMSCodigosCortosEmp.loc[TraficoSMSCodigosCortosEmp['id_empresa'].isin(EmpMenMovilCodigosCortos)==False,'id_empresa']='Otros'
+            TraficoSMSCodigosCortosEmp=TraficoSMSCodigosCortosEmp[(TraficoSMSCodigosCortosEmp['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['tráfico'].sum().reset_index()
+
             
             if ServiciosMenMovil=='Tráfico':
                 TraficoSMSTelMovil['periodo']=TraficoSMSTelMovil['anno']+'-T'+TraficoSMSTelMovil['trimestre']
@@ -1041,19 +1068,16 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col1:
                     LineaTiempoTraficoSMSTelmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasTraficoSMSTelmovil=st.button('Operadores') 
-                        
+                    BarrasTraficoSMSTelmovil=st.button('Información por operadores') 
+                
+                
                 if LineaTiempoTraficoSMSTelmovil:
-                    TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
-                    TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico (SMS)'].sum().reset_index()
-                    TraficoSMSTelMovilAgg['periodo_formato']=TraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    #st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoMensajeriaMovil2,'tráfico','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+
                 if BarrasTraficoSMSTelmovil:
-                    TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico (SMS)'})
-                    TraficoSMSTelMovilEmpresa=TraficoSMSTelMovil.groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index() 
-                    EmpMenMovilTraficoSMS=TraficoSMSTelMovilEmpresa[TraficoSMSTelMovilEmpresa['anno']=='2021'].sort_values(by='tráfico (SMS)',ascending=False)['id_empresa'].to_list()[0:4]
-                    TraficoSMSTelMovilEmpresa=TraficoSMSTelMovilEmpresa[(TraficoSMSTelMovilEmpresa['id_empresa'].isin(EmpMenMovilTraficoSMS))&(TraficoSMSTelMovilEmpresa['anno'].isin(['2020','2021']))]
-                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','Millones de mensajes',1e6,'Tráfico anual por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','Millones de mensajes',1e6,'SMS intercambiados entre usuarios por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(TraficoSMSCodigosCortosEmp,'tráfico','Millones de mensajes',1e6,'Tráfico de códigos cortos por empresa'),use_container_width=True)  
                 
             if ServiciosMenMovil=='Ingresos':
                 IngresosSMSTelMovil['periodo']=IngresosSMSTelMovil['anno']+'-T'+IngresosSMSTelMovil['trimestre']
@@ -1062,40 +1086,88 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col1:
                     LineaTiempoIngresosSMSTelmovil=st.button('Evolución temporal')
                 with col2:
-                    BarrasIngresosSMSTelmovil=st.button('Operadores')
+                    BarrasIngresosSMSTelmovil=st.button('Información por operadores')
                 ## Limpieza Ingresos SMS    
                 IngresosSMSTelMovilAgg=IngresosSMSTelMovil.groupby(['periodo'])['ingresos'].sum().reset_index()
                 IngresosSMSTelMovilAgg['periodo_formato']=IngresosSMSTelMovilAgg['periodo'].apply(periodoformato)
-                IngresosSMSTelMovilEmpresa=IngresosSMSTelMovil.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
-                EmpMenMovilTraficoSMS=IngresosSMSTelMovilEmpresa[IngresosSMSTelMovilEmpresa['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-                IngresosSMSTelMovilEmpresa=IngresosSMSTelMovilEmpresa[(IngresosSMSTelMovilEmpresa['id_empresa'].isin(EmpMenMovilTraficoSMS))&(IngresosSMSTelMovilEmpresa['anno'].isin(['2020','2021']))]
 
-                ## Limpieza Tráfico SMS
-                TraficoSMSTelMovil=TraficoSMSTelMovil.rename(columns={'cantidad':'tráfico'})
-                TraficoSMSTelMovilAgg=TraficoSMSTelMovil.groupby(['periodo'])['tráfico'].sum().reset_index()
-                ## Ingresos/TraficoSMS
-                IngresosPorTraficoSMSTelMovil=IngresosSMSTelMovil.merge(TraficoSMSTelMovil, left_on=['periodo','anno','trimestre','empresa','id_empresa'],right_on=['periodo','anno','trimestre','empresa','id_empresa'])
-                IngresosPorTraficoSMSTelMovilAgg=IngresosPorTraficoSMSTelMovil.groupby(['periodo']).agg({'ingresos':'sum','tráfico':'sum'}).reset_index()
-                IngresosPorTraficoSMSTelMovilAgg['Ingresos/Tráfico']=round(IngresosPorTraficoSMSTelMovilAgg['ingresos']/IngresosPorTraficoSMSTelMovilAgg['tráfico'],2)
-                IngresosPorTraficoSMSTelMovilAgg['periodo_formato']=IngresosPorTraficoSMSTelMovilAgg['periodo'].apply(periodoformato)
+                IngresosSMSTelMovilEmpresa=IngresosSMSTelMovil.groupby(['periodo','anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                IngresosSMSCodigosCortosEmpresa=IngresosSMSCodigosCortos.groupby(['periodo','anno','empresa','id_empresa'])['ingresos'].sum().reset_index()                
+                IngresosMensajeríaMóvilEmpresa=pd.concat([IngresosSMSTelMovilEmpresa,IngresosSMSCodigosCortosEmpresa])
+                IngresosMensajeríaMóvilEmpresa2=IngresosMensajeríaMóvilEmpresa.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                EmpMenMovilIngresos=IngresosMensajeríaMóvilEmpresa2[IngresosMensajeríaMóvilEmpresa2['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+                IngresosMensajeríaMóvilEmpresa2.loc[IngresosMensajeríaMóvilEmpresa2['id_empresa'].isin(EmpMenMovilIngresos)==False,'empresa']='Otros'
+                IngresosMensajeríaMóvilEmpresa2.loc[IngresosMensajeríaMóvilEmpresa2['id_empresa'].isin(EmpMenMovilIngresos)==False,'id_empresa']='Otros'
+                IngresosMensajeríaMóvilEmpresa2=IngresosMensajeríaMóvilEmpresa2.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                IngresosMensajeríaMóvilEmpresa2=IngresosMensajeríaMóvilEmpresa2[IngresosMensajeríaMóvilEmpresa2['anno'].isin(['2020','2021'])]
+                IngresosMensajeríaMóvilEmpresa3=IngresosMensajeríaMóvilEmpresa[IngresosMensajeríaMóvilEmpresa['periodo'].isin(['2020-T4','2021-T4'])]
+                IngresosMensajeríaMóvilEmpresa3=IngresosMensajeríaMóvilEmpresa3.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()                
+                IngresosMensajeríaMóvilEmpresa3.loc[IngresosMensajeríaMóvilEmpresa3['id_empresa'].isin(EmpMenMovilIngresos)==False,'empresa']='Otros'
+                IngresosMensajeríaMóvilEmpresa3.loc[IngresosMensajeríaMóvilEmpresa3['id_empresa'].isin(EmpMenMovilIngresos)==False,'id_empresa']='Otros'
+                IngresosMensajeríaMóvilEmpresa3=IngresosMensajeríaMóvilEmpresa3.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
                 
-                IngresosPorTraficoSMSTelMovilEmp=IngresosPorTraficoSMSTelMovil.groupby(['anno','empresa','id_empresa']).agg({'ingresos':'sum','tráfico':'sum'}).reset_index()
-                IngresosPorTraficoSMSTelMovilEmp=IngresosPorTraficoSMSTelMovilEmp[(IngresosPorTraficoSMSTelMovilEmp['id_empresa'].isin(['830122566','800153993','830114921']))&(IngresosPorTraficoSMSTelMovilEmp['anno'].isin(['2020','2021']))]
-                IngresosPorTraficoSMSTelMovilEmp['Ingresos/Tráfico']=round(IngresosPorTraficoSMSTelMovilEmp['ingresos']/IngresosPorTraficoSMSTelMovilEmp['tráfico'],2)
+                TraficoSMSTelMovilEmpresa2=TraficoSMSTelMovil[TraficoSMSTelMovil['trimestre']=='4'].groupby(['anno','empresa','id_empresa'])['tráfico (SMS)'].sum().reset_index()
+                TraficoSMSTelMovilEmpresa2=TraficoSMSTelMovilEmpresa2.rename(columns={'tráfico (SMS)':'tráfico'})
+                TraficoSMSCodigosCortos2=TraficoSMSCodigosCortos.copy()
+                TraficoSMSCodigosCortos2['tráfico']=TraficoSMSCodigosCortos2['trafico terminado']+TraficoSMSCodigosCortos2['trafico originado']                
+                TraficoSMSCodigosCortosEmpresa2=TraficoSMSCodigosCortos2[TraficoSMSCodigosCortos2['trimestre']=='4'].groupby(['anno','empresa','id_empresa'])['tráfico'].sum().reset_index()                
+                TraficoMensajeríaMóvilEmpresa=pd.concat([TraficoSMSTelMovilEmpresa2,TraficoSMSCodigosCortosEmpresa2])
+                TraficoMensajeríaMóvilEmpresa=TraficoMensajeríaMóvilEmpresa.groupby(['anno','empresa','id_empresa'])['tráfico'].sum().reset_index()
+                TraficoMensajeríaMóvilEmpresa.loc[TraficoMensajeríaMóvilEmpresa['id_empresa'].isin(EmpMenMovilIngresos)==False,'empresa']='Otros'
+                TraficoMensajeríaMóvilEmpresa.loc[TraficoMensajeríaMóvilEmpresa['id_empresa'].isin(EmpMenMovilIngresos)==False,'id_empresa']='Otros'
+                TraficoMensajeríaMóvilEmpresa=TraficoMensajeríaMóvilEmpresa.groupby(['anno','empresa','id_empresa'])['tráfico'].sum().reset_index()
+                TraficoMensajeríaMóvilEmpresa=TraficoMensajeríaMóvilEmpresa[TraficoMensajeríaMóvilEmpresa['anno'].isin(['2020','2021'])]
+                #
+                IngPorTrafMensajeríaMovilEmpresa=IngresosMensajeríaMóvilEmpresa3.merge(TraficoMensajeríaMóvilEmpresa,left_on=['anno','empresa','id_empresa'],right_on=['anno','empresa','id_empresa'])
+                IngPorTrafMensajeríaMovilEmpresa['Ingresos/Tráfico']=round(IngPorTrafMensajeríaMovilEmpresa['ingresos']/IngPorTrafMensajeríaMovilEmpresa['tráfico'],3)
+                IngPorTrafMensajeríaMovilEmpresa['anno']=IngPorTrafMensajeríaMovilEmpresa['anno'].replace({'2020':'2020-T4','2021':'2021-T4'})
 
-                ## 
+                ##Ingresos códigos cortos
+                IngresosSMSCodigosCortosAgg=IngresosSMSCodigosCortos.groupby(['periodo'])['ingresos'].sum().reset_index()
+                IngresosSMSCodigosCortosAgg=IngresosSMSCodigosCortosAgg.rename(columns={'ingresos':'Códigos cortos'})
+                IngresosSMSTelMovilAgg2=IngresosSMSTelMovilAgg.copy()
+                IngresosSMSTelMovilAgg2=IngresosSMSTelMovilAgg2.rename(columns={'ingresos':'SMS intercambiados entre usuarios'})
+                IngresosMensajeríaMóvil=IngresosSMSTelMovilAgg2.merge(IngresosSMSCodigosCortosAgg,left_on=['periodo'],right_on=['periodo'])
+                IngresosMensajeríaMóvil2=pd.melt(IngresosMensajeríaMóvil,id_vars=['periodo','periodo_formato'],value_vars=['SMS intercambiados entre usuarios',
+                                    'Códigos cortos'],var_name='modalidad',value_name='ingresos')
+                                    
+                ## Ingresos por tráfico y modalidad                
+                IngresosPorTraficoMensajeríaMóvil=IngresosMensajeríaMóvil2.merge(TraficoMensajeriaMovil2,left_on=['periodo','periodo_formato','modalidad'],right_on=['periodo','periodo_formato','modalidad'])    
+                IngresosPorTraficoMensajeríaMóvil['Ingresos/Tráfico']=round(IngresosPorTraficoMensajeríaMóvil['ingresos']/IngresosPorTraficoMensajeríaMóvil['tráfico'],2)
                 if LineaTiempoIngresosSMSTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosSMSTelMovilAgg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoSMSTelMovilAgg,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                if BarrasIngresosSMSTelmovil:                    
-                    st.plotly_chart(PlotlyBarras(IngresosSMSTelMovilEmpresa,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
-                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoSMSTelMovilEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico y por empresa'),use_container_width=True)  
+                    st.plotly_chart(Plotlylineatiempo(IngresosMensajeríaMóvil2,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoMensajeríaMóvil,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                if BarrasIngresosSMSTelmovil:    
+                    st.plotly_chart(PlotlyBarras(IngresosMensajeríaMóvilEmpresa2,'ingresos','Miles de Millones de pesos',1e9,'Ingresos Mensajería móvil por empresa'),use_container_width=True)  
+                    #
+                    figIngporTrafTelMov = make_subplots(rows=1, cols=1) 
+                    for empresa in IngPorTrafMensajeríaMovilEmpresa['empresa'].unique().tolist():
+                        figIngporTrafTelMov.add_trace(go.Bar(x=IngPorTrafMensajeríaMovilEmpresa[IngPorTrafMensajeríaMovilEmpresa['empresa']==empresa]['anno'],y=IngPorTrafMensajeríaMovilEmpresa[IngPorTrafMensajeríaMovilEmpresa['empresa']==empresa]['Ingresos/Tráfico']
+                                             ,marker_color=PColoresEmp(IngPorTrafMensajeríaMovilEmpresa[IngPorTrafMensajeríaMovilEmpresa['empresa']==empresa]['id_empresa'].unique()[0]),
+                                            name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
+                        'Ingresos/Tráfico'+' '+'Pesos/Min'+': %{y:.3f}<br>'))
+                    figIngporTrafTelMov.update_layout(barmode='group')
+                    figIngporTrafTelMov.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+                    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+                    figIngporTrafTelMov.update_yaxes(range=[0,5],tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Pesos/Min', row=1, col=1)
+                    figIngporTrafTelMov.update_layout(height=550,legend_title=None)
+                    figIngporTrafTelMov.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    title={
+                    'text': 'Ingresos por tráfico y por empresa',
+                    'y':0.98,
+                    'x':0.5,
+                    'xanchor': 'center',
+                    'yanchor': 'top'})        
+                    figIngporTrafTelMov.update_layout(legend=dict(orientation="h",y=1.2,xanchor='center',x=0.5,font_size=12),showlegend=True)
+                    figIngporTrafTelMov.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
+                    figIngporTrafTelMov.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+                    st.plotly_chart(figIngporTrafTelMov,use_container_width=True)  
                         
     if select_secResumenDinTic == 'Servicios fijos': 
         st.markdown(r"""<div class="titulo"><h3>Servicios fijos</h3></div>""",unsafe_allow_html=True)
         st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
 
-        ServiciosFijos=st.radio('',['Telefonía fija','Internet fijo', 'TV por suscripción','TV comunitaria'],horizontal=True)
+        ServiciosFijos=st.radio('',['Telefonía fija','Internet fijo', 'TV por suscripción'],horizontal=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True)   
         
         if ServiciosFijos == 'Internet fijo':
@@ -1256,8 +1328,6 @@ Claro aumentó su participación, pasando de 37,7% en
                 if LineaTiempoVelIntFijo:
                     VelIntFijo_Mod['periodo_formato']=VelIntFijo_Mod['periodo'].apply(periodoformato)                    
                     st.plotly_chart(Plotlylineatiempo(VelIntFijo_Mod,'Velocidad descarga promedio','Mbps',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Velocidad promedio de descarga de Internet fijo por modalidad y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-
-                    
                                         
         if ServiciosFijos == 'Telefonía fija':
 
@@ -1564,75 +1634,75 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
                     st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'Ingresos por suscriptores por empresa'),use_container_width=True)
 
-        if ServiciosFijos == 'TV comunitaria':
+        # if ServiciosFijos == 'TV comunitaria':
             
-            col1,col2=st.columns(2)
-            with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-comunitaria.png'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
-            with col2:             
-                with st.expander("Datos relevantes de TV comunitaria"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+            # col1,col2=st.columns(2)
+            # with col1:
+                # st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-comunitaria.png'/><h4 style="text-align:left">TV comunitaria</h4></div>""",unsafe_allow_html=True)   
+            # with col2:             
+                # with st.expander("Datos relevantes de TV comunitaria"):
+                    # st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    # st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    # st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
 
-            ServiciosTVCom=st.selectbox('Escoja el servicio de TV comunitaria',['Asociados','Ingresos'])
+            # ServiciosTVCom=st.selectbox('Escoja el servicio de TV comunitaria',['Asociados','Ingresos'])
 
-            ##Asociados
-            AsociadosTVComunitaria['periodo']=AsociadosTVComunitaria['anno']+'-T'+AsociadosTVComunitaria['trimestre']
-            AsociadosTVComunitaria=AsociadosTVComunitaria[AsociadosTVComunitaria['periodo'].isin(['2019-T4','2020-T2','2020-T4','2021-T2','2021-T4'])]
-            AsociadosTVComunitariaNac=AsociadosTVComunitaria.groupby(['periodo'])['asociados'].sum().reset_index()
-            #
-            AsociadosTVComunitariaEmp=AsociadosTVComunitaria[AsociadosTVComunitaria['trimestre']=='4'].groupby(['anno','empresa','id_empresa'])['asociados'].sum().reset_index()
-            AsociadosTVComunitariaEmp=AsociadosTVComunitariaEmp[(AsociadosTVComunitariaEmp['anno'].isin(['2020','2021']))]
-            EmpAsocidosTVComEmp=AsociadosTVComunitariaEmp[AsociadosTVComunitariaEmp['anno']=='2021'].sort_values(by='asociados',ascending=False)['id_empresa'].to_list()[0:4]
-            AsociadosTVComunitariaEmp=AsociadosTVComunitariaEmp[AsociadosTVComunitariaEmp['id_empresa'].isin(EmpAsocidosTVComEmp)]
-            #
-            AsociadosTVComunitariaDep=AsociadosTVComunitaria.groupby(['periodo','departamento','id_departamento'])['asociados'].sum().reset_index()
-            ##Ingresos 
-            IngresosTVComunitariaIng=IngresosTVComunitariaIng[IngresosTVComunitariaIng['periodo'].isin(['2019-T4','2020-T2','2020-T4','2021-T2','2021-T4'])]
-            IngresosTVComunitariaIng2=pd.melt(IngresosTVComunitariaIng,id_vars=['periodo','id_empresa','empresa'],value_vars=['Ing Total','Ing Pauta publicitaria',
-                                                                                        'Ing Brutos operacionales'],var_name='modalidad', value_name='ingresos')
-            IngresosTVComunitariaIngNac=IngresosTVComunitariaIng2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
-            #    
-            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIng.groupby(['anno','id_empresa','empresa'])['Ing Total'].sum().reset_index()
-            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp[(IngresosTVComunitariaIngEmp['anno'].isin(['2020','2021']))]
-            EmpIngresosTVComEmp=IngresosTVComunitariaIngEmp[IngresosTVComunitariaIngEmp['anno']=='2021'].sort_values(by='Ing Total',ascending=False)['id_empresa'].to_list()[0:4]
-            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp[IngresosTVComunitariaIngEmp['id_empresa'].isin(EmpIngresosTVComEmp)]
-            IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp.rename(columns={'Ing Total':'ingresos'})
+            # ##Asociados
+            # AsociadosTVComunitaria['periodo']=AsociadosTVComunitaria['anno']+'-T'+AsociadosTVComunitaria['trimestre']
+            # AsociadosTVComunitaria=AsociadosTVComunitaria[AsociadosTVComunitaria['periodo'].isin(['2019-T4','2020-T2','2020-T4','2021-T2','2021-T4'])]
+            # AsociadosTVComunitariaNac=AsociadosTVComunitaria.groupby(['periodo'])['asociados'].sum().reset_index()
+            # #
+            # AsociadosTVComunitariaEmp=AsociadosTVComunitaria[AsociadosTVComunitaria['trimestre']=='4'].groupby(['anno','empresa','id_empresa'])['asociados'].sum().reset_index()
+            # AsociadosTVComunitariaEmp=AsociadosTVComunitariaEmp[(AsociadosTVComunitariaEmp['anno'].isin(['2020','2021']))]
+            # EmpAsocidosTVComEmp=AsociadosTVComunitariaEmp[AsociadosTVComunitariaEmp['anno']=='2021'].sort_values(by='asociados',ascending=False)['id_empresa'].to_list()[0:4]
+            # AsociadosTVComunitariaEmp=AsociadosTVComunitariaEmp[AsociadosTVComunitariaEmp['id_empresa'].isin(EmpAsocidosTVComEmp)]
+            # #
+            # AsociadosTVComunitariaDep=AsociadosTVComunitaria.groupby(['periodo','departamento','id_departamento'])['asociados'].sum().reset_index()
+            # ##Ingresos 
+            # IngresosTVComunitariaIng=IngresosTVComunitariaIng[IngresosTVComunitariaIng['periodo'].isin(['2019-T4','2020-T2','2020-T4','2021-T2','2021-T4'])]
+            # IngresosTVComunitariaIng2=pd.melt(IngresosTVComunitariaIng,id_vars=['periodo','id_empresa','empresa'],value_vars=['Ing Total','Ing Pauta publicitaria',
+                                                                                        # 'Ing Brutos operacionales'],var_name='modalidad', value_name='ingresos')
+            # IngresosTVComunitariaIngNac=IngresosTVComunitariaIng2.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
+            # #    
+            # IngresosTVComunitariaIngEmp=IngresosTVComunitariaIng.groupby(['anno','id_empresa','empresa'])['Ing Total'].sum().reset_index()
+            # IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp[(IngresosTVComunitariaIngEmp['anno'].isin(['2020','2021']))]
+            # EmpIngresosTVComEmp=IngresosTVComunitariaIngEmp[IngresosTVComunitariaIngEmp['anno']=='2021'].sort_values(by='Ing Total',ascending=False)['id_empresa'].to_list()[0:4]
+            # IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp[IngresosTVComunitariaIngEmp['id_empresa'].isin(EmpIngresosTVComEmp)]
+            # IngresosTVComunitariaIngEmp=IngresosTVComunitariaIngEmp.rename(columns={'Ing Total':'ingresos'})
 
             
-            if ServiciosTVCom=='Asociados':
-                col1,col2=st.columns(2)
-                with col1:
-                    DimensionTVCom=st.selectbox('Escoja la dimensión del análisis',['Evolución temporal','Operadores','Departamentos'])    
+            # if ServiciosTVCom=='Asociados':
+                # col1,col2=st.columns(2)
+                # with col1:
+                    # DimensionTVCom=st.selectbox('Escoja la dimensión del análisis',['Evolución temporal','Operadores','Departamentos'])    
                 
-                if DimensionTVCom=='Evolución temporal':  
-                    AsociadosTVComunitariaNac['periodo_formato']=AsociadosTVComunitariaNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Asociados TV comunitaria por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                if DimensionTVCom=='Operadores':
-                    st.plotly_chart(PlotlyBarras(AsociadosTVComunitariaEmp,'asociados','',1,'Asociados anuales por empresa'),use_container_width=True)
-                if DimensionTVCom=='Departamentos':
-                    AsociadosTVComunitariaDep['periodo_formato']=AsociadosTVComunitariaDep['periodo'].apply(periodoformato)
-                    DepartamentosAsoTVCom=AsociadosTVComunitariaDep['departamento'].unique().tolist()
-                    with col2:
-                        OpcionesDPTO=st.multiselect('Seleccione los departamentos para visualizar la evolución del número de asociados',DepartamentosAsoTVCom)
-                        AsociadosTVComunitariaDep2=AsociadosTVComunitariaDep[AsociadosTVComunitariaDep['departamento'].isin(OpcionesDPTO)]
-                    st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados','','Asociados por departamento por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)   
+                # if DimensionTVCom=='Evolución temporal':  
+                    # AsociadosTVComunitariaNac['periodo_formato']=AsociadosTVComunitariaNac['periodo'].apply(periodoformato)
+                    # st.plotly_chart(Plotlylineatiempo(AsociadosTVComunitariaNac,'asociados','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Asociados TV comunitaria por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                # if DimensionTVCom=='Operadores':
+                    # st.plotly_chart(PlotlyBarras(AsociadosTVComunitariaEmp,'asociados','',1,'Asociados anuales por empresa'),use_container_width=True)
+                # if DimensionTVCom=='Departamentos':
+                    # AsociadosTVComunitariaDep['periodo_formato']=AsociadosTVComunitariaDep['periodo'].apply(periodoformato)
+                    # DepartamentosAsoTVCom=AsociadosTVComunitariaDep['departamento'].unique().tolist()
+                    # with col2:
+                        # OpcionesDPTO=st.multiselect('Seleccione los departamentos para visualizar la evolución del número de asociados',DepartamentosAsoTVCom)
+                        # AsociadosTVComunitariaDep2=AsociadosTVComunitariaDep[AsociadosTVComunitariaDep['departamento'].isin(OpcionesDPTO)]
+                    # st.plotly_chart(PlotlylineatiempoDep(AsociadosTVComunitariaDep2,'asociados','','Asociados por departamento por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)   
 
-            if ServiciosTVCom=='Ingresos':
+            # if ServiciosTVCom=='Ingresos':
 
-                col1,col2=st.columns(2)
-                with col1:
-                    LineaTiempoIngresosTVCom=st.button('Evolución temporal')
-                with col2:
-                    BarrasIngresosTVCom=st.button('Información por operadores')
+                # col1,col2=st.columns(2)
+                # with col1:
+                    # LineaTiempoIngresosTVCom=st.button('Evolución temporal')
+                # with col2:
+                    # BarrasIngresosTVCom=st.button('Información por operadores')
                 
-                if LineaTiempoIngresosTVCom:
-                    IngresosTVComunitariaIngNac['periodo_formato']=IngresosTVComunitariaIngNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV comunitaria por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                    st.markdown("<b>Nota</b>: Los ingresos operacionales corresponden al total de los ingresos por concepto de la prestación del servicio de televisión, en referencia, por parte del proveedor en el periodo de reporte. No incluye ingresos por pauta publicitaria ni los que se producen por otros conceptos no operacionales, tales como ingresos financieros, rendimientos de inversiones o utilidades en venta de activos fijos, entre otros.",unsafe_allow_html=True)
-                if BarrasIngresosTVCom:
-                    st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
+                # if LineaTiempoIngresosTVCom:
+                    # IngresosTVComunitariaIngNac['periodo_formato']=IngresosTVComunitariaIngNac['periodo'].apply(periodoformato)
+                    # st.plotly_chart(Plotlylineatiempo(IngresosTVComunitariaIngNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV comunitaria por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    # st.markdown("<b>Nota</b>: Los ingresos operacionales corresponden al total de los ingresos por concepto de la prestación del servicio de televisión, en referencia, por parte del proveedor en el periodo de reporte. No incluye ingresos por pauta publicitaria ni los que se producen por otros conceptos no operacionales, tales como ingresos financieros, rendimientos de inversiones o utilidades en venta de activos fijos, entre otros.",unsafe_allow_html=True)
+                # if BarrasIngresosTVCom:
+                    # st.plotly_chart(PlotlyBarras(IngresosTVComunitariaIngEmp,'ingresos','Millones de pesos',1e6,'Ingresos anuales por empresa'),use_container_width=True)
 
     if select_secResumenDinTic == 'Servicios OTT':
         st.markdown(r"""<div class="titulo"><h3>Servicios OTT</h3></div>""",unsafe_allow_html=True)
