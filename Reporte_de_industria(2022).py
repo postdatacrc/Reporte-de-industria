@@ -66,6 +66,17 @@ Colores_pie3={'Colvantes':'rgb(204,0,0)','InterRapidisimo':'rgb(255,128,0)','DHL
 def Participacion(df,column):
     part=df[column]/df[column].sum()
     return part
+def trim(x):
+    if x in ['1','2','3']:
+        return '1'
+    if x in ['4','5','6']:
+        return '2'
+    if x in ['7','8','9']:
+        return '3'
+    if x in ['10','11','12']:
+        return '4'    
+    else:
+        pass    
 def PColoresEmp(id_empresa):
     if id_empresa == '800153993':
         return 'rgb(255,75,75)'
@@ -594,6 +605,20 @@ def TVabierta():
     TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
     return TVabierta
 TVabierta=TVabierta()
+## IPC
+IPC=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/IPC.csv',delimiter=';')
+IPC=IPC.fillna(0)
+IPC['anno']=IPC['anno'].astype('int64').astype('str')
+IPC['mes']=IPC['mes'].astype('int64').astype('str')
+IPC['subclase-cod']=IPC['subclase-cod'].astype('int64').astype('str')
+IPC['fecha']=IPC['anno']+'-'+IPC['mes'].str.zfill(2)
+IPC['trimestre']=IPC['mes'].apply(trim)
+IPC['periodo']=IPC['anno']+'-T'+IPC['trimestre']
+IPCTrim=IPC.groupby(['periodo','anno','trimestre','subclase-cod'])['indice2021'].mean().reset_index()
+IPCTrimMov=IPCTrim[IPCTrim['subclase-cod']=='8310400'].drop(columns={'subclase-cod'})
+IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
+IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
+IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
     
 st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria </b> """,unsafe_allow_html=True)
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
@@ -778,6 +803,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(TrafAnualTelMovl,'trafico','Miles de Millones de minutos',1e9,'Tráfico anual por empresa'),use_container_width=True)  
             
             if ServiciosTelMovil=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                     
                 col1,col2=st.columns(2)
                 with col1:
@@ -785,7 +811,12 @@ Claro aumentó su participación, pasando de 37,7% en
                 with col2:
                     BarrasIngresosTelmovil=st.button('Información por operadores')
                 
+                IngresosTelMovil=IngresosTelMovil.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+                IngresosTelMovil['ingresos_totales']=IngresosTelMovil['ingresos_totales']/IngresosTelMovil['indice2021']
                 IngresosTelMovil=IngresosTelMovil.astype({'ingresos_totales':'int64','ingresos_prepago':'int64','ingresos_pospago':'int64'})
+                IngresosTelMovil['ingresos_pospago']=IngresosTelMovil['ingresos_pospago']/IngresosTelMovil['indice2021']
+                IngresosTelMovil['ingresos_prepago']=IngresosTelMovil['ingresos_prepago']/IngresosTelMovil['indice2021']
+                
                 IngresosTelMovil2=pd.melt(IngresosTelMovil,id_vars=['periodo','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
                                                                                         'ingresos_pospago'],var_name='modalidad', value_name='ingresos')
                 IngresosTelMovil2['modalidad']=IngresosTelMovil2['modalidad'].replace({'ingresos_totales':'TOTAL','ingresos_prepago':'PREPAGO','ingresos_pospago':'POSPAGO'})
@@ -815,7 +846,7 @@ Claro aumentó su participación, pasando de 37,7% en
                 IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
 
                 if LineaTiempoIngresosTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)                    
                     col1,col2=st.columns(2)
                     with col1:
                         st.plotly_chart(PlotlyIngresosPorAcceso(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por abonado',''), use_container_width=True)
@@ -861,6 +892,8 @@ Claro aumentó su participación, pasando de 37,7% en
 
             ## Ingresos
             IngresosInternetmovil=IngresosInternetmovil[IngresosInternetmovil['ingresos']>0]
+            IngresosInternetmovil=IngresosInternetmovil.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosInternetmovil['ingresos']=IngresosInternetmovil['ingresos']/IngresosInternetmovil['indice2021']
             IngresosInternetmovilTotal=IngresosInternetmovil.groupby(['anno','trimestre','id_empresa','empresa','periodo'])['ingresos'].sum().reset_index()
             IngresosInternetmovilTotal['modalidad']='Total'
             IngresosInternetmovildf=pd.concat([IngresosInternetmovil,IngresosInternetmovilTotal]).sort_values(by=['periodo'])
@@ -889,7 +922,7 @@ Claro aumentó su participación, pasando de 37,7% en
             
             
             ServiciosIntMovil=st.selectbox('Escoja el servicio de Internet móvil',['Accesos','Tráfico','Ingresos'])
-            st.markdown("""<p style="font-size:12px"><b>Nota:</b>Los servicios de Internet móvil por demanda corresponden a aquellos que se obtienen sin que medie la contratación de un plan para tal fin, mientras que los servicios de Internet móvil por cargo fijo se dan a través de la contratación de un plan que se paga de forma periódica.</p>""",unsafe_allow_html=True)
+            st.markdown("""<p style="font-size:12px"><b>Nota:</b> Los servicios de Internet móvil por demanda corresponden a aquellos que se obtienen sin que medie la contratación de un plan para tal fin, mientras que los servicios de Internet móvil por cargo fijo se dan a través de la contratación de un plan que se paga de forma periódica.</p>""",unsafe_allow_html=True)
 
                                         
             if ServiciosIntMovil=='Accesos':  
@@ -947,7 +980,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(TraficoInternetMovilEmp,'trafico','Millones de GB',1e6,'Tráfico anual por empresa'),use_container_width=True)
 
             if ServiciosIntMovil=='Ingresos':
-                
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)                
                 IngresosInternetmovilNac=IngresosInternetmovildf.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
                 IngresosInternetmovilNac['periodo_formato']=IngresosInternetmovilNac['periodo'].apply(periodoformato)
                 
@@ -1029,9 +1062,10 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/sms.png'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
             with col2:             
                 with st.expander("Datos relevantes de Mensajería móvil"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Los ingresos por concepto de mensajería de texto fueron de 150,39 mil millones de pesos en 2021 de los cuales el 78,7% son generados por mensajes cursados entre usuarios.</li>
+                    <li>En cuando al servicio de SMS, este se compone de los mensajes cursados entre usuarios y mensajes de texto a través de códigos cortos. El tráfico del primer tipo fue de 1.791,6 millones de mensajes en 2021 y se redujo a tasa anual de 17,9%. En tanto, los segundos fueron 41.464.7millones de mensajes y creció 35,5% frente al año anterior.</li>
+                    </ul>""",unsafe_allow_html=True)
             
             ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
 
@@ -1081,7 +1115,12 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlyBarras(TraficoSMSCodigosCortosEmp,'tráfico','Millones de mensajes',1e6,'Tráfico de códigos cortos por empresa'),use_container_width=True)  
                 
             if ServiciosMenMovil=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 IngresosSMSTelMovil['periodo']=IngresosSMSTelMovil['anno']+'-T'+IngresosSMSTelMovil['trimestre']
+                IngresosSMSTelMovil=IngresosSMSTelMovil.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+                IngresosSMSTelMovil['ingresos']=IngresosSMSTelMovil['ingresos']/IngresosSMSTelMovil['indice2021']
+                IngresosSMSCodigosCortos=IngresosSMSCodigosCortos.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+                IngresosSMSCodigosCortos['ingresos']=IngresosSMSCodigosCortos['ingresos']/IngresosSMSCodigosCortos['indice2021']
                 
                 col1,col2=st.columns(2)
                 with col1:
@@ -1212,6 +1251,8 @@ Claro aumentó su participación, pasando de 37,7% en
             ##
             IngresosInternetFijo=IngresosInternetFijo[IngresosInternetFijo['ingresos']>0]
             IngresosInternetFijo['periodo']=IngresosInternetFijo['anno']+'-T'+IngresosInternetFijo['trimestre']
+            IngresosInternetFijo=IngresosInternetFijo.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosInternetFijo['ingresos']=IngresosInternetFijo['ingresos']/IngresosInternetFijo['indice2021']
             
             IngresosInternetFijoNac=IngresosInternetFijo.groupby(['periodo'])['ingresos'].sum().reset_index()
             IngresosInternetFijoNacProm=IngresosInternetFijo.groupby(['periodo'])['ingresos'].mean().reset_index()
@@ -1287,6 +1328,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Accesos Internet fijo por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosIntFijo=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosIntFijo=st.button('Evolución temporal')
@@ -1337,9 +1379,11 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de Telefonía fija"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Al cierre de 2021 se contabilizaron 7.55 millones de líneas, de las cuales el 86,5% son líneas residenciales. En comparación con el año 2020, las líneas residenciales crecieron 6% en 2021. En tanto, las líneas corporativas continúan en descenso.</li>
+                    <li>Los ingresos por telefonía fija ascendieron a 1.88 billones de pesos, de los cuales el 83.5% se originó en telefonía local. Respecto del año anterior, sus tres componentes tuvieron reducciones cercanas al 6%, local (6,1%), Larga Distancia Nacional (6.6%) y Larga Distancia Internacional (6.4%). </li>
+                    <li>En cuanto al tráfico, este se redujo a tasas mayores que los ingresos alcanzando un total de 9955 millones de minutos de los cuales: telefonía local se redujo el 29.4%, LDN ý LDI decrecieron 12.8% y 3.7% respectivamente.</li>
+                    </ul>""",unsafe_allow_html=True)
 
 
             ServiciosTelFija=st.selectbox('Escoja el servicio de Telefonía fija',['Líneas','Tráfico','Ingresos','Ingresos por tráfico','Ingresos por líneas'])
@@ -1388,6 +1432,8 @@ Claro aumentó su participación, pasando de 37,7% en
             TraficoTelefoniaFijaEmpTLDI=TraficoTelefoniaFijaEmpTLDI.groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()  
             
             ##Ingresos 
+            IngresosTelefoniaFija=IngresosTelefoniaFija.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosTelefoniaFija['ingresos']=IngresosTelefoniaFija['ingresos']/IngresosTelefoniaFija['indice2021']
             IngresosTelefoniaFijaNac=IngresosTelefoniaFija.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
             IngresosTelefoniaFijaEmp=IngresosTelefoniaFija[IngresosTelefoniaFija['periodo'].isin(['2020-T4','2021-T4'])].groupby(['anno','modalidad','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
@@ -1470,6 +1516,7 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDI,'trafico','Millones de minutos',1e6,'Tráfico anual de Telefonía LDI por empresa'),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosTelFija=st.button('Evolución temporal')
@@ -1488,6 +1535,7 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTLDI,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía LDI por empresa'),use_container_width=True)
                     
             if ServiciosTelFija=='Ingresos por tráfico':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosportraficoTelFija=st.button('Evolución temporal')
@@ -1506,6 +1554,7 @@ Claro aumentó su participación, pasando de 37,7% en
                         st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía LDI por empresa'),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos por líneas':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosporlineaTelFija=st.button('Evolución temporal')
@@ -1550,6 +1599,9 @@ Claro aumentó su participación, pasando de 37,7% en
             SuscriptoresTVSusTec=SuscriptoresTVSus[SuscriptoresTVSus['anno']=='2021'].groupby(['periodo','tecnologia'])['suscriptores'].sum().reset_index()
             SuscriptoresTVSusTec=SuscriptoresTVSusTec.rename(columns={'tecnologia':'CodTec'})
             ##Ingresos
+            IngresosTVSus=IngresosTVSus.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosTVSus['ingresos']=IngresosTVSus['ingresos']/IngresosTVSus['indice2021']
+
             IngresosTVSus['concepto']=IngresosTVSus['concepto'].replace({'Cargo fijo plan básico de televisión por suscripción':'Cargo fijo plan básico',
             'Otros ingresos operacionales televisión por suscripción':'Otros ingresos operacionales','Cargo fijo plan premium de televisión por suscripción':'Cargo fijo plan premium',
             'Provisión de contenidos audiovisuales a través del servicio de televisión por suscripción':'Provisión de contenidos audiovisuales'})
@@ -1616,7 +1668,7 @@ Claro aumentó su participación, pasando de 37,7% en
                     st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Suscriptores TV por suscripción por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosTVporSus=='Ingresos':
-
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosTVSus=st.button('Evolución temporal')
@@ -1637,16 +1689,18 @@ Claro aumentó su participación, pasando de 37,7% en
 
     if select_secResumenDinTic == 'Servicios OTT':
         st.markdown(r"""<div class="titulo"><h3>Servicios OTT</h3></div>""",unsafe_allow_html=True)
-        st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
-
+        
         col1,col2=st.columns(2)
         with col1:
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/ott.png'/><h4 style="text-align:left">Servicios Over the top (OTT)</h4></div>""",unsafe_allow_html=True)   
         with col2:             
             with st.expander("Datos relevantes de OTT"):
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                st.markdown(r"""<ul>
+                <li>En el cuarto trimestre de 2021, el 86,4% de los hogares con Internet consumieron contenidos audiovisuales a través de plataformas de servicios OTT.</li>
+                <li>Los modelos de negocio de servicios OTT audiovisuales con mayor penetración en los hogares colombianos son: video por demanda gratuito o con publicidad (87%), seguido de servicios de video por demanda con suscripción (75%) y los servicios de TV everywhere (39%).</li>
+                <li>De los hogares con Internet, el 10.58% manifestaron haber renunciado al servicio de TV por suscripción (cord-cutters), de los cuales el 17.98% de los hogares señaló el motivo fue que podía encontrar el mismo contenido por Internet</li>
+                </ul>""",unsafe_allow_html=True)
+        st.markdown(r"""<hr>""",unsafe_allow_html=True) 
         st.markdown('')
         OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/OTT.csv',delimiter=';')
         OTT['periodo']=OTT['periodo'].replace({r'Q':'-T'},regex=True)
@@ -1678,6 +1732,8 @@ Claro aumentó su participación, pasando de 37,7% en
             MotivosOTT=st.button('Motivos corte servicio')
 
         if ModeloOTT:
+            st.markdown("""<p style="font-size:12px"><b>Nota:</b> Los siguientes modelos son los modelos de negocio de servicios OTT de contenidos audiovisuales. SVOD: video por demanda por suscripción; FVOD: video por demanda gratuito; AVOD: video por demanda gratuito que monetizan sus servicios a través de terceros, por ejemplo publicidad; TVOD: video por demanda en la que se abona por cada contenido al que se accede por alquiler o compra; TV everywhere: hace referencia al modelo en el que se accede a las plataformas a través de una suscripción a TV, servicios de Internet o Telefonía el cual es ofrecido por programadores o cableoperadores; TV everywhere pago: se diferencia del TV everywhere ya que hay que realizar un pago adicional para el acceso a este servicio. “Ilegal”: “ilegal” se refiere las plataformas no pagan a los dueños de los derechos de los contenidos dispuestos. Un ejemplo de esto son los servicios P2P, plataformas como Cuevana, pelisplus, pelisflix y similares que no pagan por los contenidos que trasmiten. Fuente: Business Bureau.</p>""",unsafe_allow_html=True)
+        
             figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
             figModeloOTT.update_layout(barmode='group')
             figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
@@ -1713,13 +1769,14 @@ Claro aumentó su participación, pasando de 37,7% en
             figMotivosOTT.update_layout(legend=dict(orientation="v",y=0.87,x=0.8,font_size=14),showlegend=True)
             figMotivosOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
             figMotivosOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+            figMotivosOTT.update_layout(xaxis={'categoryorder':'category descending'})
             st.plotly_chart(figMotivosOTT,use_container_width=True)
                                           
     if select_secResumenDinTic == 'Servicios de radiodifusión':                   
         st.markdown(r"""<div class="titulo"><h3>Servicios de radiodifusión</h3></div>""",unsafe_allow_html=True)
         
         ServiciosRadiodifusion=st.radio('',['TV abierta','Radio'],horizontal=True)
-        
+        st.markdown(r"""<hr>""",unsafe_allow_html=True)       
         if ServiciosRadiodifusion=='Radio':
 
             col1,col2=st.columns(2)
@@ -1727,9 +1784,11 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de Radio"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>En el año 2021 Colombia tenía 1.704 emisoras radiales, de las cuales 756 son emisoras comunitarias, 624 son comerciales y 324 son emisoras de interés público.</li>
+                    <li>331 emisoras tienen frecuencia asignada en banda AM y las restantes 1.373 en la banda FM.</li>
+                    <li>Los ingresos de las principales emisoras comerciales fueron 492.8 mil millones de pesos en 2021, 29% más que los registrados el año inmediatamente anterior.</li>
+                    </ul>""",unsafe_allow_html=True)
 
             nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
             'EMPRESA COLOMBIANA DE RADIO SAS':'Empresa Colombiana<br>de radio','RADIO CADENA NACIONAL SAS':'RCN Radio','DIGITAL ESTEREO SAS':'Digital estereo',
@@ -1737,9 +1796,11 @@ Claro aumentó su participación, pasando de 37,7% en
             'CHAR DIAZ SAS':'Char Diaz','VITAL INVERSIONES S.A.':'Vital inversiones','ALIANZA INTEGRAL COM SAS':'Alianza integral','CARACOL TELEVISIÓN S.A.':'Caracol Televisión'}
             ##Ingresos Radio
             IngresosRadio=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/radio_ingresos.csv',delimiter=';',encoding='latin-1')
-            IngresosRadio['ingresos ordinarios']=IngresosRadio['ingresos ordinarios'].astype('int64')
+            IngresosRadio['ingresos ordinarios']=IngresosRadio['ingresos ordinarios'].astype('int64')            
             IngresosRadio['anno']=IngresosRadio['anno'].astype('str')
             IngresosRadio=IngresosRadio.rename(columns={'empresa  ':'empresa','ingresos ordinarios':'ingresos'})
+            IngresosRadio=IngresosRadio.merge(IPCAnuTot,left_on=['anno'],right_on=['anno'])
+            IngresosRadio['ingresos']=IngresosRadio['ingresos']/IngresosRadio['indice2021']
             IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
             ##Número emisoras
             NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='latin-1')
@@ -1758,14 +1819,18 @@ Claro aumentó su participación, pasando de 37,7% en
             NumeroEmisorasDepComunitarias=NumeroEmisorasDepComunitarias.rename(columns={'CODIGO EMISORA':'Número empresas'})
             
             ServiciosRadio=st.selectbox('Escoja el servicio de radio',['Ingresos','Número de emisoras'])
-            st.markdown(r"""<hr>""",unsafe_allow_html=True)
             
             if ServiciosRadio=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'Ingresos en radio por empresa',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
                 'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)']),use_container_width=True)
        
       
             if ServiciosRadio=='Número de emisoras':
+                st.markdown("""<p style="font-size:12px"><b>Nota:</b> Las emisoras comunitarias son aquellas que prestan "un servicio público participativo y pluralista, orientado a satisfacer necesidades de comunicación en el municipio o área objeto de cubrimiento, promueven el desarrollo social, la convivencia pacífica, los valores democráticos, la construcción de ciudadanía y el fortalecimiento de las identidades culturales y
+                sociales". </p>""",unsafe_allow_html=True)
+                st.markdown("""<p style="font-size:12px"><b>Nota:</b> Son ejemplo de emisoras de interés público la Radio Pública Nacional de Colombia, emisoras de la Fuerza Pública (ejército y policía nacional), emisoras territoriales, emisoras educativas, emisoras educativas universitarias, emisoras para atención y prevención de desastres.</p>""",unsafe_allow_html=True)
+                st.markdown("""<p style="font-size:12px"><b>Nota:</b> Las emisoras comerciales son aquellas cuya programación está destinada a la satisfacción de los hábitos y gustos del oyente y el servicio se presta con ánimo de lucro.</p>""",unsafe_allow_html=True)
 
                 col1,col2=st.columns(2)
                 with col1:
@@ -1830,9 +1895,11 @@ Claro aumentó su participación, pasando de 37,7% en
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-abierta.png'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de TV abierta"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Los ingresos por TV abierta alcanzaron 1.78 billones de pesos en 2021, creiciendo a una tasa de 37.2%</li>
+                    <li>Por servicio, la TV abierta privada representa el 66.4% de los ingresos y creció un 24.9%</li>
+                    <li>Los operadores de TV públicos (nacionales, regionales y local sin ánimo de lucro) obtienen ingresos principalmente por transferencias del gobierno nacional y local para su operación.</li>
+                    </ul>""",unsafe_allow_html=True)
             st.markdown('') 
             
             IngresosTVabierta=st.selectbox('Escoja el servicio de TV abierta',['Ingresos por servicio','Ingresos TV pública'])
@@ -1840,6 +1907,10 @@ Claro aumentó su participación, pasando de 37,7% en
             ##Ingresos TV abierta
             TVabierta=TVabierta.dropna()
             TVabierta=TVabierta[TVabierta['ingresos']>0]
+            IPCAnuTot2=IPCAnuTot.copy()
+            IPCAnuTot2['anno']=IPCAnuTot2['anno'].astype('int64')
+            TVabierta=TVabierta.merge(IPCAnuTot2,left_on=['anno'],right_on=['anno'])
+            TVabierta['ingresos']=TVabierta['ingresos']/TVabierta['indice2021']
             TVabierta=TVabierta.rename(columns={'nit':'id_empresa','razon social':'empresa'})   
             TVabiertaNac=TVabierta.groupby(['anno','modalidad'])['ingresos'].sum().reset_index()
             #
@@ -1851,7 +1922,8 @@ Claro aumentó su participación, pasando de 37,7% en
             TVPublica=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_publica.csv',delimiter=';')
             TVPublica=TVPublica.fillna(0)
             
-            if IngresosTVabierta=='Ingresos por servicio':   
+            if IngresosTVabierta=='Ingresos por servicio':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 st.markdown('Escoja la dimensión del análisis')  
                 col1,col2=st.columns(2)
                 with col1:
@@ -1933,7 +2005,7 @@ Claro aumentó su participación, pasando de 37,7% en
         ServiciosInternacionales=st.radio('',['Telefonía fija','Telfonía móvil','Internet fijo','Internet móvil','TV por suscripción'],horizontal=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True) 
 
-        GlobalData=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/GlobalData.csv',delimiter=';',encoding='latin-1')
+        GlobalData=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/GlobalData.csv',delimiter=';')
         GlobalData=GlobalData.iloc[:,:6]
         GlobalData=GlobalData.rename(columns={'Country':'País'})
         GlobalData['País']=GlobalData['País'].replace({'Brazil':'Brasil','Dominican Republic':'República Dominicana'})
@@ -1989,18 +2061,21 @@ if select_seccion =='Postal':
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
             with col2:             
                 with st.expander("Datos relevantes de Correo"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>En 2021 se contabilizaron 85.8 millones de envíos, representando una reducción de 18.3% frente a 2020. Por tipo de envío, los masivos se redujeron 17.8%, lo que corresponde al 83.53% del total de envíos en 2021.</li>
+                    <li>Los ingresos de correo en 2021 fueron de 94 mil millones de pesos, representando 12.7% menos que en 2020. Discriminando por tipo de envío, los ingresos de los envíos indivuales decrecieron un 11.9%. Por su parte, los ingresos en envíos masivos pasaron de 29.78 mil millones en 2020 a 25.38 mil millones en 2021.</li>
+                    </ul>""",unsafe_allow_html=True)
 
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
             ##Número de envíos e ingresos
+            IngresosyEnviosCorreo=IngresosyEnviosCorreo.merge(IPCTrimTot, left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosyEnviosCorreo['Ingresos']=IngresosyEnviosCorreo['Ingresos']/IngresosyEnviosCorreo['indice2021']
             IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
-
             if ServiciosCorreo=='Número de envíos':
                 st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
             
             if ServiciosCorreo=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
 
         if select_DinPos=='Mensajería expresa':
@@ -2009,13 +2084,16 @@ if select_seccion =='Postal':
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
             with col2:             
-                with st.expander("Datos relevantes de Internet móvil"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                with st.expander("Datos relevantes de Mensajería expresa"):
+                    st.markdown(r"""<ul>
+                    <li>En 2021, a través del servicio de mensajería expresa se realizaron 281.5 millones de envíos, 0.6% más que en el año 2020. El 56.5% correspondieron a envíos masivos y el 43.5% restante a envíos individuales.</li>
+                    <li>En materia de ingresos, en 2021 la prestación de este servicio percibió 1.5 billones de pesos, 18.1% más que en 2020. Discriminando por tipo de envío, los envíos individuales acumularon un total de 1.297 mil millones de pesos, aumentando un 19.6% frente a 2020, mientras que los envíos masivos crecieron un 9.6%.</li>
+                    </ul>""",unsafe_allow_html=True)
 
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
             ##Número de envíos e ingresos
+            IngresosyEnviosMExpresa=IngresosyEnviosMExpresa.merge(IPCTrimTot, left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosyEnviosMExpresa['Ingresos']=IngresosyEnviosMExpresa['Ingresos']/IngresosyEnviosMExpresa['indice2021']
             IngresosyEnviosMexpresaNac=IngresosyEnviosMExpresa.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
             IngresosyEnviosMexpresaEMp=IngresosyEnviosMExpresa.groupby(['anno','id_empresa','empresa']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()    
             EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
@@ -2047,6 +2125,7 @@ if select_seccion =='Postal':
                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'Envíos anuales por empresa'),use_container_width=True) 
                     
             if ServiciosCorreo=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 col1,col2,col3=st.columns(3)
                 with col1:
                     LineaTiempoIngresosMenExpresa=st.button('Evolución temporal')
@@ -2078,19 +2157,24 @@ if select_seccion =='Postal':
                         st.plotly_chart(figPieMenExpMas,use_container_width=True)    
 
         if select_DinPos=='Giros':
-            ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros','Ingresos por número de giros'])
+            
 
             col1,col2=st.columns(2)
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
             with col2:             
                 with st.expander("Datos relevantes de Giros"):
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
-                    st.markdown(r"""<ul>Lorem Ipsum is simply dummy text of the printing and typesetting industry</ul>""",unsafe_allow_html=True)
+                    st.markdown(r"""<ul>
+                    <li>Los operadores de los servicios postales de pago movilizaron un total de 20.6 billones de pesos en 2021 en 127.7 millones de giros. El valor de los giros así como el número de envíos redujeron anualmente a tasas de 7.0% y 5.3% respectivamente</li>
+                    <li>Por la prestación de este servicio, los operadores recibieron ingresos de 718.4 mil millones, 11.9% menos que en 2020. Los giros nacionales representaron el 99.4% del total de ingresos.</li>
+                    <li>En 2021, en promedio por cada giro lo operadores tuvieron ingresos de $5626, siendo menores 6.9% a los obtenidos en 2020. El operador con el costo por envío más bajo es MOVIIRED con $2421 y el de mayor costo es SERVICIOS POSTALES NACIONALES con $36448</li>
+                    </ul>""",unsafe_allow_html=True)
+            
+            ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros','Ingresos por número de giros'])
             
             IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
-            
+            IngresosGiros=IngresosGiros.merge(IPCTrimTot, left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
+            IngresosGiros['Ingresos']=IngresosGiros['Ingresos']/IngresosGiros['indice2021']            
             ##Ingresos
             IngresosGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
             IngresosGirosNac=IngresosGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
@@ -2122,6 +2206,7 @@ if select_seccion =='Postal':
             IngresosGiros2=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
             
             if ServiciosGiros=='Ingresos':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
                 st.markdown('')
                 col1,col2,col3=st.columns(3)
                 with col1:
@@ -2178,7 +2263,7 @@ if select_seccion =='Postal':
                         st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'Número de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
 
                 if BarrasNGiros:
-                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',9,'Número de giros anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',1,'Número de giros anuales por empresa'),use_container_width=True)
 
                 if PieNGiros:
                     figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
@@ -2187,3 +2272,29 @@ if select_seccion =='Postal':
                     figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
                     figPieGirNum.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieGirNum,use_container_width=True)
+                    
+            if ServiciosGiros=='Ingresos por número de giros':
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                IngresosPorNGirosNac=IngresosGirosNac.merge(NumeroGirosNac,left_on=['anno','ambito','tipo_envio'],right_on=['anno','ambito','tipo_envio'])
+                IngresosPorNGirosNac['Ingresos/Giros']=round(IngresosPorNGirosNac['Ingresos']/IngresosPorNGirosNac['Giros'],3)
+                IngresosporGirosEmp=IngresosGiros[IngresosGiros['periodo'].isin(['2020-T4','2021-T4'])]
+                IngresosporGirosEmp=IngresosporGirosEmp.groupby(['periodo','empresa','id_empresa']).agg({'Ingresos':'sum','Giros':'sum'}).reset_index()
+                IngresosporGirosEmp['Ingresos/Giros']=round(IngresosporGirosEmp['Ingresos']/IngresosporGirosEmp['Giros'],3)
+                IngresosporGirosEmp=IngresosporGirosEmp.rename(columns={'periodo':'anno'})
+                
+                
+                col1,col2=st.columns(2)
+                with col1:
+                    LineaTiempoIngNGiros=st.button('Evolución temporal')
+                with col2:
+                    BarrasIngNGiros=st.button('Información por operadores')  
+                
+                if LineaTiempoIngNGiros:
+                    col1,col2=st.columns(2)                               
+                    with col1:
+                        st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Nacionales'],'Ingresos/Giros','ambito','Pesos',1,'Ingresos por giros (nacionales)',['rgb(122, 68, 242)']),use_container_width=True)
+                    with col2:    
+                        st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Internacionales'],'Ingresos/Giros','ambito','Pesos',1,'Ingresos por giros (internacionales)<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+
+                if BarrasIngNGiros:
+                    st.plotly_chart(PlotlyBarras(IngresosporGirosEmp,'Ingresos/Giros','Pesos',1,'Ingresos por giros por empresa'),use_container_width=True)
