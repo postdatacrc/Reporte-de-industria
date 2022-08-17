@@ -12,6 +12,8 @@ from streamlit_folium import folium_static
 from st_aggrid import AgGrid
 import geopandas as gpd
 import folium
+from folium.plugins import FloatImage
+import urllib
 
     
 LogoComision="data:image/png;base64,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"
@@ -61,8 +63,6 @@ Colores_pie3={'Colvantes':'rgb(204,0,0)','InterRapidisimo':'rgb(255,128,0)','DHL
              'EIS':'rgb(0,102,102)','Cadena':'rgb(255,51,51)','Datacurrier':'rgb(153,255,51)','Efecty':'rgb(255,213,30)','Matrix':'rgb(153,255,51)',
              '4-72':'rgb(0,0,255)','Supergiros':'rgb(0,102,204)','Moviired':'rgb(255,0,127)'}
 
-
-#['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)']
 Colores_pais={'Argentina':'rgb(116,172,223)','Bolivia':'rgb(0,128,0)','Brasil':'rgb(153,255,51)','Chile':'rgb(255, 51, 51)'
               ,'Colombia':'rgb(255,205,0)','Costa Rica':'rgb(0,43,127)','República Dominicana':'rgb(0,45,98)',
              'Ecuador':'rgb(255,153,51)','El Salvador':'rgb(0,71,171)','Guatemala':'rgb(0,163,230)',
@@ -658,6 +658,19 @@ IPCTrimMov=IPCTrim[IPCTrim['subclase-cod']=='8310400'].drop(columns={'subclase-c
 IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
+##
+#@st.cache(allow_output_mutation=True)
+def gdf_Suramerica():
+    gdf_Int = gpd.read_file("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json")
+    gdf_Int=gdf_Int.rename(columns=({'admin':'País'}))
+    return gdf_Int
+gdf_Int=gdf_Suramerica()
+#@st.cache(allow_output_mutation=True)
+def data_Suramerica():    
+    with urllib.request.urlopen("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json") as url:
+        SURAMERICA = json.loads(url.read().decode())
+    return SURAMERICA
+SURAMERICA=data_Suramerica()  
     
 st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de industria </b> """,unsafe_allow_html=True)
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
@@ -2053,34 +2066,356 @@ Claro aumentó su participación, pasando de 37,7% en
         GlobalData2['Accesos']=GlobalData2['Accesos'].str.replace(',','.').astype('float')
         GlobalData2=GlobalData2[GlobalData2['País'].isin(['Costa Rica','República Dominicana','El Salvador',
                                               'Guatemala','Honduras','Mexico','Nicaragua','Panama'])==False]
-
+      
         if ServiciosInternacionales == 'Telefonía fija':
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
-            TelFijaInt=GlobalData2[GlobalData2['Variable']=='Telefonía fija']
-            st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía fija en Suramérica',''),use_container_width=True)
+            st.markdown("")
+            col1,col2=st.columns(2)
+            with col1:
+                SelectTelFijaInt=st.selectbox('',['Evolución temporal','Penetraciones'])
 
+            if SelectTelFijaInt=='Evolución temporal':
+                TelFijaInt=GlobalData2[GlobalData2['Variable']=='Telefonía fija']            
+                st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía fija en Suramérica',''),use_container_width=True)
+
+            TelFijaInt2=GlobalData2[GlobalData2['Variable'].isin(['Telefonía fija','Hogares'])]
+            TelFijaInt2=pd.pivot(TelFijaInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+            TelFijaInt2['Penetración']=round(100*TelFijaInt2['Telefonía fija']/TelFijaInt2['Hogares'],2)
+            TelFijaInt2['País']=TelFijaInt2['País'].replace({'Brasil':'Brazil'})
+            gdf_GlobalDataTelFija=gdf_Int.merge(TelFijaInt2, left_on=['País'], right_on=['País'])  
+            
+            if SelectTelFijaInt=='Penetraciones':
+                with col2:
+                    BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
+                col1,col2,col3=st.columns([1,1,1])
+                with col2:                    
+                    gdf_GlobalDataTelFija=gdf_GlobalDataTelFija[gdf_GlobalDataTelFija['Año']==BotonAño]
+                    st.markdown('')
+                    suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
+                    choropleth=folium.Choropleth(
+                        geo_data=SURAMERICA,
+                        data=gdf_GlobalDataTelFija,
+                        columns=['País', 'Penetración'],
+                        key_on='feature.properties.name',
+                        bins=[10,20,30,40,50,60,70,80,90,100],
+                        fill_color='Greens', 
+                        fill_opacity=1, 
+                        line_opacity=0.9,
+                        reversescale=True,
+                        legend_name='Penetración',
+                        nan_fill_color = "black",
+                        smooth_factor=0).add_to(suramerica_map)
+
+                    #Adicionar valores velocidad
+                    style_function = lambda x: {'fillColor': '#ffffff', 
+                                                'color':'#000000', 
+                                                'fillOpacity': 0.1, 
+                                                'weight': 0.1}
+                    highlight_function = lambda x: {'fillColor': '#000000', 
+                                                    'color':'#000000', 
+                                                    'fillOpacity': 0.50, 
+                                                    'weight': 0.1}
+                    NIL = folium.features.GeoJson(
+                        data = gdf_GlobalDataTelFija,
+                        style_function=style_function, 
+                        control=False,
+                        highlight_function=highlight_function, 
+                        tooltip=folium.features.GeoJsonTooltip(
+                            fields=['País','Penetración'],
+                            aliases=['País','Penetración'],
+                            style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;") 
+                        )
+                    )
+                    suramerica_map.add_child(NIL)
+                    suramerica_map.keep_in_front(NIL)                           
+                    st.markdown("<center><b>Penetración de Telefonía fija<br>en Suramerica</b></center>",
+                    unsafe_allow_html=True)
+                    #Quitar barra de colores
+                    for key in choropleth._children:
+                        if key.startswith('color_map'):
+                            del(choropleth._children[key])
+                    folium_static(suramerica_map,width=400,height=500)      
+                        
         if ServiciosInternacionales == 'Telefonía móvil':
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
-            TelMovilInt=GlobalData2[GlobalData2['Variable']=='Telefonía móvil']
-            st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía móvil en Suramérica',''),use_container_width=True)
+            st.markdown("")
+            col1,col2=st.columns(2)
+            with col1:
+                SelectTelMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
+            
+            if SelectTelMovilInt=='Evolución temporal':
+                TelMovilInt=GlobalData2[GlobalData2['Variable']=='Telefonía móvil']
+                st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía móvil en Suramérica',''),use_container_width=True)                        
 
+            TelMovilInt2=GlobalData2[GlobalData2['Variable'].isin(['Telefonía móvil','Población'])]
+            TelMovilInt2=pd.pivot(TelMovilInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+            TelMovilInt2['Penetración']=round(100*TelMovilInt2['Telefonía móvil']/TelMovilInt2['Población'],2)
+            TelMovilInt2['País']=TelMovilInt2['País'].replace({'Brasil':'Brazil'})
+            gdf_GlobalDataTelMovil=gdf_Int.merge(TelMovilInt2, left_on=['País'], right_on=['País']) 
+
+            if SelectTelMovilInt=='Penetraciones':
+                with col2:
+                    BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
+                col1,col2,col3=st.columns([1,1,1])
+                with col2:
+                    gdf_GlobalDataTelMovil=gdf_GlobalDataTelMovil[gdf_GlobalDataTelMovil['Año']==BotonAño]
+                
+                    suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
+                    choropleth=folium.Choropleth(
+                        geo_data=SURAMERICA,
+                        data=gdf_GlobalDataTelMovil,
+                        columns=['País', 'Penetración'],
+                        key_on='feature.properties.name',
+                        #bins=[10,20,30,40,50,60,70,80,90,100],
+                        fill_color='Greens', 
+                        fill_opacity=1, 
+                        line_opacity=0.9,
+                        reversescale=True,
+                        legend_name='Penetración',
+                        nan_fill_color = "black",
+                        smooth_factor=0).add_to(suramerica_map)
+
+                    #Adicionar valores velocidad
+                    style_function = lambda x: {'fillColor': '#ffffff', 
+                                                'color':'#000000', 
+                                                'fillOpacity': 0.1, 
+                                                'weight': 0.1}
+                    highlight_function = lambda x: {'fillColor': '#000000', 
+                                                    'color':'#000000', 
+                                                    'fillOpacity': 0.50, 
+                                                    'weight': 0.1}
+                    NIL = folium.features.GeoJson(
+                        data = gdf_GlobalDataTelMovil,
+                        style_function=style_function, 
+                        control=False,
+                        highlight_function=highlight_function, 
+                        tooltip=folium.features.GeoJsonTooltip(
+                            fields=['País','Penetración'],
+                            aliases=['País','Penetración'],
+                            style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;") 
+                        )
+                    )
+                    suramerica_map.add_child(NIL)
+                    suramerica_map.keep_in_front(NIL)                           
+                    st.markdown("<center><b>Penetración de Telefonía móvil<br>en Suramerica</b></center>",
+                    unsafe_allow_html=True)
+                    #Quitar barra de colores
+                    for key in choropleth._children:
+                        if key.startswith('color_map'):
+                            del(choropleth._children[key])
+                    folium_static(suramerica_map,width=400,height=500)   
+            
         if ServiciosInternacionales == 'Internet móvil':
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
-            IntMovilInt=GlobalData2[GlobalData2['Variable']=='Internet móvil']
-            st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'Accesos de Internet móvil en Suramérica',''),use_container_width=True)
+            st.markdown("")
+            col1,col2=st.columns(2)
+            with col1:
+                SelectIntMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
+            
+            if SelectIntMovilInt=='Evolución temporal':
+                IntMovilInt=GlobalData2[GlobalData2['Variable']=='Internet móvil']
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'Accesos de Internet móvil en Suramérica',''),use_container_width=True)
+
+            IntMovilInt2=GlobalData2[GlobalData2['Variable'].isin(['Internet móvil','Población'])]
+            IntMovilInt2=pd.pivot(IntMovilInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+            IntMovilInt2['Penetración']=round(100*IntMovilInt2['Internet móvil']/IntMovilInt2['Población'],2)
+            IntMovilInt2['País']=IntMovilInt2['País'].replace({'Brasil':'Brazil'})
+            gdf_GlobalDataIntMovil=gdf_Int.merge(IntMovilInt2, left_on=['País'], right_on=['País']) 
+
+            if SelectIntMovilInt=='Penetraciones':
+                with col2:
+                    BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
+                col1,col2,col3=st.columns([1,1,1])
+                with col2:
+                    gdf_GlobalDataIntMovil=gdf_GlobalDataIntMovil[gdf_GlobalDataIntMovil['Año']==BotonAño]
+                
+                    suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
+                    choropleth=folium.Choropleth(
+                        geo_data=SURAMERICA,
+                        data=gdf_GlobalDataIntMovil,
+                        columns=['País', 'Penetración'],
+                        key_on='feature.properties.name',
+                        #bins=[10,20,30,40,50,60,70,80,90,100],
+                        fill_color='Greens', 
+                        fill_opacity=1, 
+                        line_opacity=0.9,
+                        reversescale=True,
+                        legend_name='Penetración',
+                        nan_fill_color = "black",
+                        smooth_factor=0).add_to(suramerica_map)
+
+                    #Adicionar valores velocidad
+                    style_function = lambda x: {'fillColor': '#ffffff', 
+                                                'color':'#000000', 
+                                                'fillOpacity': 0.1, 
+                                                'weight': 0.1}
+                    highlight_function = lambda x: {'fillColor': '#000000', 
+                                                    'color':'#000000', 
+                                                    'fillOpacity': 0.50, 
+                                                    'weight': 0.1}
+                    NIL = folium.features.GeoJson(
+                        data = gdf_GlobalDataIntMovil,
+                        style_function=style_function, 
+                        control=False,
+                        highlight_function=highlight_function, 
+                        tooltip=folium.features.GeoJsonTooltip(
+                            fields=['País','Penetración'],
+                            aliases=['País','Penetración'],
+                            style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;") 
+                        )
+                    )
+                    suramerica_map.add_child(NIL)
+                    suramerica_map.keep_in_front(NIL)                           
+                    st.markdown("<center><b>Penetración de Internet móvil<br>en Suramerica</b></center>",
+                    unsafe_allow_html=True)
+                    #Quitar barra de colores
+                    for key in choropleth._children:
+                        if key.startswith('color_map'):
+                            del(choropleth._children[key])
+                    folium_static(suramerica_map,width=400,height=500)   
 
         if ServiciosInternacionales == 'Internet fijo':
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
-            IntMovilfijo=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Internet fijo (Fibra Óptica)'])]
-            IntMovilfijo=pd.pivot(IntMovilfijo,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
-            IntMovilfijo['Fibra óptica(%)']=round(100*IntMovilfijo['Internet fijo (Fibra Óptica)']/IntMovilfijo['Internet fijo'],2)
-            st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Internet fijo','Millones de accesos',1e3,'Accesos de Internet fijo en Suramérica',''),use_container_width=True)
+            st.markdown("")
+            col1,col2=st.columns(2)
+            with col1:
+                SelectIntFijoInt=st.selectbox('',['Evolución temporal','Penetraciones'])
+            
+            if SelectIntFijoInt=='Evolución temporal':    
+                IntMovilfijo=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Internet fijo (Fibra Óptica)'])]
+                IntMovilfijo=pd.pivot(IntMovilfijo,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+                IntMovilfijo['Fibra óptica(%)']=round(100*IntMovilfijo['Internet fijo (Fibra Óptica)']/IntMovilfijo['Internet fijo'],2)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Internet fijo','Millones de accesos',1e3,'Accesos de Internet fijo en Suramérica',''),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Fibra óptica(%)','Porcentaje (%)',1,'Evolución porcentaje Fibra óptica de Internet fijo en Suramérica',''),use_container_width=True)
+
+            IntFijoInt2=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Hogares'])]
+            IntFijoInt2=pd.pivot(IntFijoInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+            IntFijoInt2['Penetración']=round(100*IntFijoInt2['Internet fijo']/IntFijoInt2['Hogares'],2)
+            IntFijoInt2['País']=IntFijoInt2['País'].replace({'Brasil':'Brazil'})
+            gdf_GlobalDataIntFijo=gdf_Int.merge(IntFijoInt2, left_on=['País'], right_on=['País']) 
+
+            if SelectIntFijoInt=='Penetraciones':
+                with col2:
+                    BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
+                col1,col2,col3=st.columns([1,1,1])
+                with col2:                    
+                    gdf_GlobalDataIntFijo=gdf_GlobalDataIntFijo[gdf_GlobalDataIntFijo['Año']==BotonAño]
+                    st.markdown('')
+                    suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
+                    choropleth=folium.Choropleth(
+                        geo_data=SURAMERICA,
+                        data=gdf_GlobalDataIntFijo,
+                        columns=['País', 'Penetración'],
+                        key_on='feature.properties.name',
+                        bins=[10,20,30,40,50,60,70,80,90,100],
+                        fill_color='Greens', 
+                        fill_opacity=1, 
+                        line_opacity=0.9,
+                        reversescale=True,
+                        legend_name='Penetración',
+                        nan_fill_color = "black",
+                        smooth_factor=0).add_to(suramerica_map)
+
+                    #Adicionar valores velocidad
+                    style_function = lambda x: {'fillColor': '#ffffff', 
+                                                'color':'#000000', 
+                                                'fillOpacity': 0.1, 
+                                                'weight': 0.1}
+                    highlight_function = lambda x: {'fillColor': '#000000', 
+                                                    'color':'#000000', 
+                                                    'fillOpacity': 0.50, 
+                                                    'weight': 0.1}
+                    NIL = folium.features.GeoJson(
+                        data = gdf_GlobalDataIntFijo,
+                        style_function=style_function, 
+                        control=False,
+                        highlight_function=highlight_function, 
+                        tooltip=folium.features.GeoJsonTooltip(
+                            fields=['País','Penetración'],
+                            aliases=['País','Penetración'],
+                            style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;") 
+                        )
+                    )
+                    suramerica_map.add_child(NIL)
+                    suramerica_map.keep_in_front(NIL)                           
+                    st.markdown("<center><b>Penetración de Internet fijo<br>en Suramerica</b></center>",
+                    unsafe_allow_html=True)
+                    #Quitar barra de colores
+                    for key in choropleth._children:
+                        if key.startswith('color_map'):
+                            del(choropleth._children[key])
+                    folium_static(suramerica_map,width=400,height=500)      
 
         if ServiciosInternacionales == 'TV por suscripción':
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
-            TVSusInt=GlobalData2[GlobalData2['Variable']=='TV por suscripción']
-            st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'Accesos de TV por suscripción en Suramérica',''),use_container_width=True)
+            st.markdown("")
+            col1,col2=st.columns(2)
+            with col1:
+                SelectTVSusInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
+            if SelectTVSusInt =='Evolución temporal':
+                TVSusInt=GlobalData2[GlobalData2['Variable']=='TV por suscripción']
+                st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'Accesos de TV por suscripción en Suramérica',''),use_container_width=True)
+
+            TVSusInt2=GlobalData2[GlobalData2['Variable'].isin(['TV por suscripción','Hogares'])]
+            TVSusInt2=pd.pivot(TVSusInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+            TVSusInt2['Penetración']=round(100*TVSusInt2['TV por suscripción']/TVSusInt2['Hogares'],2)
+            TVSusInt2['País']=TVSusInt2['País'].replace({'Brasil':'Brazil'})
+            gdf_GlobalDataTVSus=gdf_Int.merge(TVSusInt2, left_on=['País'], right_on=['País']) 
+
+            if SelectTVSusInt=='Penetraciones':
+                with col2:
+                    BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
+                col1,col2,col3=st.columns([1,1,1])
+                with col2:                    
+                    gdf_GlobalDataTVSus=gdf_GlobalDataTVSus[gdf_GlobalDataTVSus['Año']==BotonAño]
+                    st.markdown('')
+                    suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
+                    choropleth=folium.Choropleth(
+                        geo_data=SURAMERICA,
+                        data=gdf_GlobalDataTVSus,
+                        columns=['País', 'Penetración'],
+                        key_on='feature.properties.name',
+                        bins=[10,20,30,40,50,60,70,80,90,100],
+                        fill_color='Greens', 
+                        fill_opacity=1, 
+                        line_opacity=0.9,
+                        reversescale=True,
+                        legend_name='Penetración',
+                        nan_fill_color = "black",
+                        smooth_factor=0).add_to(suramerica_map)
+
+                    #Adicionar valores velocidad
+                    style_function = lambda x: {'fillColor': '#ffffff', 
+                                                'color':'#000000', 
+                                                'fillOpacity': 0.1, 
+                                                'weight': 0.1}
+                    highlight_function = lambda x: {'fillColor': '#000000', 
+                                                    'color':'#000000', 
+                                                    'fillOpacity': 0.50, 
+                                                    'weight': 0.1}
+                    NIL = folium.features.GeoJson(
+                        data = gdf_GlobalDataTVSus,
+                        style_function=style_function, 
+                        control=False,
+                        highlight_function=highlight_function, 
+                        tooltip=folium.features.GeoJsonTooltip(
+                            fields=['País','Penetración'],
+                            aliases=['País','Penetración'],
+                            style=("background-color: white; color: #333333; font-family: arial; font-size: 12px; padding: 10px;") 
+                        )
+                    )
+                    suramerica_map.add_child(NIL)
+                    suramerica_map.keep_in_front(NIL)                           
+                    st.markdown("<center><b>Penetración de TV por suscripción<br>en Suramerica</b></center>",
+                    unsafe_allow_html=True)
+                    #Quitar barra de colores
+                    for key in choropleth._children:
+                        if key.startswith('color_map'):
+                            del(choropleth._children[key])
+                    folium_static(suramerica_map,width=400,height=500)      
+        
+        
 if select_seccion =='Postal':
     st.title("Sector Postal")
 
