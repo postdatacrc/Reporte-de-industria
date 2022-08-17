@@ -676,15 +676,27 @@ st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
-                                    ['Introducción','Resumen ejecutivo','Telecomunicaciones','Postal'])
+                                    ['Portada','Introducción','Telecomunicaciones','Postal'])
 
-if select_seccion == 'Introducción':
-    st.title("Introducción")    
+IntroReporte21=r"""<p style='text-align:justify'>
+2021 fue el año de la recuperación económica. Por lo menos así lo evidencia el principal indicador de actividad económica como es el PIB. Mientras en 2020 este indicador se redujo anualmente a 7% producto de la disrupción generada por el COVID-19, 2021 el PIB se recuperó creciendo 10,7%, recuperando la totalidad de lo perdido en el periodo más duro de la pandemia, lo que significó un crecimiento respecto de 2019, año previo a la emergencia, de 2,9% 
+Sin embargo, el mercado laboral, que es el principal camino para la generación de ingresos de los hogares, 2021 mostró una recuperación frente a 2020, pero no así frente a 2019. La población ocupada promedio del año creció 6,3% frente a 2020, pero aun está por debajo de la de periodo previo de la pandemia en 5,4%. Este es un indicador relevante en la medida que, previamente la CRC, ha mostrado que los altos costos de prestación de los servicios y dificultades para la asequibilidad de los mismos son una barrera para el acceso, por ejemplo, para el servicio de Internet.
+Los escenarios de recuperación no fueron tan claros a lo largo del año, toda vez que en algunas municipalidades se impuso medidas de restricción a la movilidad de las personas las cuales tuvieron impactos sobre algunas actividades económicas. Además. Durante el segundo trimestre se vivió periodos de protestas que condujeron a nuevos bloqueos a la movilidad.
+La inflación que durante 2020 mostró una desaceleración producto de choque negativo de oferta y demanda, siendo esta de 1,61% anual frente a 3,8% de 2019, en 2021 inició escenarios de aceleración tanto por la recuperación en el ritmo de gasto de los hogares como por restricciones logísticas y de oferta. Es así como desde mayo de 2021, la inflación anualizada se ha situado por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5,62%.
+
+En este contexto turbulento de los dos últimos años, las actividades económicas de Información y comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2,6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer a tasa mayor que el resto de la economía (11,4%). La adaptación del trabajo y estudio en casa, condujo a la adaptación del sector, no solo garantizando los servicios de conectividad, si no ofreciendo mayores características como mayor velocidad para el Internet fijo y capacidades de Internet móvil. Además, como expresión de la fortaleza del sector, los precios le quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12,27% en 2021.
+
+</p>
+"""
+
+if select_seccion == 'Portada':
+    st.title("Reporte de industria 2021")    
     st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
     st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
-if select_seccion =='Resumen ejecutivo':
-    st.title("Resumen ejecutivo")
+if select_seccion =='Introducción':
+    st.title("Introducción")
+    st.markdown(IntroReporte21,unsafe_allow_html=True)
         
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
@@ -713,45 +725,21 @@ if select_seccion =='Telecomunicaciones':
         col5.metric("Telefonía fija", "7.55M", "7.86%")
         col6.metric("TV por suscripción", "6.17M", "1.74%")
         st.markdown("<p style='font-size:10px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2020 </p>",unsafe_allow_html=True)
-        col1, col2, = st.columns([4,6])
+        st.markdown('')
+        st.markdown('')
+        st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
+        col1,col2=st.columns(2)
         with col1:
-            st.markdown(r"""<div style="text-align: justify">
-Durante 2020, los ingresos del sector TIC por
-la prestación de servicios fijos, móviles y de
-televisión abierta radiodifundida ascendió
-a $22,1 billones. El 33,9% de los ingresos fue
-generado en la prestación del servicio de
-Internet móvil, seguido del 24,3% de Internet fijo y el
-14,8% en televisión por suscripción. Con respecto a
-2019, el sector presentó un crecimiento nominal de
-2,2% y de 1,6% en términos constantes.
-<br>
-<br>
-En el año 2020, 5 operadores (Claro, Telefónica, Tigo,
-DirecTV y ETB) concentraron el 86,0% de los ingresos
-del sector. En el servicio de Telefonía fija, entre 2019
-y 2020 resaltan los incrementos en la participación
-de Claro y de ETB de 4,7 y 0,6 puntos porcentuales
-(pp). En Internet fijo, Claro aumentó su participación
-en 1,3 pp alcanzando en 2020 el 28,7% de los ingresos
-asociados a este servicio, así como la agrupación “otros” que aumnetó 1,3%.
-<br>
-<br>
-En tanto, en la prestación de televisión por suscripción
-Claro aumentó su participación, pasando de 37,7% en
-2019 a 40% en 2020.</div>
-        """,unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>La prestación de servicios TIC en 2021 generó 23.9 billones de pesos, de los cuales, el 59% fue por la prestación de Internet fijo y móvil. Estos servicios crecieron a tasas reales de 18.9% y 10.4% respectivamente, evidenciando las necesidades de conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos. Por el contrario, los servicios de telefonía fija y móvil evidenciaron reducciones frente a los ingresos generados en 2020.De otra parte, los sectores expuestos a ingresos por pauta publicitaria como lo son los servicios radiodifundidos de televisión y radio mostraron variaciones nominales superiores al 25%. En TV abierta, el crecimiento más que compensó la reducción de ingresos derivado del Covid-19, en tanto en radio, a pesar del crecimiento del 2021, aun los ingresos se sitúan por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
         with col2:
-            st.write("")
-            st.write("")
-            st.write("")
-            st.write("")
-            st.write("")
-            st.write("")            
-            st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/DinamicaIndustriaTic.PNG")   
-        st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/EvolucionPartServOp.PNG")    
-        st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria-2020/main/.DINAMICASECTORTIC/EvolucionPartNusuarios.PNG")
-        
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-TIC.png')
+
+        col1,col2=st.columns(2)
+        with col1:
+            st.markdown("<p style='text-align:justify'>En materia de penetración, los servicios de telecomunicaciones mostraron, en su mayoría, crecimientos en las tasas de penetración de estos. Sólo la penetración de TV por suscripción se ve reducida, pero como resultado de un crecimiento más de en número de hogares respecto reduce, pero por un crecimiento de hogares mayor al crecimiento de los suscriptores.</p>",unsafe_allow_html=True)
+        with col2:
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Penetracion-TIC.png')
+            
     if select_secResumenDinTic == 'Servicios móviles':
         bla="https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true"
         st.markdown(r"""<div class="titulo"><h3>Servicios móviles</h3></div>""",unsafe_allow_html=True)
@@ -2439,7 +2427,21 @@ if select_seccion =='Postal':
         col3.metric("Mensajería expresa", "281.5 M", "0.6%")
         col4.metric("Giros", "127.7M", "-5.3%")      
         st.markdown("<p style='font-size:10px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2020 </p>",unsafe_allow_html=True)
+        st.markdown('')
+        st.markdown('')
+        st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
 
+        col1,col2=st.columns(2)
+        with col1:
+            st.markdown("<p style='text-align:justify'>En 2021, los operadores de servicios tuvieron ingresos por estos servicios por más de 2.3 billones de pesos, equivalente a un crecimiento real de 2.8% frente a 2020. Así mismo, facilitaron la realización de más de 495.1 millones de transacciones, de las cuales el 56.9% correspondieron a envíos de mensajería expresa, 25.8% a giros y el 17.3% de envíos de correo realizados por el Operador Postal Oficial.</p>",unsafe_allow_html=True)
+        with col2:
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-Postal.png')
+
+        col1,col2=st.columns(2)
+        with col1:
+            st.markdown("<p style='text-align:justify'>Un indicador de alcance del servicio es el número de puntos de atención físicos. De los puntos físicos de correo provistos por el Operador Postal Oficial, el 84.5% de estos tuvieron presencia en municipios no capitales. Por el contrario, mensajería expresa tuvo una mayor proporción de puntos de atención en las ciudades capitales en las que se concentró el 61.8% de sus puntos. Finalmente, los operadores postales de pago pusieron a disposición más de 42 mil puntos de atención ubicados en el territorio nacional con presencia en las 32 capitales y 795 municipios más.  Sólo en 142 puntos es posible la realización de envíos o entregas de giros internacionales.</p>",unsafe_allow_html=True)
+        with col2:
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/Puntos-postal.png')
 
     if select_secResumenPos=='Servicios postales':
         st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
