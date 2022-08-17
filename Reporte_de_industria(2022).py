@@ -62,6 +62,13 @@ Colores_pie3={'Colvantes':'rgb(204,0,0)','InterRapidisimo':'rgb(255,128,0)','DHL
              '4-72':'rgb(0,0,255)','Supergiros':'rgb(0,102,204)','Moviired':'rgb(255,0,127)'}
 
 
+#['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)']
+Colores_pais={'Argentina':'rgb(116,172,223)','Bolivia':'rgb(0,128,0)','Brasil':'rgb(153,255,51)','Chile':'rgb(255, 51, 51)'
+              ,'Colombia':'rgb(255,205,0)','Costa Rica':'rgb(0,43,127)','República Dominicana':'rgb(0,45,98)',
+             'Ecuador':'rgb(255,153,51)','El Salvador':'rgb(0,71,171)','Guatemala':'rgb(0,163,230)',
+             'Honduras':'rgb(2,190,230)','Mexico':'rgb(0,104,71)','Nicaragua':'rgb(0,103,198)',
+             'Panama':'rgb(218,18,26)','Peru':'rgb(153,51,255)','Uruguay':'rgb(0,56,168)','Paraguay':'rgb(221,0,35)'}
+
 
 def Participacion(df,column):
     part=df[column]/df[column].sum()
@@ -304,6 +311,38 @@ def PlotlylineatiempoDep(df,column,unidad,titulo,textofuente):
     'xanchor': 'center',
     'yanchor': 'top'})        
     fig.update_layout(barmode='stack',legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5),showlegend=True)
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
+    #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    fig.update_layout(yaxis_tickformat ='d')
+    fig.add_annotation(
+    showarrow=False,
+    text=textofuente,
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)    
+    return fig
+
+def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
+    fig = make_subplots(rows=1, cols=1)
+    maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3  
+    pais=df['País'].unique().tolist()
+    for i,pais in enumerate(pais):
+        df2=df[df['País']==pais]
+        fig.add_trace(go.Scatter(x=df2['Año'],
+        y=df2[column]/escalamiento,text=df[column],
+        name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
+        '<br><b>Accesos</b>: %{y:3f}<br>'+unidad+'<br><b>Año</b>:%{x}',mode='lines+markers',marker=dict(size=7,color=Colores_pais[pais])))  
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text':titulo,
+    'y':0.95,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
     #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
@@ -2002,7 +2041,7 @@ Claro aumentó su participación, pasando de 37,7% en
     if select_secResumenDinTic == 'Comparación internacional':
         st.markdown(r"""<div class="titulo"><h3>Comparación internacional</h3></div>""",unsafe_allow_html=True)
         
-        ServiciosInternacionales=st.radio('',['Telefonía fija','Telfonía móvil','Internet fijo','Internet móvil','TV por suscripción'],horizontal=True)
+        ServiciosInternacionales=st.radio('',['Telefonía fija','Telefonía móvil','Internet fijo','Internet móvil','TV por suscripción'],horizontal=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True) 
 
         GlobalData=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/GlobalData.csv',delimiter=';')
@@ -2012,17 +2051,36 @@ Claro aumentó su participación, pasando de 37,7% en
         GlobalData2=pd.melt(GlobalData,id_vars=['País','Variable'],value_vars=['2018A','2019A','2020A','2021A'],var_name='Año',value_name='Accesos')
         GlobalData2['Año']=GlobalData2['Año'].replace('\D','',regex=True)
         GlobalData2['Accesos']=GlobalData2['Accesos'].str.replace(',','.').astype('float')
-        Colores_pais={'Argentina':'rgb(116,172,223)','Bolivia':'rgb(212,43,30)','Brasil':'rgb(0,188,152)','Chile':'rgb(215,42,31)'
-                      ,'Colombia':'rgb(255,205,0)','Costa Rica':'rgb(0,43,127)','República Dominicana':'rgb(0,45,98)',
-                     'Ecuador':'rgb(255,221,0)','El Salvador':'rgb(0,71,171)','Guatemala':'rgb(0,163,230)',
-                     'Honduras':'rgb(2,190,230)','Mexico':'rgb(0,104,71)','Nicaragua':'rgb(0,103,198)',
-                     'Panama':'rgb(218,18,26)','Peru':'rgb(217,16,35)','Uruguay':'rgb(0,56,168)','Paraguay':'rgb(221,0,35)'}
-
+        GlobalData2=GlobalData2[GlobalData2['País'].isin(['Costa Rica','República Dominicana','El Salvador',
+                                              'Guatemala','Honduras','Mexico','Nicaragua','Panama'])==False]
 
         if ServiciosInternacionales == 'Telefonía fija':
             st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
-            
+            TelFijaInt=GlobalData2[GlobalData2['Variable']=='Telefonía fija']
+            st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía fija en Suramérica',''),use_container_width=True)
 
+        if ServiciosInternacionales == 'Telefonía móvil':
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+            TelMovilInt=GlobalData2[GlobalData2['Variable']=='Telefonía móvil']
+            st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía móvil en Suramérica',''),use_container_width=True)
+
+        if ServiciosInternacionales == 'Internet móvil':
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
+            IntMovilInt=GlobalData2[GlobalData2['Variable']=='Internet móvil']
+            st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'Accesos de Internet móvil en Suramérica',''),use_container_width=True)
+
+        if ServiciosInternacionales == 'Internet fijo':
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
+            IntMovilfijo=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Internet fijo (Fibra Óptica)'])]
+            IntMovilfijo=pd.pivot(IntMovilfijo,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
+            IntMovilfijo['Fibra óptica(%)']=round(100*IntMovilfijo['Internet fijo (Fibra Óptica)']/IntMovilfijo['Internet fijo'],2)
+            st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Internet fijo','Millones de accesos',1e3,'Accesos de Internet fijo en Suramérica',''),use_container_width=True)
+
+        if ServiciosInternacionales == 'TV por suscripción':
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+            TVSusInt=GlobalData2[GlobalData2['Variable']=='TV por suscripción']
+            st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'Accesos de TV por suscripción en Suramérica',''),use_container_width=True)
+            
 if select_seccion =='Postal':
     st.title("Sector Postal")
 
