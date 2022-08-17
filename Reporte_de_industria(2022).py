@@ -2068,10 +2068,10 @@ Claro aumentó su participación, pasando de 37,7% en
                                               'Guatemala','Honduras','Mexico','Nicaragua','Panama'])==False]
       
         if ServiciosInternacionales == 'Telefonía fija':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
-            st.markdown("")
             col1,col2=st.columns(2)
             with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
+            with col2:
                 SelectTelFijaInt=st.selectbox('',['Evolución temporal','Penetraciones'])
 
             if SelectTelFijaInt=='Evolución temporal':
@@ -2137,10 +2137,10 @@ Claro aumentó su participación, pasando de 37,7% en
                     folium_static(suramerica_map,width=400,height=500)      
                         
         if ServiciosInternacionales == 'Telefonía móvil':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
-            st.markdown("")
             col1,col2=st.columns(2)
             with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+            with col2:
                 SelectTelMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectTelMovilInt=='Evolución temporal':
@@ -2206,10 +2206,10 @@ Claro aumentó su participación, pasando de 37,7% en
                     folium_static(suramerica_map,width=400,height=500)   
             
         if ServiciosInternacionales == 'Internet móvil':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
-            st.markdown("")
             col1,col2=st.columns(2)
             with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
+            with col2:
                 SelectIntMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectIntMovilInt=='Evolución temporal':
@@ -2275,10 +2275,10 @@ Claro aumentó su participación, pasando de 37,7% en
                     folium_static(suramerica_map,width=400,height=500)   
 
         if ServiciosInternacionales == 'Internet fijo':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
-            st.markdown("")
             col1,col2=st.columns(2)
             with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
+            with col2:
                 SelectIntFijoInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectIntFijoInt=='Evolución temporal':    
@@ -2347,10 +2347,10 @@ Claro aumentó su participación, pasando de 37,7% en
                     folium_static(suramerica_map,width=400,height=500)      
 
         if ServiciosInternacionales == 'TV por suscripción':
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
-            st.markdown("")
             col1,col2=st.columns(2)
             with col1:
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+            with col2:
                 SelectTVSusInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectTVSusInt =='Evolución temporal':
