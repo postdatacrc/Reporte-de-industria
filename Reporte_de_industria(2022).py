@@ -328,7 +328,7 @@ def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
     for i,pais in enumerate(pais):
         df2=df[df['País']==pais]
         fig.add_trace(go.Scatter(x=df2['Año'],
-        y=df2[column]/escalamiento,text=df[column],
+        y=round(df2[column]/escalamiento,2),text=df[column],
         name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
         '<br><b>Accesos</b>: %{y:3f}<br>'+unidad+'<br><b>Año</b>:%{x}',mode='lines+markers',marker=dict(size=7,color=Colores_pais[pais])))  
     fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
@@ -350,7 +350,7 @@ def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
     fig.add_annotation(
     showarrow=False,
     text=textofuente,
-    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.4)    
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.15)    
     return fig
  
 def PlotlyBarras(df,column,unidad,escalamiento,titulo):   
@@ -452,6 +452,38 @@ def PlotlyBarrasEmp(df,column,unidad,escalamiento,titulo,colores):
     fig.update_layout(legend=dict(orientation="v",y=1,x=0.95,font_size=12),showlegend=True,barmode='stack',yaxis={'categoryorder':'category descending'})
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',xaxis_tickformat='d')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    return fig
+
+def PlotlyBarrasInt(df,column,unidad,escalamiento,titulo,textofuente):       
+    fig = make_subplots(rows=1, cols=1)
+    df=df.sort_values(by=column,ascending=False)
+    maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.3  
+    pais=df['País'].unique().tolist()
+    for i,pais in enumerate(pais):
+        df2=df[df['País']==pais]
+        fig.add_trace(go.Bar(x=df2['Cod_pais'],
+        y=df2[column]/escalamiento,
+        name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
+        '<br><b>Penetración (%)</b>: %{y:3f}',marker_color=Colores_pais[pais]))
+    fig.update_layout(barmode='group')
+    fig.update_yaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=unidad,row=1, col=1,
+    zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
+    fig.update_xaxes(tickangle=0,tickfont=dict(family='Boston', color='black', size=11),titlefont_size=18, title_text=None, row=1, col=1)
+    fig.update_layout(height=550,legend_title=None)
+    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    title={
+    'text': titulo,
+    'y':0.91,
+    'x':0.5,
+    'xanchor': 'center',
+    'yanchor': 'top'})        
+    fig.update_layout(showlegend=False,barmode='stack',yaxis={'categoryorder':'total ascending'})
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',xaxis_tickformat='d')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
+    fig.add_annotation(
+    showarrow=False,
+    text=textofuente,
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.15)    
     return fig
 
 st.set_page_config(
@@ -676,16 +708,48 @@ st.sidebar.markdown(r"""<b style="font-size: 26px;text-align:center"> Reporte de
 st.sidebar.markdown(r"""<hr>""",unsafe_allow_html=True)
 st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
-                                    ['Portada','Introducción','Telecomunicaciones','Postal'])
+                                    ['Portada','Carta editorial','Introducción','Telecomunicaciones','Postal'])
 
-IntroReporte21=r"""<p style='text-align:justify'>
-2021 fue el año de la recuperación económica. Por lo menos así lo evidencia el principal indicador de actividad económica como es el PIB. Mientras en 2020 este indicador se redujo anualmente a 7% producto de la disrupción generada por el COVID-19, 2021 el PIB se recuperó creciendo 10,7%, recuperando la totalidad de lo perdido en el periodo más duro de la pandemia, lo que significó un crecimiento respecto de 2019, año previo a la emergencia, de 2,9% 
-Sin embargo, el mercado laboral, que es el principal camino para la generación de ingresos de los hogares, 2021 mostró una recuperación frente a 2020, pero no así frente a 2019. La población ocupada promedio del año creció 6,3% frente a 2020, pero aun está por debajo de la de periodo previo de la pandemia en 5,4%. Este es un indicador relevante en la medida que, previamente la CRC, ha mostrado que los altos costos de prestación de los servicios y dificultades para la asequibilidad de los mismos son una barrera para el acceso, por ejemplo, para el servicio de Internet.
+IntroReporte21Sec1=r"""<p style='text-align:justify'>
+2021 fue el año de la recuperación económica. Por lo menos así lo evidencia el principal indicador de actividad económica como es el PIB. Mientras en 2020 este indicador se redujo anualmente a 7% producto de la disrupción generada por el COVID-19, en 2021 el PIB se recuperó creciendo 10.7%, recuperando la totalidad de lo perdido en el periodo más duro de la pandemia, lo que significó un crecimiento respecto de 2019, año previo a la emergencia, de 2.9% 
+Sin embargo, el mercado laboral, que es el principal camino para la generación de ingresos de los hogares, 2021 mostró una recuperación frente a 2020, pero no así frente a 2019. La población ocupada promedio del año creció 6.3% frente a 2020, pero aun está por debajo de la de periodo previo de la pandemia en 5.4%.
+</p>
+"""
+
+IntroReporte21Sec2=r"""<p style='text-align:justify'>
+Este es un indicador relevante en la medida que, previamente la CRC, ha mostrado que los altos costos de prestación de los servicios y dificultades para la asequibilidad de los mismos son una barrera para el acceso, por ejemplo, para el servicio de Internet.
 Los escenarios de recuperación no fueron tan claros a lo largo del año, toda vez que en algunas municipalidades se impuso medidas de restricción a la movilidad de las personas las cuales tuvieron impactos sobre algunas actividades económicas. Además. Durante el segundo trimestre se vivió periodos de protestas que condujeron a nuevos bloqueos a la movilidad.
-La inflación que durante 2020 mostró una desaceleración producto de choque negativo de oferta y demanda, siendo esta de 1,61% anual frente a 3,8% de 2019, en 2021 inició escenarios de aceleración tanto por la recuperación en el ritmo de gasto de los hogares como por restricciones logísticas y de oferta. Es así como desde mayo de 2021, la inflación anualizada se ha situado por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5,62%.
+La inflación que durante 2020 mostró una desaceleración producto de choque negativo de oferta y demanda, siendo esta de 1.61% anual frente a 3.8% de 2019, en 2021 inició escenarios de aceleración tanto por la recuperación en el ritmo de gasto de los hogares como por restricciones logísticas y de oferta. Es así como desde mayo de 2021, la inflación anualizada se ha situado por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5.62%.
+</p>
+"""
+IntroReporte21Sec3=r"""<p style='text-align:justify'>
+En este contexto turbulento de los dos últimos años, las actividades económicas de Información y comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2.6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer a tasa mayor que el resto de la economía (11.4%). La adaptación del trabajo y estudio en casa, condujo a la adaptación del sector, no solo garantizando los servicios de conectividad, si no ofreciendo mayores características como mayor velocidad para el Internet fijo y capacidades de Internet móvil. Además, como expresión de la fortaleza del sector, los precios le quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12.27% en 2021.
+</p>
+"""
 
-En este contexto turbulento de los dos últimos años, las actividades económicas de Información y comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2,6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer a tasa mayor que el resto de la economía (11,4%). La adaptación del trabajo y estudio en casa, condujo a la adaptación del sector, no solo garantizando los servicios de conectividad, si no ofreciendo mayores características como mayor velocidad para el Internet fijo y capacidades de Internet móvil. Además, como expresión de la fortaleza del sector, los precios le quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12,27% en 2021.
+CartaEditorialSec1=r"""<p style='text-align:justify'>
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+</p>
+"""
 
+CartaEditorialSec2=r"""<p style='text-align:justify'>
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Lorem Ipsum is simply dummy text of the printing and typesetting industry
 </p>
 """
 
@@ -694,10 +758,34 @@ if select_seccion == 'Portada':
     st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
     st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
+if select_seccion =='Carta editorial':
+    st.title("Carta editorial")
+    col1,col2=st.columns([2,1])
+    with col1:
+        st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
+    with col2:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/PaolaB.png', width=250)
+    st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
+
 if select_seccion =='Introducción':
     st.title("Introducción")
-    st.markdown(IntroReporte21,unsafe_allow_html=True)
-        
+    st.markdown(r"""<center><h2>Aspectos generales de los sectores <br>TIC y postal en 2021</h2></center>""",unsafe_allow_html=True)
+    col1,col2=st.columns([2,1])
+    with col1:
+        st.markdown(IntroReporte21Sec1,unsafe_allow_html=True)
+    with col2:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png')
+    col1,col2=st.columns([1,2])
+    with col1:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png')
+    with col2:
+        st.markdown(IntroReporte21Sec2,unsafe_allow_html=True)
+    col1,col2=st.columns([2,1])
+    with col1:
+        st.markdown(IntroReporte21Sec3,unsafe_allow_html=True)
+    with col2:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png')
+    
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
     select_secResumenDinTic = st.sidebar.selectbox('Seleccione el sector a consultar',['Información general',
@@ -1689,7 +1777,6 @@ if select_seccion =='Telecomunicaciones':
                 if LineaTiempoSuscriptoresTVSus:
                     SuscriptoresTVSusNac['periodo_formato']=SuscriptoresTVSusNac['periodo'].apply(periodoformato)
                     st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Suscriptores TV por suscripción por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-            
                 if BarrasSuscriptoresTVSus:
                     st.plotly_chart(PlotlyBarras(SuscriptoresTVSusEmp,'suscriptores','',1,'Suscriptores anuales por empresa'),use_container_width=True)
                 
@@ -2053,30 +2140,47 @@ if select_seccion =='Telecomunicaciones':
         GlobalData2['Año']=GlobalData2['Año'].replace('\D','',regex=True)
         GlobalData2['Accesos']=GlobalData2['Accesos'].str.replace(',','.').astype('float')
         GlobalData2=GlobalData2[GlobalData2['País'].isin(['Costa Rica','República Dominicana','El Salvador',
-                                              'Guatemala','Honduras','Mexico','Nicaragua','Panama'])==False]
-      
+                                              'Guatemala','Honduras','Mexico','Nicaragua','Panama','Colombia'])==False]
+        ColombiaInt=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/Colombia_Internacional.csv',delimiter=';',encoding='latin-1')
+        ColombiaInt.columns=GlobalData2.columns
+        ColombiaInt['Accesos']=ColombiaInt['Accesos']/1e3
+        ColombiaInt['Variable']=ColombiaInt['Variable'].replace({'Internet fijo (Fibra Óptica) ':'Internet fijo (Fibra Óptica)'})
+        ColombiaInt['Año']=ColombiaInt['Año'].astype('str')
+        GlobalData2=pd.concat([GlobalData2,ColombiaInt])
+        
         if ServiciosInternacionales == 'Telefonía fija':
             col1,col2=st.columns(2)
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
             with col2:
+                with st.expander("Datos relevantes de Telefonía fija"):
+                    st.markdown(r"""<ul>
+                    <li>En 2021 Colombia registró un total de 7.55 Millones de líneas, y presentó una penetración del 44.71%, ubicandose en este indicador en la tercera posición.</li>
+                    </ul>""",unsafe_allow_html=True)
                 SelectTelFijaInt=st.selectbox('',['Evolución temporal','Penetraciones'])
 
             if SelectTelFijaInt=='Evolución temporal':
                 TelFijaInt=GlobalData2[GlobalData2['Variable']=='Telefonía fija']            
-                st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía fija en Suramérica',''),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía fija en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
 
             TelFijaInt2=GlobalData2[GlobalData2['Variable'].isin(['Telefonía fija','Hogares'])]
             TelFijaInt2=pd.pivot(TelFijaInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
             TelFijaInt2['Penetración']=round(100*TelFijaInt2['Telefonía fija']/TelFijaInt2['Hogares'],2)
-            TelFijaInt2['País']=TelFijaInt2['País'].replace({'Brasil':'Brazil'})
+            TelFijaInt2['País']=TelFijaInt2['País'].replace({'Brasil':'Brazil'})            
             gdf_GlobalDataTelFija=gdf_Int.merge(TelFijaInt2, left_on=['País'], right_on=['País'])  
             
             if SelectTelFijaInt=='Penetraciones':
                 with col2:
                     BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
-                col1,col2,col3=st.columns([1,1,1])
-                with col2:                    
+                col1,col2=st.columns([1,1])
+                
+                with col2:
+                    TelFijaInt2=TelFijaInt2[TelFijaInt2['Año']==BotonAño]
+                    TelFijaInt2['País']=TelFijaInt2['País'].replace({'Brazil':'Brasil'}) 
+                    TelFijaInt2['Cod_pais']=TelFijaInt2['País'].apply(lambda x: x[0:3].upper())
+                    st.plotly_chart(PlotlyBarrasInt(TelFijaInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                
+                with col1:                    
                     gdf_GlobalDataTelFija=gdf_GlobalDataTelFija[gdf_GlobalDataTelFija['Año']==BotonAño]
                     st.markdown('')
                     suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
@@ -2116,7 +2220,7 @@ if select_seccion =='Telecomunicaciones':
                     )
                     suramerica_map.add_child(NIL)
                     suramerica_map.keep_in_front(NIL)                           
-                    st.markdown("<center><b>Penetración de Telefonía fija<br>en Suramerica</b></center>",
+                    st.markdown("<b>Penetración de Telefonía fija en Suramerica</b>-"+BotonAño,
                     unsafe_allow_html=True)
                     #Quitar barra de colores
                     for key in choropleth._children:
@@ -2129,11 +2233,15 @@ if select_seccion =='Telecomunicaciones':
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
             with col2:
+                with st.expander("Datos relevantes de Telefonía móvil"):
+                    st.markdown(r"""<ul>
+                    <li>En 2021 Colombia registró un total de 75.06 Millones de líneas, y presentó una penetración del 147%, ubicandose en este indicador en la primera posición.</li>
+                    </ul>""",unsafe_allow_html=True)
                 SelectTelMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectTelMovilInt=='Evolución temporal':
                 TelMovilInt=GlobalData2[GlobalData2['Variable']=='Telefonía móvil']
-                st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía móvil en Suramérica',''),use_container_width=True)                        
+                st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía móvil en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)                        
 
             TelMovilInt2=GlobalData2[GlobalData2['Variable'].isin(['Telefonía móvil','Población'])]
             TelMovilInt2=pd.pivot(TelMovilInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2144,8 +2252,15 @@ if select_seccion =='Telecomunicaciones':
             if SelectTelMovilInt=='Penetraciones':
                 with col2:
                     BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
-                col1,col2,col3=st.columns([1,1,1])
+                col1,col2=st.columns([1,1])
+                
                 with col2:
+                    TelMovilInt2=TelMovilInt2[TelMovilInt2['Año']==BotonAño]
+                    TelMovilInt2['País']=TelMovilInt2['País'].replace({'Brazil':'Brasil'}) 
+                    TelMovilInt2['Cod_pais']=TelMovilInt2['País'].apply(lambda x: x[0:3].upper())
+                    st.plotly_chart(PlotlyBarrasInt(TelMovilInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                
+                with col1:
                     gdf_GlobalDataTelMovil=gdf_GlobalDataTelMovil[gdf_GlobalDataTelMovil['Año']==BotonAño]
                 
                     suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
@@ -2185,7 +2300,7 @@ if select_seccion =='Telecomunicaciones':
                     )
                     suramerica_map.add_child(NIL)
                     suramerica_map.keep_in_front(NIL)                           
-                    st.markdown("<center><b>Penetración de Telefonía móvil<br>en Suramerica</b></center>",
+                    st.markdown("<b>Penetración de Telefonía móvil en Suramerica -</b>"+BotonAño,
                     unsafe_allow_html=True)
                     #Quitar barra de colores
                     for key in choropleth._children:
@@ -2198,11 +2313,15 @@ if select_seccion =='Telecomunicaciones':
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
             with col2:
+                with st.expander("Datos relevantes de Internet móvil"):
+                    st.markdown(r"""<ul>
+                    <li>En 2021 Colombia registró un total de 37.96 Millones de accesos, y presentó una penetración del 74.4%, ubicandose en este indicador en la quinta posición.</li>
+                    </ul>""",unsafe_allow_html=True)
                 SelectIntMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectIntMovilInt=='Evolución temporal':
                 IntMovilInt=GlobalData2[GlobalData2['Variable']=='Internet móvil']
-                st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'Accesos de Internet móvil en Suramérica',''),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'Accesos de Internet móvil en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
 
             IntMovilInt2=GlobalData2[GlobalData2['Variable'].isin(['Internet móvil','Población'])]
             IntMovilInt2=pd.pivot(IntMovilInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2213,8 +2332,15 @@ if select_seccion =='Telecomunicaciones':
             if SelectIntMovilInt=='Penetraciones':
                 with col2:
                     BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
-                col1,col2,col3=st.columns([1,1,1])
+                col1,col2=st.columns([1,1])
+
                 with col2:
+                    IntMovilInt2=IntMovilInt2[IntMovilInt2['Año']==BotonAño]
+                    IntMovilInt2['País']=IntMovilInt2['País'].replace({'Brazil':'Brasil'})
+                    IntMovilInt2['Cod_pais']=IntMovilInt2['País'].apply(lambda x: x[0:3].upper())                    
+                    st.plotly_chart(PlotlyBarrasInt(IntMovilInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+
+                with col1:
                     gdf_GlobalDataIntMovil=gdf_GlobalDataIntMovil[gdf_GlobalDataIntMovil['Año']==BotonAño]
                 
                     suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
@@ -2254,7 +2380,7 @@ if select_seccion =='Telecomunicaciones':
                     )
                     suramerica_map.add_child(NIL)
                     suramerica_map.keep_in_front(NIL)                           
-                    st.markdown("<center><b>Penetración de Internet móvil<br>en Suramerica</b></center>",
+                    st.markdown("<b>Penetración de Internet móvil en Suramerica -</b>"+BotonAño,
                     unsafe_allow_html=True)
                     #Quitar barra de colores
                     for key in choropleth._children:
@@ -2267,6 +2393,10 @@ if select_seccion =='Telecomunicaciones':
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
             with col2:
+                with st.expander("Datos relevantes de Internet fijo"):
+                    st.markdown(r"""<ul>
+                    <li>En 2021 Colombia registró un total de 8.43 Millones de accesos, y presentó una penetración del 49.9%, ubicandose en este indicador en la sexta posición.</li>
+                    </ul>""",unsafe_allow_html=True)
                 SelectIntFijoInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectIntFijoInt=='Evolución temporal':    
@@ -2274,7 +2404,7 @@ if select_seccion =='Telecomunicaciones':
                 IntMovilfijo=pd.pivot(IntMovilfijo,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
                 IntMovilfijo['Fibra óptica(%)']=round(100*IntMovilfijo['Internet fijo (Fibra Óptica)']/IntMovilfijo['Internet fijo'],2)
                 st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Internet fijo','Millones de accesos',1e3,'Accesos de Internet fijo en Suramérica',''),use_container_width=True)
-                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Fibra óptica(%)','Porcentaje (%)',1,'Evolución porcentaje Fibra óptica de Internet fijo en Suramérica',''),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Fibra óptica(%)','Porcentaje (%)',1,'Evolución porcentaje Fibra óptica de Internet fijo en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
 
             IntFijoInt2=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Hogares'])]
             IntFijoInt2=pd.pivot(IntFijoInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2285,8 +2415,16 @@ if select_seccion =='Telecomunicaciones':
             if SelectIntFijoInt=='Penetraciones':
                 with col2:
                     BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
-                col1,col2,col3=st.columns([1,1,1])
-                with col2:                    
+
+                col1,col2=st.columns([1,1])
+
+                with col2:
+                    IntFijoInt2=IntFijoInt2[IntFijoInt2['Año']==BotonAño]
+                    IntFijoInt2['País']=IntFijoInt2['País'].replace({'Brazil':'Brasil'}) 
+                    IntFijoInt2['Cod_pais']=IntFijoInt2['País'].apply(lambda x: x[0:3].upper())
+                    st.plotly_chart(PlotlyBarrasInt(IntFijoInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+
+                with col1:                    
                     gdf_GlobalDataIntFijo=gdf_GlobalDataIntFijo[gdf_GlobalDataIntFijo['Año']==BotonAño]
                     st.markdown('')
                     suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
@@ -2326,7 +2464,7 @@ if select_seccion =='Telecomunicaciones':
                     )
                     suramerica_map.add_child(NIL)
                     suramerica_map.keep_in_front(NIL)                           
-                    st.markdown("<center><b>Penetración de Internet fijo<br>en Suramerica</b></center>",
+                    st.markdown("<b>Penetración de Internet fijo en Suramerica -</b>"+BotonAño,
                     unsafe_allow_html=True)
                     #Quitar barra de colores
                     for key in choropleth._children:
@@ -2339,11 +2477,15 @@ if select_seccion =='Telecomunicaciones':
             with col1:
                 st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
             with col2:
+                with st.expander("Datos relevantes de TV por suscripción"):
+                    st.markdown(r"""<ul>
+                    <li>En 2021 Colombia registró un total de 6.17 Millones de suscriptores, y presentó una penetración del 36.5%, ubicandose en este indicador en la cuarta posición.</li>
+                    </ul>""",unsafe_allow_html=True)
                 SelectTVSusInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectTVSusInt =='Evolución temporal':
                 TVSusInt=GlobalData2[GlobalData2['Variable']=='TV por suscripción']
-                st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'Accesos de TV por suscripción en Suramérica',''),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'Accesos de TV por suscripción en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
 
             TVSusInt2=GlobalData2[GlobalData2['Variable'].isin(['TV por suscripción','Hogares'])]
             TVSusInt2=pd.pivot(TVSusInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2354,8 +2496,15 @@ if select_seccion =='Telecomunicaciones':
             if SelectTVSusInt=='Penetraciones':
                 with col2:
                     BotonAño=st.selectbox('Escoja el año para visualizar la penetración',['2018','2019','2020','2021'],3)
-                col1,col2,col3=st.columns([1,1,1])
-                with col2:                    
+                col1,col2=st.columns([1,1])
+
+                with col2:
+                    TVSusInt2=TVSusInt2[TVSusInt2['Año']==BotonAño]
+                    TVSusInt2['País']=TVSusInt2['País'].replace({'Brazil':'Brasil'})
+                    TVSusInt2['Cod_pais']=TVSusInt2['País'].apply(lambda x: x[0:3].upper())                    
+                    st.plotly_chart(PlotlyBarrasInt(TVSusInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+
+                with col1:                    
                     gdf_GlobalDataTVSus=gdf_GlobalDataTVSus[gdf_GlobalDataTVSus['Año']==BotonAño]
                     st.markdown('')
                     suramerica_map = folium.Map(location=[-24, -60], zoom_start=3,tiles='cartodbpositron')
@@ -2395,7 +2544,7 @@ if select_seccion =='Telecomunicaciones':
                     )
                     suramerica_map.add_child(NIL)
                     suramerica_map.keep_in_front(NIL)                           
-                    st.markdown("<center><b>Penetración de TV por suscripción<br>en Suramerica</b></center>",
+                    st.markdown("<b>Penetración de TV por suscripción en Suramerica -</b>"+BotonAño,
                     unsafe_allow_html=True)
                     #Quitar barra de colores
                     for key in choropleth._children:
