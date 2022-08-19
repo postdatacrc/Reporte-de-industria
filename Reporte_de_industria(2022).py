@@ -70,6 +70,7 @@ Colores_pais={'Argentina':'rgb(116,172,223)','Bolivia':'rgb(0,128,0)','Brasil':'
              'Panama':'rgb(218,18,26)','Peru':'rgb(153,51,255)','Uruguay':'rgb(0,56,168)','Paraguay':'rgb(221,0,35)'}
 
 
+
 def Participacion(df,column):
     part=df[column]/df[column].sum()
     return part
@@ -150,7 +151,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
             '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
             '<br><b>Periodo</b>: %{x}<br>'+                         
             column.capitalize()+'-'+unidad+': %{y:.3f}<br>'))
-        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
+        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
         maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.1  
@@ -159,11 +160,11 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
                                 y=df[column]/escalamiento,marker_color='rgb(102,204,0)',name=column,
                                 hovertemplate ='<br><b>Periodo</b>: %{x}<br><extra></extra>'+                         
             column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
-        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -177,7 +178,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
     fig.add_annotation(
     showarrow=False,
     text=textofuente,
-    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.2)
+    font=dict(size=12), xref='x domain',x=0.5,yref='y domain',y=-0.2)
     return fig
 
 def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofuente):
@@ -192,7 +193,7 @@ def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofu
             '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
             '<br><b>Periodo</b>: %{x}<br>'+                         
             column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
-        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
+        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
         maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.1  
@@ -201,11 +202,11 @@ def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofu
                                 y=df[column]/escalamiento,marker_color='rgb(102,204,0)',name=column,
                                 hovertemplate ='<br><b>Periodo</b>: %{x}<br><extra></extra>'+                         
             column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
-        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -235,11 +236,11 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores,titulo,textofuent
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>',mode='lines+markers',marker=dict(size=7)))
     fig.update_layout(barmode='group')    
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -268,11 +269,11 @@ def PlotlylineatiempoEmp(df,column,unidad,colores,titulo,textofuente):
         '<br><b>Empresa</b>:<br><extra></extra>'+elem+
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -299,11 +300,11 @@ def PlotlylineatiempoDep(df,column,unidad,titulo,textofuente):
         '<br><b>Departamento</b>:<br><extra></extra>'+elem+
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
-    fig.update_yaxes(tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -330,12 +331,12 @@ def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
         fig.add_trace(go.Scatter(x=df2['Año'],
         y=round(df2[column]/escalamiento,2),text=df[column],
         name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
-        '<br><b>Accesos</b>: %{y:3f}<br>'+unidad+'<br><b>Año</b>:%{x}',mode='lines+markers',marker=dict(size=7,color=Colores_pais[pais])))  
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Boton', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=14),title_text=None,row=1, col=1
+        '<br><b>Accesos</b>: %{y:3f}',mode='lines+markers',marker=dict(size=7,color=Colores_pais[pais])))  
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -346,11 +347,11 @@ def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
     #fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.4)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-    fig.update_layout(yaxis_tickformat ='d')
+    fig.update_layout(yaxis_tickformat ='d',hovermode='x')
     fig.add_annotation(
     showarrow=False,
     text=textofuente,
-    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.15)    
+    font=dict(size=12), xref='x domain',x=0.5,yref='y domain',y=-0.15)    
     return fig
  
 def PlotlyBarras(df,column,unidad,escalamiento,titulo):   
@@ -362,11 +363,11 @@ def PlotlyBarras(df,column,unidad,escalamiento,titulo):
                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
         column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
     fig.update_layout(barmode='group')
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.98,
@@ -389,11 +390,11 @@ def PlotyMultiIndexBarra(df,column,unidad,titulo,escalamiento):
         hovertemplate='<br><b>Ámbito</b>:<br><extra></extra>'+ambito+'<br>'+                       
         column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
     fig.update_layout(barmode='group')
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.98,
@@ -413,11 +414,11 @@ def PlotlyBarras2(df,column,modalidad,unidad,escalamiento,titulo,colores):
                              ,marker_color=colores[i],name=elem,hovertemplate=modalidad.capitalize()+':'+elem+'<br>'+                       
         column.capitalize()+'-'+unidad+': %{y:.3f}<br>'))      
     fig.update_layout(barmode='group')
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.95,
@@ -438,11 +439,11 @@ def PlotlyBarrasEmp(df,column,unidad,escalamiento,titulo,colores):
                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
         column.capitalize()+' '+unidad+': %{x:.3f}<br>'))
     fig.update_layout(barmode='group')
-    fig.update_yaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_yaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_xaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_xaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.91,
@@ -466,11 +467,11 @@ def PlotlyBarrasInt(df,column,unidad,escalamiento,titulo,textofuente):
         name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
         '<br><b>Penetración (%)</b>: %{y:3f}',marker_color=Colores_pais[pais]))
     fig.update_layout(barmode='group')
-    fig.update_yaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=unidad,row=1, col=1,
+    fig.update_yaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=unidad,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_xaxes(tickangle=0,tickfont=dict(family='Boston', color='black', size=11),titlefont_size=18, title_text=None, row=1, col=1)
+    fig.update_xaxes(tickangle=0,tickfont=dict(family='sans-serif', color='black', size=11),titlefont_size=18, title_text=None, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.91,
@@ -490,6 +491,11 @@ st.set_page_config(
     page_title="Reporte de industria 2021", page_icon=LogoComision,layout="wide",initial_sidebar_state="expanded")
  
 Estilo_css="""<style type="text/css">
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); 
+
+    html, body, [class*="css"] {
+        font-family: 'Poppins', serif; 
+    }  
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
         width: 300px;}
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
@@ -606,7 +612,7 @@ Estilo_css="""<style type="text/css">
     ul {
     list-style-type: square;
     text-align:left;
-    }
+    }      
     </style>"""
 Barra_superior="""
 <div class="barra-superior">
@@ -765,6 +771,7 @@ if select_seccion =='Carta editorial':
         st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
     with col2:
         st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/PaolaB.png', width=250)
+        st.markdown("Paola Andrea Bonilla<br><b>Comisionada y Directora Ejecutiva</b>",unsafe_allow_html=True)
     st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
 
 if select_seccion =='Introducción':
@@ -774,17 +781,17 @@ if select_seccion =='Introducción':
     with col1:
         st.markdown(IntroReporte21Sec1,unsafe_allow_html=True)
     with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png')
-    col1,col2=st.columns([1,2])
-    with col1:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png')
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png', width=325)
+    col1,col2=st.columns([2,1])
     with col2:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png', width=325)
+    with col1:
         st.markdown(IntroReporte21Sec2,unsafe_allow_html=True)
     col1,col2=st.columns([2,1])
     with col1:
         st.markdown(IntroReporte21Sec3,unsafe_allow_html=True)
     with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png')
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png', width=325)
     
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
@@ -820,7 +827,9 @@ if select_seccion =='Telecomunicaciones':
         with col1:
             st.markdown("<p style='text-align:justify'>La prestación de servicios TIC en 2021 generó 23.9 billones de pesos, de los cuales, el 59% fue por la prestación de Internet fijo y móvil. Estos servicios crecieron a tasas reales de 18.9% y 10.4% respectivamente, evidenciando las necesidades de conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos. Por el contrario, los servicios de telefonía fija y móvil evidenciaron reducciones frente a los ingresos generados en 2020.De otra parte, los sectores expuestos a ingresos por pauta publicitaria como lo son los servicios radiodifundidos de televisión y radio mostraron variaciones nominales superiores al 25%. En TV abierta, el crecimiento más que compensó la reducción de ingresos derivado del Covid-19, en tanto en radio, a pesar del crecimiento del 2021, aun los ingresos se sitúan por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
         with col2:
+            st.markdown("Tabla", unsafe_allow_html=True)
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-TIC.png')
+            st.markdown("Tabla", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
         with col1:
@@ -901,7 +910,7 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie, title='<b>Participación en abonados de telefonía móvil<br>(2021-T4)')
                     figPieTelMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieTelMovil.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieTelMovil.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTelMovil)
                                
             if ServiciosTelMovil=='Tráfico':
@@ -1083,7 +1092,7 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie,title='<b>Participación en accesos de Internet móvil<br>(2021-T4)')
                     figPieIntMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieIntMovil.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieIntMovil.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieIntMovil)
                 
             if ServiciosIntMovil=='Tráfico':
@@ -1447,7 +1456,7 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2021-T4)')
                     figPieIntFijo.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntFijo.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieIntFijo.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieIntFijo.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieIntFijo)
                     st.markdown("""<center><p style="font-size:12px"><b>Nota:</b>Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
                     
@@ -1622,7 +1631,7 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie2, title='<b>Participación en líneas de Telefonía local<br>(2021-T4)')
                     figPieTelFija.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelFija.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieTelFija.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieTelFija.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTelFija)                            
             
             if ServiciosTelFija=='Tráfico':
@@ -1785,7 +1794,7 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie2, title='<b>Participación en suscriptores de TV por suscripción<br>(2021-T4)')
                     figPieTVSus.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTVSus.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieTVSus.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieTVSus.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTVSus,use_container_width=True)   
                     st.markdown("""<center><p style="font-size:12px"><b>Nota:</b>Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
 
@@ -2688,7 +2697,7 @@ if select_seccion =='Postal':
                                  color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2021)')
                     figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieMenExpInd.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieMenExpInd.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     with col1:
                         st.plotly_chart(figPieMenExpInd,use_container_width=True)
 
@@ -2696,7 +2705,7 @@ if select_seccion =='Postal':
                                  color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos(2021)')
                     figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieMenExpMas.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieMenExpMas.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     with col2:
                         st.plotly_chart(figPieMenExpMas,use_container_width=True)    
 
@@ -2776,13 +2785,13 @@ if select_seccion =='Postal':
                                  color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2021)')
                     figPieGirIng.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieGirIng.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieGirIng.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     #
                     figPieGirValorGiro = px.pie(IngresosGirosPie, values='Valor total giros', names='empresa', color='empresa',
                      color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2021)')
                     figPieGirValorGiro.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieGirValorGiro.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieGirValorGiro.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     col1,col2=st.columns(2)
                     with col1:
                         st.plotly_chart(figPieGirIng,use_container_width=True) 
@@ -2814,7 +2823,7 @@ if select_seccion =='Postal':
                      color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2021)')
                     figPieGirNum.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieGirNum.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20)
+                    figPieGirNum.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieGirNum,use_container_width=True)
                     
             if ServiciosGiros=='Ingresos por número de giros':
