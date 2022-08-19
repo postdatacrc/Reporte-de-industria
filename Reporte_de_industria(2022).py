@@ -151,7 +151,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
             '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
             '<br><b>Periodo</b>: %{x}<br>'+                         
             column.capitalize()+'-'+unidad+': %{y:.3f}<br>'))
-        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
+        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
         maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.1  
@@ -164,7 +164,7 @@ def Plotlylineatiempo(df,column,unidad,escalamiento,colores,titulo,textofuente):
     fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="Poppins",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -193,7 +193,7 @@ def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofu
             '<br><b>Modalidad</b>:<br><extra></extra>'+elem+
             '<br><b>Periodo</b>: %{x}<br>'+                         
             column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
-        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
+        fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)
     
     else:
         maxdf=df[column].max()/escalamiento+(df[column].max()/escalamiento)*0.1  
@@ -202,11 +202,11 @@ def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofu
                                 y=df[column]/escalamiento,marker_color='rgb(102,204,0)',name=column,
                                 hovertemplate ='<br><b>Periodo</b>: %{x}<br><extra></extra>'+                         
             column.capitalize()+'-'+unidad+': %{y:.2f}<br>'))
-        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
+        fig.update_yaxes(range=[mindf,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                        
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -236,11 +236,11 @@ def PlotlylineatiempoTec(df,column,unidad,escalamiento,colores,titulo,textofuent
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>',mode='lines+markers',marker=dict(size=7)))
     fig.update_layout(barmode='group')    
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -269,11 +269,11 @@ def PlotlylineatiempoEmp(df,column,unidad,colores,titulo,textofuente):
         '<br><b>Empresa</b>:<br><extra></extra>'+elem+
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -300,11 +300,11 @@ def PlotlylineatiempoDep(df,column,unidad,titulo,textofuente):
         '<br><b>Departamento</b>:<br><extra></extra>'+elem+
         '<br><b>Periodo</b>: %{x}<br>'+                         
         column.capitalize()+' '+unidad+': %{y:.2f}<br>'))
-    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -332,11 +332,11 @@ def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
         y=round(df2[column]/escalamiento,2),text=df[column],
         name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
         '<br><b>Accesos</b>: %{y:3f}',mode='lines+markers',marker=dict(size=7,color=Colores_pais[pais])))  
-    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=14),title_text=None,row=1, col=1
+    fig.update_yaxes(range=[0,maxdf],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=16, title_text=unidad, row=1, col=1)                    
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=14),title_text=None,row=1, col=1
     ,zeroline=True,linecolor = 'rgba(192, 192, 192, 0.8)',zerolinewidth=2)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text':titulo,
     'y':0.95,
@@ -351,7 +351,7 @@ def PlotlylineatiempoInt(df,column,unidad,escalamiento,titulo,textofuente):
     fig.add_annotation(
     showarrow=False,
     text=textofuente,
-    font=dict(size=12), xref='x domain',x=0.5,yref='y domain',y=-0.15)    
+    font=dict(size=12), xref='x domain',x=0.5,yref='y domain',y=-0.2)    
     return fig
  
 def PlotlyBarras(df,column,unidad,escalamiento,titulo):   
@@ -363,11 +363,11 @@ def PlotlyBarras(df,column,unidad,escalamiento,titulo):
                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
         column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
     fig.update_layout(barmode='group')
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.98,
@@ -390,11 +390,11 @@ def PlotyMultiIndexBarra(df,column,unidad,titulo,escalamiento):
         hovertemplate='<br><b>Ámbito</b>:<br><extra></extra>'+ambito+'<br>'+                       
         column.capitalize()+' '+unidad+': %{y:.3f}<br>'))
     fig.update_layout(barmode='group')
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.98,
@@ -414,11 +414,11 @@ def PlotlyBarras2(df,column,modalidad,unidad,escalamiento,titulo,colores):
                              ,marker_color=colores[i],name=elem,hovertemplate=modalidad.capitalize()+':'+elem+'<br>'+                       
         column.capitalize()+'-'+unidad+': %{y:.3f}<br>'))      
     fig.update_layout(barmode='group')
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_yaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.95,
@@ -439,11 +439,11 @@ def PlotlyBarrasEmp(df,column,unidad,escalamiento,titulo,colores):
                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
         column.capitalize()+' '+unidad+': %{x:.3f}<br>'))
     fig.update_layout(barmode='group')
-    fig.update_yaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=None,row=1, col=1,
+    fig.update_yaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_xaxes(tickfont=dict(family='sans-serif', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
+    fig.update_xaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text=unidad, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.91,
@@ -467,11 +467,11 @@ def PlotlyBarrasInt(df,column,unidad,escalamiento,titulo,textofuente):
         name=pais,hovertemplate ='<br><b>País</b>:<extra></extra>'+pais+
         '<br><b>Penetración (%)</b>: %{y:3f}',marker_color=Colores_pais[pais]))
     fig.update_layout(barmode='group')
-    fig.update_yaxes(tickangle=0, tickfont=dict(family='sans-serif', color='black', size=16),title_text=unidad,row=1, col=1,
+    fig.update_yaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=unidad,row=1, col=1,
     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-    fig.update_xaxes(tickangle=0,tickfont=dict(family='sans-serif', color='black', size=11),titlefont_size=18, title_text=None, row=1, col=1)
+    fig.update_xaxes(tickangle=0,tickfont=dict(family='Poppins', color='black', size=11),titlefont_size=18, title_text=None, row=1, col=1)
     fig.update_layout(height=550,legend_title=None)
-    fig.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20,
+    fig.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
     title={
     'text': titulo,
     'y':0.91,
@@ -484,7 +484,7 @@ def PlotlyBarrasInt(df,column,unidad,escalamiento,titulo,textofuente):
     fig.add_annotation(
     showarrow=False,
     text=textofuente,
-    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.15)    
+    font=dict(size=10), xref='x domain',x=0.5,yref='y domain',y=-0.2)    
     return fig
 
 st.set_page_config(
@@ -493,7 +493,7 @@ st.set_page_config(
 Estilo_css="""<style type="text/css">
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); 
 
-    html, body, [class*="css"] {
+    html, body, [class*="css"] ,[class*="st-ae"]{
         font-family: 'Poppins', serif; 
     }  
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
@@ -505,7 +505,7 @@ Estilo_css="""<style type="text/css">
     h1{ background: rgb(215,235,252);
         text-align: center;
         padding: 15px;
-        font-family: sans-serif;
+        font-family: Poppins;
         font-size:1.60rem;
         color: black;
         position:fixed;
@@ -819,7 +819,7 @@ if select_seccion =='Telecomunicaciones':
         col4.metric("Internet fijo", "8.43M", "7.7%")
         col5.metric("Telefonía fija", "7.55M", "7.86%")
         col6.metric("TV por suscripción", "6.17M", "1.74%")
-        st.markdown("<p style='font-size:10px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2020 </p>",unsafe_allow_html=True)
+        st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2020 </p>",unsafe_allow_html=True)
         st.markdown('')
         st.markdown('')
         st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
@@ -891,7 +891,7 @@ if select_seccion =='Telecomunicaciones':
                     AboTrimTelMovilB['modalidad']='TOTAL'
                     AboTrimTelMovilTOTAL=pd.concat([AboTrimTelMovilA,AboTrimTelMovilB]).sort_values(by=['periodo'])
                     AboTrimTelMovilTOTAL['periodo_formato']=AboTrimTelMovilTOTAL['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovilTOTAL,'abonados','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Abonados Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AboTrimTelMovilTOTAL,'abonados','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Abonados Telefonía móvil por periodo','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
@@ -899,7 +899,7 @@ if select_seccion =='Telecomunicaciones':
                     AboAnualTelMovl.loc[AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados)==False,'empresa']='Otros'
                     AboAnualTelMovl.loc[AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados)==False,'id_empresa']='Otros'
                     AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(AboAnualTelMovl,'abonados','Millones',1e6,'Abonados anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(AboAnualTelMovl,'abonados','Millones',1e6,'<b>Abonados anuales por empresa'),use_container_width=True)
                 if PieAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
@@ -910,8 +910,8 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie, title='<b>Participación en abonados de telefonía móvil<br>(2021-T4)')
                     figPieTelMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieTelMovil.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
-                    st.plotly_chart(figPieTelMovil)
+                    figPieTelMovil.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieTelMovil,use_container_width=True)
                                
             if ServiciosTelMovil=='Tráfico':
                 
@@ -930,14 +930,14 @@ if select_seccion =='Telecomunicaciones':
                     TrafTrimTelMovilB['modalidad']='TOTAL'
                     TrafTrimTelMovilTOTAL=pd.concat([TrafTrimTelMovilA,TrafTrimTelMovilB]).sort_values(by=['periodo'])
                     TrafTrimTelMovilTOTAL['periodo_formato']=TrafTrimTelMovilTOTAL['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico Telefonía móvil por periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoTelmovil:
                     TrafAnualTelMovl=TraficoTelMovil.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     EmpTelMovilTrafico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:5]
                     TrafAnualTelMovl.loc[TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTrafico)==False,'empresa']='Otros'
                     TrafAnualTelMovl.loc[TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTrafico)==False,'id_empresa']='Otros'                    
                     TrafAnualTelMovl=TrafAnualTelMovl[(TrafAnualTelMovl['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(TrafAnualTelMovl,'trafico','Miles de Millones de minutos',1e9,'Tráfico anual por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(TrafAnualTelMovl,'trafico','Miles de Millones de minutos',1e9,'<b>Tráfico anual por empresa</b>'),use_container_width=True)  
             
             if ServiciosTelMovil=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -983,12 +983,12 @@ if select_seccion =='Telecomunicaciones':
                 IngresosPorTraficoTelMovil2['periodo_formato']=IngresosPorTraficoTelMovil2['periodo'].apply(periodoformato)
 
                 if LineaTiempoIngresosTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)                    
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelMovil2Agg,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos Telefonía móvil por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)                    
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyIngresosPorAcceso(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por abonado',''), use_container_width=True)
+                        st.plotly_chart(PlotlyIngresosPorAcceso(IngresosPorAbonadoTelMovil2,'Ingresos/Abonado','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por abonado</b>',''), use_container_width=True)
                     with col2:
-                        st.plotly_chart(PlotlyIngresosPorAcceso(IngresosPorTraficoTelMovil2,'Ingresos/Trafico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
+                        st.plotly_chart(PlotlyIngresosPorAcceso(IngresosPorTraficoTelMovil2,'Ingresos/Trafico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por tráfico</b>',''), use_container_width=True)
   
                 if BarrasIngresosTelmovil:
                     IngresosTelMovil3=pd.melt(IngresosTelMovil,id_vars=['anno','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
@@ -999,7 +999,7 @@ if select_seccion =='Telecomunicaciones':
                     IngresosTelMovil3Agg.loc[IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos)==False,'empresa']='Otros'
                     IngresosTelMovil3Agg.loc[IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos)==False,'id_empresa']='Otros'                    
                     IngresosTelMovil3Agg=IngresosTelMovil3Agg[(IngresosTelMovil3Agg['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(IngresosTelMovil3Agg,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(IngresosTelMovil3Agg,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>'),use_container_width=True)  
                     ##
                     IngresosPorAbonadoTelMovil=IngresosPorAbonadoTelMovil[(IngresosPorAbonadoTelMovil['trimestre']=='4')&(IngresosPorAbonadoTelMovil['modalidad']=='TOTAL')]
                     IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil.groupby(['periodo','empresa_x','id_empresa']).agg({'ingresos':'sum','abonados':'sum'}).reset_index()
@@ -1015,9 +1015,9 @@ if select_seccion =='Telecomunicaciones':
                     
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','Pesos',1,'Ingresos por abonado y por empresa'),use_container_width=True)  
+                        st.plotly_chart(PlotlyBarras(IngresosPorAbonadoTelMovil3,'Ingresos/Abonado','Pesos',1,'<b>Ingresos por abonado y por empresa</b>'),use_container_width=True)  
                     with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','Pesos/Min',1,'Ingresos por tráfico y por empresa'),use_container_width=True)  
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelMovil3,'Ingresos/Trafico','Pesos/Min',1,'<b>Ingresos por tráfico y por empresa</b>'),use_container_width=True)  
                                                                                                  
         if ServiciosMóviles=='Internet':
             ##Tráfico
@@ -1075,14 +1075,14 @@ if select_seccion =='Telecomunicaciones':
                 if LineaTiempoAccesosIntmovil:
                     AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
                     AccesosInternetmovilNac['periodo_formato']=AccesosInternetmovilNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Accesos Internet móvil por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAccesosIntmovil:
                     AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
                     EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
                     AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)==False,'empresa']='Otros'
                     AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)==False,'id_empresa']='Otros'     
                     AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(AccesosInternetmovilEmp,'accesos','Millones',1e6,'Accesos anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(AccesosInternetmovilEmp,'accesos','Millones',1e6,'<b>Accesos anuales por empresa</b>'),use_container_width=True)
                 if PieAccesosIntmovil:
                     AccesosInternetmovilPie=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2021']))]
                     AccesosInternetmovilPie=AccesosInternetmovilPie.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
@@ -1092,8 +1092,8 @@ if select_seccion =='Telecomunicaciones':
                                  color_discrete_map=Colores_pie,title='<b>Participación en accesos de Internet móvil<br>(2021-T4)')
                     figPieIntMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieIntMovil.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
-                    st.plotly_chart(figPieIntMovil)
+                    figPieIntMovil.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieIntMovil,use_container_width=True)
                 
             if ServiciosIntMovil=='Tráfico':
                 
@@ -1106,7 +1106,7 @@ if select_seccion =='Telecomunicaciones':
                 if LineaTiempoTraficoIntmovil:             
                     TraficoInternetMovilNac=TraficoInternetMovildf.groupby(['periodo','modalidad'])['trafico'].sum().reset_index()
                     TraficoInternetMovilNac['periodo_formato']=TraficoInternetMovilNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Internet móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico Internet móvil por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoIntmovil:
                     TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
@@ -1114,7 +1114,7 @@ if select_seccion =='Telecomunicaciones':
                     TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)==False,'empresa']='Otros'
                     TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)==False,'id_empresa']='Otros'     
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(TraficoInternetMovilEmp,'trafico','Millones de GB',1e6,'Tráfico anual por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(TraficoInternetMovilEmp,'trafico','Millones de GB',1e6,'<b>Tráfico anual por empresa</b>'),use_container_width=True)
 
             if ServiciosIntMovil=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)                
@@ -1175,22 +1175,22 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoIngresosIntmovil:
                                                                                                     
-                    st.plotly_chart(Plotlylineatiempo(IngresosInternetmovilNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetmovilNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos Internet móvil por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyIngresosPorAcceso(IngPorAccesosIntMovil,'Ingresos/Acceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso',''), use_container_width=True)
+                        st.plotly_chart(PlotlyIngresosPorAcceso(IngPorAccesosIntMovil,'Ingresos/Acceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por acceso</b>',''), use_container_width=True)
                     with col2:    
-                        st.plotly_chart(PlotlyIngresosPorAcceso(IngPorTraficoIntMovil,'Ingresos/Trafico','Pesos/GB',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
+                        st.plotly_chart(PlotlyIngresosPorAcceso(IngPorTraficoIntMovil,'Ingresos/Trafico','Pesos/GB',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por tráfico</b>',''), use_container_width=True)
  
                 if BarrasIngresosIntmovil:
-                    st.plotly_chart(PlotlyBarras(IngresosInternetmovilEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosInternetmovilEmp,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>'),use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
                         IngPorAccesosIntMovilEmp=IngPorAccesosIntMovilEmp.rename(columns={'empresa_x':'empresa','periodo':'anno'})
-                        st.plotly_chart(PlotlyBarras(IngPorAccesosIntMovilEmp,'Ingresos/Acceso','Pesos',1,'Ingresos por acceso y por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngPorAccesosIntMovilEmp,'Ingresos/Acceso','Pesos',1,'<b>Ingresos por acceso y por empresa</b>'),use_container_width=True)
                     with col2:
                         IngPorTraficoIntMovilEmp=IngPorTraficoIntMovilEmp.rename(columns={'empresa_x':'empresa','periodo':'anno'})
-                        st.plotly_chart(PlotlyBarras(IngPorTraficoIntMovilEmp,'Ingresos/Trafico','Pesos/GB',1,'Ingresos por tráfico y por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngPorTraficoIntMovilEmp,'Ingresos/Trafico','Pesos/GB',1,'<b>Ingresos por tráfico y por empresa</b>'),use_container_width=True)
  
         if ServiciosMóviles=='Mensajería':
         
@@ -1245,11 +1245,11 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoTraficoSMSTelmovil:
                     #st.plotly_chart(Plotlylineatiempo(TraficoSMSTelMovilAgg,'tráfico (SMS)','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(TraficoMensajeriaMovil2,'tráfico','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoMensajeriaMovil2,'tráfico','Millones de mensajes',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico Mensajería móvil por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
                 if BarrasTraficoSMSTelmovil:
-                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','Millones de mensajes',1e6,'SMS intercambiados entre usuarios por empresa'),use_container_width=True)  
-                    st.plotly_chart(PlotlyBarras(TraficoSMSCodigosCortosEmp,'tráfico','Millones de mensajes',1e6,'Tráfico de códigos cortos por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(TraficoSMSTelMovilEmpresa,'tráfico (SMS)','Millones de mensajes',1e6,'<b>SMS intercambiados entre usuarios por empresa</b>'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(TraficoSMSCodigosCortosEmp,'tráfico','Millones de mensajes',1e6,'<b>Tráfico de códigos cortos por empresa</b>'),use_container_width=True)  
                 
             if ServiciosMenMovil=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -1312,10 +1312,10 @@ if select_seccion =='Telecomunicaciones':
                 IngresosPorTraficoMensajeríaMóvil=IngresosMensajeríaMóvil2.merge(TraficoMensajeriaMovil2,left_on=['periodo','periodo_formato','modalidad'],right_on=['periodo','periodo_formato','modalidad'])    
                 IngresosPorTraficoMensajeríaMóvil['Ingresos/Tráfico']=round(IngresosPorTraficoMensajeríaMóvil['ingresos']/IngresosPorTraficoMensajeríaMóvil['tráfico'],2)
                 if LineaTiempoIngresosSMSTelmovil:
-                    st.plotly_chart(Plotlylineatiempo(IngresosMensajeríaMóvil2,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Mensajería móvil por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoMensajeríaMóvil,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosMensajeríaMóvil2,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos Mensajería móvil por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoMensajeríaMóvil,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por tráfico</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosSMSTelmovil:    
-                    st.plotly_chart(PlotlyBarras(IngresosMensajeríaMóvilEmpresa2,'ingresos','Miles de Millones de pesos',1e9,'Ingresos Mensajería móvil por empresa'),use_container_width=True)  
+                    st.plotly_chart(PlotlyBarras(IngresosMensajeríaMóvilEmpresa2,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos Mensajería móvil por empresa</b>'),use_container_width=True)  
                     #
                     figIngporTrafTelMov = make_subplots(rows=1, cols=1) 
                     for empresa in IngPorTrafMensajeríaMovilEmpresa['empresa'].unique().tolist():
@@ -1324,13 +1324,13 @@ if select_seccion =='Telecomunicaciones':
                                             name=empresa,hovertemplate='<br><b>Empresa</b>:<br><extra></extra>'+empresa+'<br>'+                       
                         'Ingresos/Tráfico'+' '+'Pesos/Min'+': %{y:.3f}<br>'))
                     figIngporTrafTelMov.update_layout(barmode='group')
-                    figIngporTrafTelMov.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+                    figIngporTrafTelMov.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
                     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                    figIngporTrafTelMov.update_yaxes(range=[0,5],tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Pesos/Min', row=1, col=1)
+                    figIngporTrafTelMov.update_yaxes(range=[0,5],tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text='Pesos/Min', row=1, col=1)
                     figIngporTrafTelMov.update_layout(height=550,legend_title=None)
-                    figIngporTrafTelMov.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    figIngporTrafTelMov.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
-                    'text': 'Ingresos por tráfico y por empresa',
+                    'text': '<b>Ingresos por tráfico y por empresa</b>',
                     'y':0.98,
                     'x':0.5,
                     'xanchor': 'center',
@@ -1448,21 +1448,21 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoAccesosIntFijo:
                     AccesosInternetFijoNac2['periodo_formato']=AccesosInternetFijoNac2['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Accesos Internet fijo por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(AccesosInternetFijoNac2,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Accesos Internet fijo por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAccesosIntFijo:
-                    st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','',1,'Accesos anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','',1,'<b>Accesos anuales por empresa</b>'),use_container_width=True)
                 if PieAccesosIntFijo:
                     figPieIntFijo = px.pie(AccesosInternetFijoPieAgg, values='accesos', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2021-T4)')
                     figPieIntFijo.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntFijo.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieIntFijo.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
-                    st.plotly_chart(figPieIntFijo)
+                    figPieIntFijo.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieIntFijo,use_container_width=True)
                     st.markdown("""<center><p style="font-size:12px"><b>Nota:</b>Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
                     
                 if TecnologiaAccesosIntFijo:
                     AccesosInternetFijoTecAgg['periodo_formato']=AccesosInternetFijoTecAgg['periodo'].apply(periodoformato)
-                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Accesos Internet fijo por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'<b>Accesos Internet fijo por tecnología y periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosIntFijo=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -1481,14 +1481,14 @@ if select_seccion =='Telecomunicaciones':
                 if LineaTiempoIngresosIntFijo: 
                     IngresosInternetFijoNac['periodo_formato']=IngresosInternetFijoNac['periodo'].apply(periodoformato)
                     IngresosPorAccesoIntFijo['periodo_formato']=IngresosPorAccesoIntFijo['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Internet fijo por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por acceso','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos Internet fijo por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por acceso</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosIntFijo:
                     EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'empresa']='Otros'
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'id_empresa']='Otros'
                     IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
-                    st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)                  
+                    st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>'),use_container_width=True)                  
 
             if ServiciosIntFijo=='Velocidades':
                 col1,col2=st.columns(2)
@@ -1503,11 +1503,11 @@ if select_seccion =='Telecomunicaciones':
                 if TecnologíaIntFijo:
                     VelIntFijo_Tec['periodo_formato']=VelIntFijo_Tec['periodo'].apply(periodoformato)
                     VelIntFijo_Tec=VelIntFijo_Tec.rename(columns={'codtec':'CodTec'})
-                    st.plotly_chart(PlotlylineatiempoTec(VelIntFijo_Tec,'Velocidad descarga promedio','Mbps',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160,160,160)','rgb(51, 153, 255)','rgb(153,51,255)'],'Velocidad promedio de descarga de Internet fijo por tecnología y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(PlotlylineatiempoTec(VelIntFijo_Tec,'Velocidad descarga promedio','Mbps',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(160,160,160)','rgb(51, 153, 255)','rgb(153,51,255)'],'<b>Velocidad promedio de descarga de Internet fijo por tecnología y periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 
                 if LineaTiempoVelIntFijo:
                     VelIntFijo_Mod['periodo_formato']=VelIntFijo_Mod['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(VelIntFijo_Mod,'Velocidad descarga promedio','Mbps',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Velocidad promedio de descarga de Internet fijo por modalidad y periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(VelIntFijo_Mod,'Velocidad descarga promedio','Mbps',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Velocidad promedio de descarga de Internet fijo por modalidad y periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                                         
         if ServiciosFijos == 'Telefonía fija':
 
@@ -1623,16 +1623,16 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoLineasTelFija:
                     LineasTelefoníaLocalNac['periodo_formato']=LineasTelefoníaLocalNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(LineasTelefoníaLocalNac,'lineas','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Líneas Telefonía fija por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(LineasTelefoníaLocalNac,'lineas','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Líneas Telefonía fija por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasLineasTelFija:
-                    st.plotly_chart(PlotlyBarras(LineasTelefoníaLocalEmp,'lineas','',1,'Líneas anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(LineasTelefoníaLocalEmp,'lineas','',1,'<b>Líneas anuales por empresa</b>'),use_container_width=True)
                 if PieLineasTelFija:
                     figPieTelFija = px.pie(LineasTelefoníaLocalPie, values='lineas', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en líneas de Telefonía local<br>(2021-T4)')
                     figPieTelFija.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelFija.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieTelFija.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
-                    st.plotly_chart(figPieTelFija)                            
+                    figPieTelFija.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
+                    st.plotly_chart(figPieTelFija,use_container_width=True)                            
             
             if ServiciosTelFija=='Tráfico':
                 col1,col2=st.columns(2)
@@ -1643,14 +1643,14 @@ if select_seccion =='Telecomunicaciones':
                     
                 if LineaTiempoTraficoTelFija:
                     TraficoTelefoniaFijaNac['periodo_formato']=TraficoTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Tráfico telefonía fija por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico telefonía fija por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoTelFija:
-                    st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTL,'trafico','Millones de minutos',1e6,'Tráfico anual de Telefonía local por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTL,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía local por empresa</b>'),use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDN,'trafico','Millones de minutos',1e6,'Tráfico anual de Telefonía LDN por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDN,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía LDN por empresa</b>'),use_container_width=True)
                     with col2:
-                        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDI,'trafico','Millones de minutos',1e6,'Tráfico anual de Telefonía LDI por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDI,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía LDI por empresa</b>'),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -1662,14 +1662,14 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoIngresosTelFija:
                     IngresosTelefoniaFijaNac['periodo_formato']=IngresosTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos Telefonía fija por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTelefoniaFijaNac,'ingresos','Miles de Millones pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos Telefonía fija por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosTelFija:
-                    st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTL,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía local por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTL,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales de Telefonía local por empresa</b>'),use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTLDN,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía LDN por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTLDN,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales de Telefonía LDN por empresa</b>'),use_container_width=True)
                     with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTLDI,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales de Telefonía LDI por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTLDI,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales de Telefonía LDI por empresa</b>'),use_container_width=True)
                     
             if ServiciosTelFija=='Ingresos por tráfico':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -1681,14 +1681,14 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoIngresosportraficoTelFija:
                     IngresosPorTraficoTelFijo['periodo_formato']=IngresosPorTraficoTelFijo['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelFijo,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por tráfico',''), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelFijo,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por tráfico</b>',''), use_container_width=True)
                 if BarrasIngresosportraficoTelFija:
-                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLocalEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía local por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLocalEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos por tráfico de Telefonía local por empresa</b>'),use_container_width=True)
                     col1,col2=st.columns(2)
                     with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDNEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía LDN por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDNEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos/tráfico de Telefonía LDN por empresa</b>'),use_container_width=True)
                     with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'Ingresos por tráfico de Telefonía LDI por empresa'),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos/tráfico de Telefonía LDI por empresa</b>'),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos por líneas':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -1700,9 +1700,9 @@ if select_seccion =='Telecomunicaciones':
 
                 if LineaTiempoIngresosporlineaTelFija:
                     IngresosPorLineaTelLocal['periodo_formato']=IngresosPorLineaTelLocal['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por líneas','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorLineaTelLocal,'Ingresos/Líneas','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por líneas</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosporlineaTelFija:
-                    st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'Ingresos por líneas de Telefonía local por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosPorLineaTelLocalEmp,'Ingresos/Líneas','Pesos',1,'<b>Ingresos por líneas de Telefonía local por empresa</b>'),use_container_width=True)
 
         if ServiciosFijos == 'TV por suscripción':
 
@@ -1785,16 +1785,16 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoSuscriptoresTVSus:
                     SuscriptoresTVSusNac['periodo_formato']=SuscriptoresTVSusNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Suscriptores TV por suscripción por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(SuscriptoresTVSusNac,'suscriptores','',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Suscriptores TV por suscripción por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasSuscriptoresTVSus:
-                    st.plotly_chart(PlotlyBarras(SuscriptoresTVSusEmp,'suscriptores','',1,'Suscriptores anuales por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(SuscriptoresTVSusEmp,'suscriptores','',1,'<b>Suscriptores anuales por empresa</b>'),use_container_width=True)
                 
                 if PieSuscriptoresTVSus:
                     figPieTVSus = px.pie(SuscriptoresTVSusPie, values='suscriptores', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie2, title='<b>Participación en suscriptores de TV por suscripción<br>(2021-T4)')
                     figPieTVSus.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTVSus.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
-                    figPieTVSus.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
+                    figPieTVSus.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieTVSus,use_container_width=True)   
                     st.markdown("""<center><p style="font-size:12px"><b>Nota:</b>Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
 
@@ -1815,13 +1815,13 @@ if select_seccion =='Telecomunicaciones':
                 
                 if LineaTiempoIngresosTVSus:
                     IngresosTVSusNac['periodo_formato']=IngresosTVSusNac['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos TV por suscripción por periodo','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosTVSusNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos TV por suscripción por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                     IngresosPorSuscriptoresTV['periodo_formato']=IngresosPorSuscriptoresTV['periodo'].apply(periodoformato)
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'Ingresos trimestrales por suscriptor','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+                    st.plotly_chart(Plotlylineatiempo(IngresosPorSuscriptoresTV,'Ingresos/Suscriptores','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por suscriptor</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
                 if BarrasIngresosTVSus:
-                    st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
-                    st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'Ingresos por suscriptores por empresa'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosTVSusEmp,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosPorSuscriptoresTVEmp,'Ingresos/Suscriptores','Pesos',1,'<b>Ingresos por suscriptores por empresa</b>'),use_container_width=True)
 
     if select_secResumenDinTic == 'Servicios OTT':
         st.markdown(r"""<div class="titulo"><h3>Servicios OTT</h3></div>""",unsafe_allow_html=True)
@@ -1872,13 +1872,13 @@ if select_seccion =='Telecomunicaciones':
         
             figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
             figModeloOTT.update_layout(barmode='group')
-            figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,row=1, col=1,
+            figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
             zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-            figModeloOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje (%)', row=1, col=1)
+            figModeloOTT.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text='Porcentaje (%)', row=1, col=1)
             figModeloOTT.update_layout(height=550,legend_title=None)
-            figModeloOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+            figModeloOTT.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
             title={
-            'text': 'Penetración suscriptores OTT por modelo de servicio',
+            'text': '<b>Penetración suscriptores OTT por modelo de servicio</b>',
             'y':0.98,
             'x':0.5,
             'xanchor': 'center',
@@ -1891,13 +1891,13 @@ if select_seccion =='Telecomunicaciones':
         if MotivosOTT:
             figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
             figMotivosOTT.update_layout(barmode='group')
-            figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text='Porcentaje (%)',row=1, col=1,
+            figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text='Porcentaje (%)',row=1, col=1,
             zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-            figMotivosOTT.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text=None, row=1, col=1)
+            figMotivosOTT.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text=None, row=1, col=1)
             figMotivosOTT.update_layout(height=550,legend_title=None)
-            figMotivosOTT.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+            figMotivosOTT.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
             title={
-            'text': 'Motivos más comunes de cancelación del servicio',
+            'text': '<b>Motivos más comunes de cancelación del servicio</b>',
             'y':0.98,
             'x':0.5,
             'xanchor': 'center',
@@ -1905,7 +1905,7 @@ if select_seccion =='Telecomunicaciones':
             figMotivosOTT.update_layout(legend=dict(orientation="v",y=0.87,x=0.8,font_size=14),showlegend=True)
             figMotivosOTT.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
             figMotivosOTT.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-            figMotivosOTT.update_layout(xaxis={'categoryorder':'category descending'})
+            figMotivosOTT.update_layout(yaxis={'categoryorder':'total descending'})
             st.plotly_chart(figMotivosOTT,use_container_width=True)
                                           
     if select_secResumenDinTic == 'Servicios de radiodifusión':                   
@@ -1958,7 +1958,7 @@ if select_seccion =='Telecomunicaciones':
             
             if ServiciosRadio=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
-                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'Ingresos en radio por empresa',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
+                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos en radio por empresa</b>',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
                 'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)']),use_container_width=True)
        
       
@@ -1979,7 +1979,7 @@ if select_seccion =='Telecomunicaciones':
                                       color_discrete_map={'COMUNITARIA':'rgb(122, 68, 242)','COMERCIAL':'rgb(0, 128, 255)','INTERÉS<br>PÚBLICO':'rgb(102,204,0)'
                                                          })
                     figPartNEmis.update_layout(height=550,legend_title=None)
-                    figPartNEmis.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    figPartNEmis.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
                     'text':'<b>Participación en el número de emisoras por clase de emisora y banda<br>(2021)',
                     'y':0.9,
@@ -1994,11 +1994,11 @@ if select_seccion =='Telecomunicaciones':
                     figDepComercial = px.bar(NumeroEmisorasDepComerciales, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)'])
                     figDepComercial.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
                     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                    figDepComercial.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
+                    figDepComercial.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
                     figDepComercial.update_layout(height=550,legend_title=None)
-                    figDepComercial.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    figDepComercial.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
-                    'text': 'Número de emisoras comerciales por departamento y banda',
+                    'text': '<b>Número de emisoras comerciales por departamento y banda</b>',
                     'y':0.95,
                     'x':0.5,
                     'xanchor': 'center',
@@ -2011,11 +2011,11 @@ if select_seccion =='Telecomunicaciones':
                     figDepComunitaria = px.bar(NumeroEmisorasDepComunitarias, x="DEPARTAMENTO", y='Número empresas',color='BANDA',color_discrete_sequence=['rgb(0, 128, 255)'])
                     figDepComunitaria.update_xaxes(tickangle=-45, tickfont=dict(family='Times', color='black', size=12),title_text=None,row=1, col=1,
                     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                    figDepComunitaria.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
+                    figDepComunitaria.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text='', row=1, col=1)
                     figDepComunitaria.update_layout(height=550,legend_title=None)
-                    figDepComunitaria.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    figDepComunitaria.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
-                    'text': 'Número de emisoras comunitarias por departamento y banda',
+                    'text': '<b>Número de emisoras comunitarias por departamento y banda</b>',
                     'y':0.95,
                     'x':0.5,
                     'xanchor': 'center',
@@ -2082,13 +2082,13 @@ if select_seccion =='Telecomunicaciones':
                     figTVabiertaMod.update_layout(barmode='group')
                     figTVabiertaMod.update_yaxes(title_text='Miles de Millones de pesos',row=1,col=2)
                     figTVabiertaMod.update_yaxes(title_text='Millones de pesos',row=1,col=1)
-                    figTVabiertaMod.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=16),title_text=None,
+                    figTVabiertaMod.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,
                     zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                    figTVabiertaMod.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18)
+                    figTVabiertaMod.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18)
                     figTVabiertaMod.update_layout(height=550,legend_title=None)
-                    figTVabiertaMod.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                    figTVabiertaMod.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
-                    'text': 'Ingresos de televisión abierta por modalidad',
+                    'text': '<b>Ingresos de televisión abierta por modalidad</b>',
                     'y':0.95,
                     'x':0.5,
                     'xanchor': 'center',
@@ -2099,7 +2099,7 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(figTVabiertaMod,use_container_width=True)
                  
                 if OperadoresTVabierta:
-                    st.plotly_chart(PlotlyBarras(TVabiertaEmp,'ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)            
+                    st.plotly_chart(PlotlyBarras(TVabiertaEmp,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>'),use_container_width=True)            
             
             if IngresosTVabierta=='Ingresos TV pública':    
                 TVPublica=TVPublica.fillna(0)
@@ -2119,13 +2119,13 @@ if select_seccion =='Telecomunicaciones':
                     X=[df2['empresa'].tolist(),df2['anno'].tolist()]
                     figTVPublica.add_trace(go.Bar(x=X,y=TVPublicaAgg2[TVPublicaAgg2['ambito']==ambito]['Porcentaje'],name=ambito,marker_color=color_ambitoTVPu[ambito]))
                 figTVPublica.update_layout(barmode='stack')
-                figTVPublica.update_xaxes(tickangle=0, tickfont=dict(family='Boston', color='black', size=12),title_text=None,row=1, col=1,
+                figTVPublica.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=12),title_text=None,row=1, col=1,
                 zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
-                figTVPublica.update_yaxes(tickfont=dict(family='Boston', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
+                figTVPublica.update_yaxes(tickfont=dict(family='Poppins', color='black', size=16),titlefont_size=18, title_text='Porcentaje', row=1, col=1)
                 figTVPublica.update_layout(height=550,legend_title=None)
-                figTVPublica.update_layout(font_color="Black",title_font_family="NexaBlack",title_font_color="Black",titlefont_size=20,
+                figTVPublica.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                 title={
-                'text': 'Composición de ingresos de los canales públicos nacionales, regionales y locales',
+                'text': '<b>Composición de ingresos de los canales públicos nacionales, regionales y locales</b>',
                 'y':0.92,
                 'x':0.5,
                 'xanchor': 'center',
@@ -2164,13 +2164,13 @@ if select_seccion =='Telecomunicaciones':
             with col2:
                 with st.expander("Datos relevantes de Telefonía fija"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 Colombia registró un total de 7.55 Millones de líneas, y presentó una penetración del 44.71%, ubicandose en este indicador en la tercera posición.</li>
+                    <li>En 2021 Colombia registró un total de 7.55 Millones de líneas, y presentó una penetración del 44.71%, ubicandose en este indicador en la tercera posición en Suramérica.</li>
                     </ul>""",unsafe_allow_html=True)
                 SelectTelFijaInt=st.selectbox('',['Evolución temporal','Penetraciones'])
 
             if SelectTelFijaInt=='Evolución temporal':
                 TelFijaInt=GlobalData2[GlobalData2['Variable']=='Telefonía fija']            
-                st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía fija en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(TelFijaInt,'Accesos','Millones de líneas',1e3,'<b>Líneas de telefonía fija en Suramérica</b>','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
 
             TelFijaInt2=GlobalData2[GlobalData2['Variable'].isin(['Telefonía fija','Hogares'])]
             TelFijaInt2=pd.pivot(TelFijaInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2187,7 +2187,7 @@ if select_seccion =='Telecomunicaciones':
                     TelFijaInt2=TelFijaInt2[TelFijaInt2['Año']==BotonAño]
                     TelFijaInt2['País']=TelFijaInt2['País'].replace({'Brazil':'Brasil'}) 
                     TelFijaInt2['Cod_pais']=TelFijaInt2['País'].apply(lambda x: x[0:3].upper())
-                    st.plotly_chart(PlotlyBarrasInt(TelFijaInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarrasInt(TelFijaInt2,'Penetración','Porcentaje (%)',1,'<b>Penetración en suramérica-</b>'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
                 
                 with col1:                    
                     gdf_GlobalDataTelFija=gdf_GlobalDataTelFija[gdf_GlobalDataTelFija['Año']==BotonAño]
@@ -2235,8 +2235,11 @@ if select_seccion =='Telecomunicaciones':
                     for key in choropleth._children:
                         if key.startswith('color_map'):
                             del(choropleth._children[key])
-                    folium_static(suramerica_map,width=400,height=500)      
+                    folium_static(suramerica_map,width=400,height=500)     
                         
+                with col1:    
+                    st.markdown("<p style='font-size:10px'><b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.",unsafe_allow_html=True)    
+                                                
         if ServiciosInternacionales == 'Telefonía móvil':
             col1,col2=st.columns(2)
             with col1:
@@ -2244,13 +2247,13 @@ if select_seccion =='Telecomunicaciones':
             with col2:
                 with st.expander("Datos relevantes de Telefonía móvil"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 Colombia registró un total de 75.06 Millones de líneas, y presentó una penetración del 147%, ubicandose en este indicador en la primera posición.</li>
+                    <li>En 2021 Colombia registró un total de 75.06 Millones de líneas, y presentó una penetración del 147%, ubicandose en este indicador en la primera posición en Suramérica.</li>
                     </ul>""",unsafe_allow_html=True)
                 SelectTelMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectTelMovilInt=='Evolución temporal':
                 TelMovilInt=GlobalData2[GlobalData2['Variable']=='Telefonía móvil']
-                st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'Líneas de telefonía móvil en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)                        
+                st.plotly_chart(PlotlylineatiempoInt(TelMovilInt,'Accesos','Millones de líneas',1e3,'<b>Líneas de telefonía móvil en Suramérica</b>','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)                        
 
             TelMovilInt2=GlobalData2[GlobalData2['Variable'].isin(['Telefonía móvil','Población'])]
             TelMovilInt2=pd.pivot(TelMovilInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2267,7 +2270,7 @@ if select_seccion =='Telecomunicaciones':
                     TelMovilInt2=TelMovilInt2[TelMovilInt2['Año']==BotonAño]
                     TelMovilInt2['País']=TelMovilInt2['País'].replace({'Brazil':'Brasil'}) 
                     TelMovilInt2['Cod_pais']=TelMovilInt2['País'].apply(lambda x: x[0:3].upper())
-                    st.plotly_chart(PlotlyBarrasInt(TelMovilInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarrasInt(TelMovilInt2,'Penetración','Porcentaje (%)',1,'<b>Penetración en suramérica-</b>'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
                 
                 with col1:
                     gdf_GlobalDataTelMovil=gdf_GlobalDataTelMovil[gdf_GlobalDataTelMovil['Año']==BotonAño]
@@ -2316,6 +2319,9 @@ if select_seccion =='Telecomunicaciones':
                         if key.startswith('color_map'):
                             del(choropleth._children[key])
                     folium_static(suramerica_map,width=400,height=500)   
+
+                with col1:    
+                    st.markdown("<p style='font-size:10px'><b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.",unsafe_allow_html=True)    
             
         if ServiciosInternacionales == 'Internet móvil':
             col1,col2=st.columns(2)
@@ -2324,13 +2330,13 @@ if select_seccion =='Telecomunicaciones':
             with col2:
                 with st.expander("Datos relevantes de Internet móvil"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 Colombia registró un total de 37.96 Millones de accesos, y presentó una penetración del 74.4%, ubicandose en este indicador en la quinta posición.</li>
+                    <li>En 2021 Colombia registró un total de 37.96 Millones de accesos, y presentó una penetración del 74.4%, ubicandose en este indicador en la quinta posición en Suramérica.</li>
                     </ul>""",unsafe_allow_html=True)
                 SelectIntMovilInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectIntMovilInt=='Evolución temporal':
                 IntMovilInt=GlobalData2[GlobalData2['Variable']=='Internet móvil']
-                st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'Accesos de Internet móvil en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilInt,'Accesos','Millones de accesos',1e3,'<b>Accesos de Internet móvil en Suramérica</b>','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
 
             IntMovilInt2=GlobalData2[GlobalData2['Variable'].isin(['Internet móvil','Población'])]
             IntMovilInt2=pd.pivot(IntMovilInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2347,7 +2353,7 @@ if select_seccion =='Telecomunicaciones':
                     IntMovilInt2=IntMovilInt2[IntMovilInt2['Año']==BotonAño]
                     IntMovilInt2['País']=IntMovilInt2['País'].replace({'Brazil':'Brasil'})
                     IntMovilInt2['Cod_pais']=IntMovilInt2['País'].apply(lambda x: x[0:3].upper())                    
-                    st.plotly_chart(PlotlyBarrasInt(IntMovilInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarrasInt(IntMovilInt2,'Penetración','Porcentaje (%)',1,'<b>Penetración en suramérica-</b>'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
 
                 with col1:
                     gdf_GlobalDataIntMovil=gdf_GlobalDataIntMovil[gdf_GlobalDataIntMovil['Año']==BotonAño]
@@ -2397,6 +2403,9 @@ if select_seccion =='Telecomunicaciones':
                             del(choropleth._children[key])
                     folium_static(suramerica_map,width=400,height=500)   
 
+                with col1:    
+                    st.markdown("<p style='font-size:10px'><b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.",unsafe_allow_html=True)    
+
         if ServiciosInternacionales == 'Internet fijo':
             col1,col2=st.columns(2)
             with col1:
@@ -2404,7 +2413,7 @@ if select_seccion =='Telecomunicaciones':
             with col2:
                 with st.expander("Datos relevantes de Internet fijo"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 Colombia registró un total de 8.43 Millones de accesos, y presentó una penetración del 49.9%, ubicandose en este indicador en la sexta posición.</li>
+                    <li>En 2021 Colombia registró un total de 8.43 Millones de accesos, y presentó una penetración del 49.9%, ubicandose en este indicador en la sexta posición en Suramérica.</li>
                     </ul>""",unsafe_allow_html=True)
                 SelectIntFijoInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
@@ -2412,8 +2421,8 @@ if select_seccion =='Telecomunicaciones':
                 IntMovilfijo=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Internet fijo (Fibra Óptica)'])]
                 IntMovilfijo=pd.pivot(IntMovilfijo,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
                 IntMovilfijo['Fibra óptica(%)']=round(100*IntMovilfijo['Internet fijo (Fibra Óptica)']/IntMovilfijo['Internet fijo'],2)
-                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Internet fijo','Millones de accesos',1e3,'Accesos de Internet fijo en Suramérica',''),use_container_width=True)
-                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Fibra óptica(%)','Porcentaje (%)',1,'Evolución porcentaje Fibra óptica de Internet fijo en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Internet fijo','Millones de accesos',1e3,'<b>Accesos de Internet fijo en Suramérica</b>','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la plataforma<br>Global Data.'),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(IntMovilfijo,'Fibra óptica(%)','Porcentaje (%)',1,'<b>Evolución porcentaje Fibra óptica de Internet fijo en Suramérica</b>','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la plataforma<br>Global Data.'),use_container_width=True)
 
             IntFijoInt2=GlobalData2[GlobalData2['Variable'].isin(['Internet fijo','Hogares'])]
             IntFijoInt2=pd.pivot(IntFijoInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2431,7 +2440,7 @@ if select_seccion =='Telecomunicaciones':
                     IntFijoInt2=IntFijoInt2[IntFijoInt2['Año']==BotonAño]
                     IntFijoInt2['País']=IntFijoInt2['País'].replace({'Brazil':'Brasil'}) 
                     IntFijoInt2['Cod_pais']=IntFijoInt2['País'].apply(lambda x: x[0:3].upper())
-                    st.plotly_chart(PlotlyBarrasInt(IntFijoInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarrasInt(IntFijoInt2,'Penetración','Porcentaje (%)',1,'<b>Penetración en suramérica-<b>'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
 
                 with col1:                    
                     gdf_GlobalDataIntFijo=gdf_GlobalDataIntFijo[gdf_GlobalDataIntFijo['Año']==BotonAño]
@@ -2481,6 +2490,9 @@ if select_seccion =='Telecomunicaciones':
                             del(choropleth._children[key])
                     folium_static(suramerica_map,width=400,height=500)      
 
+                with col1:    
+                    st.markdown("<p style='font-size:10px'><b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.",unsafe_allow_html=True)    
+
         if ServiciosInternacionales == 'TV por suscripción':
             col1,col2=st.columns(2)
             with col1:
@@ -2488,13 +2500,13 @@ if select_seccion =='Telecomunicaciones':
             with col2:
                 with st.expander("Datos relevantes de TV por suscripción"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 Colombia registró un total de 6.17 Millones de suscriptores, y presentó una penetración del 36.5%, ubicandose en este indicador en la cuarta posición.</li>
+                    <li>En 2021 Colombia registró un total de 6.17 Millones de suscriptores, y presentó una penetración del 36.5%, ubicandose en este indicador en la cuarta posición en Suramérica.</li>
                     </ul>""",unsafe_allow_html=True)
                 SelectTVSusInt=st.selectbox('',['Evolución temporal','Penetraciones'])
             
             if SelectTVSusInt =='Evolución temporal':
                 TVSusInt=GlobalData2[GlobalData2['Variable']=='TV por suscripción']
-                st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'Accesos de TV por suscripción en Suramérica','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema Colombia TIC.<br>La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                st.plotly_chart(PlotlylineatiempoInt(TVSusInt,'Accesos','Millones de accesos',1e3,'<b>Accesos de TV por suscripción en Suramérica</b>','<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
 
             TVSusInt2=GlobalData2[GlobalData2['Variable'].isin(['TV por suscripción','Hogares'])]
             TVSusInt2=pd.pivot(TVSusInt2,index=['País','Año'],columns='Variable',values='Accesos').reset_index()
@@ -2511,7 +2523,7 @@ if select_seccion =='Telecomunicaciones':
                     TVSusInt2=TVSusInt2[TVSusInt2['Año']==BotonAño]
                     TVSusInt2['País']=TVSusInt2['País'].replace({'Brazil':'Brasil'})
                     TVSusInt2['Cod_pais']=TVSusInt2['País'].apply(lambda x: x[0:3].upper())                    
-                    st.plotly_chart(PlotlyBarrasInt(TVSusInt2,'Penetración','Porcentaje (%)',1,'Penetración en suramérica-'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información al sistema<br>Colombia TIC. La información de los demás paises es consultada a través de la plataforma Global Data.'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarrasInt(TVSusInt2,'Penetración','Porcentaje (%)',1,'<b>Penetración en suramérica-</b>'+BotonAño,'<b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.'),use_container_width=True)
 
                 with col1:                    
                     gdf_GlobalDataTVSus=gdf_GlobalDataTVSus[gdf_GlobalDataTVSus['Año']==BotonAño]
@@ -2560,6 +2572,9 @@ if select_seccion =='Telecomunicaciones':
                         if key.startswith('color_map'):
                             del(choropleth._children[key])
                     folium_static(suramerica_map,width=400,height=500)      
+
+                with col1:    
+                    st.markdown("<p style='font-size:10px'><b>Fuente</b>:Elaboración CRC con datos para Colombia tomados en los reportes de información<br>al sistema Colombia TIC. La información de los demás paises es consultada a través de la<br>plataforma Global Data.",unsafe_allow_html=True)    
         
         
 if select_seccion =='Postal':
@@ -2584,7 +2599,7 @@ if select_seccion =='Postal':
         col2.metric("Correo", "85.8 M", "-18.3%")
         col3.metric("Mensajería expresa", "281.5 M", "0.6%")
         col4.metric("Giros", "127.7M", "-5.3%")      
-        st.markdown("<p style='font-size:10px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2020 </p>",unsafe_allow_html=True)
+        st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2020 </p>",unsafe_allow_html=True)
         st.markdown('')
         st.markdown('')
         st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
@@ -2625,11 +2640,11 @@ if select_seccion =='Postal':
             IngresosyEnviosCorreo['Ingresos']=IngresosyEnviosCorreo['Ingresos']/IngresosyEnviosCorreo['indice2021']
             IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
             if ServiciosCorreo=='Número de envíos':
-                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6),use_container_width=True)
             
             if ServiciosCorreo=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
-                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9),use_container_width=True)
 
         if select_DinPos=='Mensajería expresa':
 
@@ -2672,10 +2687,10 @@ if select_seccion =='Postal':
                     BarrasEnviosMenExpresa=st.button('Información por operadores')
                 
                 if LineaTiempoEnviosMenExpresa:
-                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','Número de envíos por tipo de envío y ámbito',1e6),use_container_width=True)
+                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6),use_container_width=True)
                 
                 if BarrasEnviosMenExpresa:
-                   st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'Envíos anuales por empresa'),use_container_width=True) 
+                   st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'<b>Envíos anuales por empresa</b>'),use_container_width=True) 
                     
             if ServiciosCorreo=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -2688,16 +2703,16 @@ if select_seccion =='Postal':
                     PieIngresosMenExpresa=st.button('Participaciones')
                 
                 if LineaTiempoIngresosMenExpresa:    
-                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','Ingresos por tipo de envío y ámbito',1e9),use_container_width=True)
+                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9),use_container_width=True)
                 if BarrasIngresosMenExpresa:
-                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'Ingresos anuales por empresa'),use_container_width=True) 
+                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'<b>Ingresos anuales por empresa</b>'),use_container_width=True) 
                 if PieIngresosMenExpresa:
                     col1,col2=st.columns(2)
                     figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2021)')
                     figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieMenExpInd.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
+                    figPieMenExpInd.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     with col1:
                         st.plotly_chart(figPieMenExpInd,use_container_width=True)
 
@@ -2705,7 +2720,7 @@ if select_seccion =='Postal':
                                  color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos(2021)')
                     figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieMenExpMas.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
+                    figPieMenExpMas.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     with col2:
                         st.plotly_chart(figPieMenExpMas,use_container_width=True)    
 
@@ -2772,9 +2787,9 @@ if select_seccion =='Postal':
                 if LineaTiempoIngresosGiros:
                     col1,col2=st.columns(2)                               
                     with col1:
-                        st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Nacionales'],'Ingresos','ambito','Miles de Millones de pesos',1e9,'Ingresos de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Nacionales'],'Ingresos','ambito','Miles de Millones de pesos',1e9,'<b>Ingresos de giros nacionales</b>',['rgb(122, 68, 242)']),use_container_width=True)
                     with col2:    
-                        st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Internacionales'],'Ingresos','ambito','Millones de pesos',1e6,'Ingresos de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Internacionales'],'Ingresos','ambito','Millones de pesos',1e6,'<b>Ingresos de giros internacionales<br>por ámbito</b>',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
                 if BarrasIngresosGiros:
                     st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa'),use_container_width=True)
                     IngresosPorValorGiroEmp['periodo_formato']=IngresosPorValorGiroEmp['periodo'].apply(periodoformato)
@@ -2784,14 +2799,14 @@ if select_seccion =='Postal':
                     figPieGirIng = px.pie(IngresosGirosPie, values='Ingresos', names='empresa', color='empresa',
                                  color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2021)')
                     figPieGirIng.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                    figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieGirIng.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
+                    figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieGirIng.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     #
                     figPieGirValorGiro = px.pie(IngresosGirosPie, values='Valor total giros', names='empresa', color='empresa',
                      color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2021)')
                     figPieGirValorGiro.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                    figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieGirValorGiro.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
+                    figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieGirValorGiro.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     col1,col2=st.columns(2)
                     with col1:
                         st.plotly_chart(figPieGirIng,use_container_width=True) 
@@ -2811,9 +2826,9 @@ if select_seccion =='Postal':
                 if LineaTiempoNGiros:
                     col1,col2=st.columns(2)                               
                     with col1:
-                        st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Nacionales'],'Giros','ambito','Millones',1e6,'Número de giros nacionales',['rgb(122, 68, 242)']),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Nacionales'],'Giros','ambito','Millones',1e6,'<b>Número de giros nacionales</b>',['rgb(122, 68, 242)']),use_container_width=True)
                     with col2:    
-                        st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'Número de giros internacionales<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'<b>Número de giros internacionales<br>por ámbito</b>',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
 
                 if BarrasNGiros:
                     st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',1,'Número de giros anuales por empresa'),use_container_width=True)
@@ -2822,8 +2837,8 @@ if select_seccion =='Postal':
                     figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
                      color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2021)')
                     figPieGirNum.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                    figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
-                    figPieGirNum.update_layout(font_color="Black",title_font_family="serif",title_font_color="Black",titlefont_size=20)
+                    figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieGirNum.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieGirNum,use_container_width=True)
                     
             if ServiciosGiros=='Ingresos por número de giros':
@@ -2845,9 +2860,9 @@ if select_seccion =='Postal':
                 if LineaTiempoIngNGiros:
                     col1,col2=st.columns(2)                               
                     with col1:
-                        st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Nacionales'],'Ingresos/Giros','ambito','Pesos',1,'Ingresos por giros (nacionales)',['rgb(122, 68, 242)']),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Nacionales'],'Ingresos/Giros','ambito','Pesos',1,'<b>Ingresos por giros (nacionales)</b>',['rgb(122, 68, 242)']),use_container_width=True)
                     with col2:    
-                        st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Internacionales'],'Ingresos/Giros','ambito','Pesos',1,'Ingresos por giros (internacionales)<br>por ámbito',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
+                        st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Internacionales'],'Ingresos/Giros','ambito','Pesos',1,'<b>Ingresos por giros (internacionales)<br>por ámbito</b>',['rgb(0, 128, 255)','rgb(102,204,0)']),use_container_width=True)
 
                 if BarrasIngNGiros:
                     st.plotly_chart(PlotlyBarras(IngresosporGirosEmp,'Ingresos/Giros','Pesos',1,'Ingresos por giros por empresa'),use_container_width=True)
