@@ -576,6 +576,11 @@ Estilo_css="""<style type="text/css">
         color: #7a44f2;
         font-weight: bold;
     }    
+    h6{
+        background: #fffdf7;
+        color: #7a44f2;
+        font-weight: bold;
+    }        
     .titulo {
       background: #fffdf7;
       display: flex;
@@ -626,9 +631,13 @@ Estilo_css="""<style type="text/css">
     .st-b4 {display: inline-flex}
     .stRadio{text-align:center}
     ul {
-    list-style-type: square;
-    text-align:left;
+        list-style-type: square;
+        text-align:left;
     }      
+    mark.title {
+        color:#7a44f2;
+        background:none;
+    }
     </style>"""
 Barra_superior="""
 <div class="barra-superior">
@@ -651,49 +660,49 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
     from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
     from APIs import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
 ## TV comunitaria
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APIsTVCom():
     from APIs import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
 ## Dinámica postal
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def APIsDinPostal():
     from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cachettl=24*3600,allow_output_mutation=True)
 def TVabierta():
     TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
     return TVabierta
@@ -713,13 +722,13 @@ IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 ##
-#@st.cache(allow_output_mutation=True)
+#@st.cacheallow_output_mutation=True)
 def gdf_Suramerica():
     gdf_Int = gpd.read_file("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json")
     gdf_Int=gdf_Int.rename(columns=({'admin':'País'}))
     return gdf_Int
 gdf_Int=gdf_Suramerica()
-#@st.cache(allow_output_mutation=True)
+#@st.cacheallow_output_mutation=True)
 def data_Suramerica():    
     with urllib.request.urlopen("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json") as url:
         SURAMERICA = json.loads(url.read().decode())
@@ -733,20 +742,22 @@ select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Portada','Carta editorial','Introducción','Telecomunicaciones','Postal'])
 
 IntroReporte21Sec1=r"""<p style='text-align:justify'>
-2021 fue el año de la recuperación económica. Por lo menos así lo evidencia el principal indicador de actividad económica como es el PIB. Mientras en 2020 este indicador se redujo anualmente a 7% producto de la disrupción generada por el COVID-19, en 2021 el PIB se recuperó creciendo 10.7%, recuperando la totalidad de lo perdido en el periodo más duro de la pandemia, lo que significó un crecimiento respecto de 2019, año previo a la emergencia, de 2.9% 
-Sin embargo, el mercado laboral, que es el principal camino para la generación de ingresos de los hogares, 2021 mostró una recuperación frente a 2020, pero no así frente a 2019. La población ocupada promedio del año creció 6.3% frente a 2020, pero aun está por debajo de la de periodo previo de la pandemia en 5.4%.
+El 2021 fue un año de recuperación económica para Colombia, en términos de Producto Interno Bruto -PIB-. Mientras en 2020 este indicador se redujo a 7% debido a la afectación generada por la pandemia del COVID-19, en 2021 el PIB se recuperó creciendo 10.7%, incluso 2.9% por encima de lo mostrado en 2019, año previo a la emergencia.
 </p>
 """
-
 IntroReporte21Sec2=r"""<p style='text-align:justify'>
-Este es un indicador relevante en la medida que, previamente la CRC, ha mostrado que los altos costos de prestación de los servicios y dificultades para la asequibilidad de los mismos son una barrera para el acceso, por ejemplo, para el servicio de Internet.
-Los escenarios de recuperación no fueron tan claros a lo largo del año, toda vez que en algunas municipalidades se impuso medidas de restricción a la movilidad de las personas las cuales tuvieron impactos sobre algunas actividades económicas. Además. Durante el segundo trimestre se vivió periodos de protestas que condujeron a nuevos bloqueos a la movilidad.
-La inflación que durante 2020 mostró una desaceleración producto de choque negativo de oferta y demanda, siendo esta de 1.61% anual frente a 3.8% de 2019, en 2021 inició escenarios de aceleración tanto por la recuperación en el ritmo de gasto de los hogares como por restricciones logísticas y de oferta. Es así como desde mayo de 2021, la inflación anualizada se ha situado por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5.62%.
+Sin embargo, el mercado laboral, que es el principal camino para la generación de ingresos de los hogares, en 2021 mostró una recuperación frente a 2020, pero no así frente a 2019. La población ocupada promedio del año creció 6.3% frente a 2020, pero aún está por debajo de la observada en el periodo previo de la pandemia en 5.4%. El rezago en el mercado laboral ha conducido a que los ingresos de los hogares de los tres primeros quintiles en 2021 sean menores en más del 10% respecto de los que tenían en 2019 y de cerca del 6.9% para los quintiles cuatro y cinco . Previamente la CRC había señalado respecto del servicio de Internet que una limitada asequibilidad, es un factor que restringe el acceso a este servicio y a su vez su consumo
 </p>
 """
 IntroReporte21Sec3=r"""<p style='text-align:justify'>
-En este contexto turbulento de los dos últimos años, las actividades económicas de Información y comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2.6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer a tasa mayor que el resto de la economía (11.4%). La adaptación del trabajo y estudio en casa, condujo a la adaptación del sector, no solo garantizando los servicios de conectividad, si no ofreciendo mayores características como mayor velocidad para el Internet fijo y capacidades de Internet móvil. Además, como expresión de la fortaleza del sector, los precios le quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12.27% en 2021.
+La inflación que durante 2020 mostró una desaceleración producto de choque negativo de oferta y demanda, siendo esta de 1,61% anual frente a 3.8% de 2019, en 2021 inició escenarios de aceleración tanto por la recuperación en el ritmo de gasto de los hogares como por restricciones logísticas y de oferta. Es así como desde mayo de 2021, la inflación anualizada se situó por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5.62%.
 </p>
+"""
+IntroReporte21Sec4=r"""<p style='text-align:justify'>
+En este contexto cambiante de los dos últimos años, las actividades económicas de Información y comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2.6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer a una tasa del 11.4%, mayor que el resto de la economía. Los cambios producidos por el trabajo y estudio en casa condujeron a la adaptación del sector, no solo garantizando los servicios de conectividad, sino ofreciendo mejores características como mayor velocidad para el Internet fijo y más capacidades de Internet móvil. Además, como expresión de la fortaleza del sector, los precios de los servicios de telecomunicaciones quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12.27% en 2021.</p>
+"""
+IntroReporte21Sec5=r"""<p style='text-align:justify'>
+A continuación, la Comisión de Regulación de Comunicaciones presenta el Reporte de Industria de los sectores TIC y Postal de 2021, cuyo objetivo es presentar la información más relevante de estos sectores, para profundizar en el conocimiento de la industria y facilitar la toma de decisiones. </p>
 """
 
 CartaEditorialSec1=r"""<p style='text-align:justify'>
@@ -793,21 +804,24 @@ if select_seccion =='Carta editorial':
 if select_seccion =='Introducción':
     st.title("Introducción")
     st.markdown(r"""<center><h2>Aspectos generales de los sectores <br>TIC y postal en 2021</h2></center>""",unsafe_allow_html=True)
+    st.markdown(IntroReporte21Sec1,unsafe_allow_html=True)
     col1,col2=st.columns([2,1])
-    with col1:
-        st.markdown(IntroReporte21Sec1,unsafe_allow_html=True)
-    with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png', width=325)
-    col1,col2=st.columns([2,1])
-    with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png', width=325)
     with col1:
         st.markdown(IntroReporte21Sec2,unsafe_allow_html=True)
+    with col2:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png', width=300)
     col1,col2=st.columns([2,1])
+    with col2:
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png', width=300)
     with col1:
         st.markdown(IntroReporte21Sec3,unsafe_allow_html=True)
+    col1,col2=st.columns([2,1])
+    with col1:
+        st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
     with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png', width=325)
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png', width=300)
+    
+    st.markdown(IntroReporte21Sec5,unsafe_allow_html=True)
     
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
@@ -837,22 +851,24 @@ if select_seccion =='Telecomunicaciones':
         col6.metric("TV por suscripción", "6.17M", "1.74%")
         st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2020 </p>",unsafe_allow_html=True)
         st.markdown('')
-        st.markdown('')
+        st.markdown('<hr>',unsafe_allow_html=True)
         st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
         st.markdown('')
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>La prestación de servicios TIC en 2021 generó 23.9 billones de pesos, de los cuales, el 59% fue por la prestación de Internet fijo y móvil. Estos servicios crecieron a tasas reales de 18.9% y 10.4% respectivamente, evidenciando las necesidades de conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos. Por el contrario, los servicios de telefonía fija y móvil evidenciaron reducciones frente a los ingresos generados en 2020.De otra parte, los sectores expuestos a ingresos por pauta publicitaria como lo son los servicios radiodifundidos de televisión y radio mostraron variaciones nominales superiores al 25%. En TV abierta, el crecimiento más que compensó la reducción de ingresos derivado del Covid-19, en tanto en radio, a pesar del crecimiento del 2021, aun los ingresos se sitúan por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
+            st.markdown("<p style='text-align:justify'>La prestación de servicios de telecomunicaciones en 2021 generó 24.3 billones de pesos, un 10.9% más, en términos reales, que en 2020. El 58% de los ingresos de 2021 correspondieron a los servicios de Internet fijo y móvil, los cuales crecieron a tasas reales de 18.9% y 10.4%, respectivamente, lo que refleja las necesidades de más conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos, del 7.9% en términos reales. Por el contrario, los servicios de telefonía fija y móvil fueron los únicos servicios que presentaron reducciones frente a los ingresos generados en 2020, a tasas reales del -2.9% y -6.8%, respectivamente.<br>De otra parte, los sectores expuestos a ingresos por pauta publicitaria, es decir, los servicios radiodifundidos de televisión y radio, mostraron variaciones reales superiores al 30%. En TV abierta, el crecimiento en ingresos en 2021 compensó la reducción de ingresos derivada del COVID-19 para el año 2020. En radio, a pesar del crecimiento mostrado en 2021, los ingresos se situaron por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
         with col2:
-            st.markdown("Tabla", unsafe_allow_html=True)
+            st.markdown("<center><p style='font-size:10px'><b>Ingresos de los servicios de telecomunicaciones 2020-2021</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-TIC.png')
-            st.markdown("Fuente", unsafe_allow_html=True)
+            st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, Contaduría General de la Nación – CHIP.", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>En materia de penetración, los servicios de telecomunicaciones mostraron, en su mayoría, crecimientos en las tasas de penetración de estos. Sólo la penetración de TV por suscripción se ve reducida, pero como resultado de un crecimiento más de en número de hogares respecto reduce, pero por un crecimiento de hogares mayor al crecimiento de los suscriptores.</p>",unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2021, por encima del 7%, con excepción TV por suscripción que creció a una tasa de 1.74%. El servicio con mayor crecimiento en accesos en 2021 fue Internet móvil con 16.8%. El servicio con mayor penetración en móviles es la telefonía, con 147 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración es el Internet con 49.9 accesos por cada 100 hogares.</p>",unsafe_allow_html=True)
         with col2:
+            st.markdown("<center><p style='font-size:10px'><b>Accesos y penetración de los servicios de telecomunicaciones fijos y móviles</b></p>", unsafe_allow_html=True)
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Penetracion-TIC2.png')
+            st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, proyecciones de población y hogares de DANE.", unsafe_allow_html=True)
             
     if select_secResumenDinTic == 'Servicios móviles':
         bla="https://github.com/postdatacrc/Reporte-de-industria/blob/main/Iconos/VozTelMovil.jpg?raw=true"
@@ -2695,20 +2711,25 @@ if select_seccion =='Postal':
         col4.metric("Giros", "127.7M", "-5.3%")      
         st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2020 </p>",unsafe_allow_html=True)
         st.markdown('')
-        st.markdown('')
+        st.markdown('<hr>',unsafe_allow_html=True)
         st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
         st.markdown("")    
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>En 2021, los operadores de servicios tuvieron ingresos por estos servicios por más de 2.3 billones de pesos, equivalente a un crecimiento real de 2.8% frente a 2020. Así mismo, facilitaron la realización de más de 495.1 millones de transacciones, de las cuales el 56.9% correspondieron a envíos de mensajería expresa, 25.8% a giros y el 17.3% de envíos de correo realizados por el Operador Postal Oficial.</p>",unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>En 2021, los operadores de servicios tuvieron ingresos por estos servicios por más de 2.3 billones de pesos, equivalente a un crecimiento real de 2.8% frente a 2020. Así mismo, se realizaron más de 495.1 millones de transacciones, de las cuales el 56.9% correspondió a envíos de mensajería expresa, 25.8% a giros y el 17.3% de envíos de correo realizados por el Operador Postal Oficial.</p>",unsafe_allow_html=True)
         with col2:
+            st.markdown("<center><p style='font-size:10px'><b>Ingresos del sector postal según servicio</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-Postal2.png')
+            st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
         with col1:
             st.markdown("<p style='text-align:justify'>Un indicador de alcance del servicio es el número de puntos de atención físicos. De los puntos físicos de correo provistos por el Operador Postal Oficial, el 84.5% de estos tuvieron presencia en municipios no capitales. Por el contrario, mensajería expresa tuvo una mayor proporción de puntos de atención en las ciudades capitales en las que se concentró el 61.8% de sus puntos. Finalmente, los operadores postales de pago pusieron a disposición más de 42 mil puntos de atención ubicados en el territorio nacional con presencia en las 32 capitales y 795 municipios más.  Sólo en 142 puntos es posible la realización de envíos o entregas de giros internacionales.</p>",unsafe_allow_html=True)
         with col2:
+            st.markdown("<center><p style='font-size:10px'><b>Número de puntos de atención físicos de Servicios Postales según tipo de servicio</p>", unsafe_allow_html=True)
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Puntos-postal2.png')
+            st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
+
 
     if select_secResumenPos=='Servicios postales':
         st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
@@ -2734,11 +2755,11 @@ if select_seccion =='Postal':
             IngresosyEnviosCorreo['Ingresos']=IngresosyEnviosCorreo['Ingresos']/IngresosyEnviosCorreo['indice2021']
             IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
             if ServiciosCorreo=='Número de envíos':
-                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6,''),use_container_width=True)
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6,'<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
             
             if ServiciosCorreo=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
-                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9,''),use_container_width=True)
+                st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9,'<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
 
         if select_DinPos=='Mensajería expresa':
 
@@ -2781,10 +2802,10 @@ if select_seccion =='Postal':
                     BarrasEnviosMenExpresa=st.button('Información por operadores')
                 
                 if LineaTiempoEnviosMenExpresa:
-                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6,''),use_container_width=True)
+                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6,'<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                 
                 if BarrasEnviosMenExpresa:
-                   st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'<b>Envíos anuales por empresa</b>',''),use_container_width=True) 
+                   st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'<b>Envíos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True) 
                     
             if ServiciosCorreo=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -2797,9 +2818,9 @@ if select_seccion =='Postal':
                     PieIngresosMenExpresa=st.button('Participaciones')
                 
                 if LineaTiempoIngresosMenExpresa:    
-                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9,''),use_container_width=True)
+                    st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosMexpresaNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9,'<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                 if BarrasIngresosMenExpresa:
-                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'<b>Ingresos anuales por empresa</b>',''),use_container_width=True) 
+                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpIng,'Ingresos','Millones',1e6,'<b>Ingresos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True) 
                 if PieIngresosMenExpresa:
                     col1,col2=st.columns(2)
                     figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
@@ -2816,7 +2837,8 @@ if select_seccion =='Postal':
                     figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
                     figPieMenExpMas.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     with col2:
-                        st.plotly_chart(figPieMenExpMas,use_container_width=True)    
+                        st.plotly_chart(figPieMenExpMas,use_container_width=True)  
+                    st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
 
         if select_DinPos=='Giros':
             
@@ -2884,8 +2906,11 @@ if select_seccion =='Postal':
                         st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Nacionales'],'Ingresos','ambito','Miles de Millones de pesos',1e9,'<b>Ingresos de giros nacionales</b>',['rgb(122, 68, 242)'],''),use_container_width=True)
                     with col2:    
                         st.plotly_chart(PlotlyBarras2(IngresosGirosNac[IngresosGirosNac['tipo_envio']=='Internacionales'],'Ingresos','ambito','Millones de pesos',1e6,'<b>Ingresos de giros internacionales<br>por ámbito</b>',['rgb(0, 128, 255)','rgb(102,204,0)'],''),use_container_width=True)
+                    
+                    st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
+
                 if BarrasIngresosGiros:
-                    st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa',''),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosGirosEmp,'Ingresos','Miles de Millones de pesos',1e9,'Ingresos anuales por empresa','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                     IngresosPorValorGiroEmp['periodo_formato']=IngresosPorValorGiroEmp['periodo'].apply(periodoformato)
                     #st.plotly_chart(PlotlylineatiempoEmp(IngresosPorValorGiroEmp,'Tasa media de comisión','Porcentaje',['rgb(255,213,30)','rgb(153,255,51)','rgb(255,0,127)','rgb(0,0,255)','rgb(0,102,204)'],'Tasa media de comisión de ámbito nacional','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 
@@ -2906,6 +2931,8 @@ if select_seccion =='Postal':
                         st.plotly_chart(figPieGirIng,use_container_width=True) 
                     with col2:
                         st.plotly_chart(figPieGirValorGiro,use_container_width=True)                  
+                    st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
+
                         
             if ServiciosGiros=='Número de giros':
                 st.markdown('')
@@ -2923,9 +2950,10 @@ if select_seccion =='Postal':
                         st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Nacionales'],'Giros','ambito','Millones',1e6,'<b>Número de giros nacionales</b>',['rgb(122, 68, 242)'],''),use_container_width=True)
                     with col2:    
                         st.plotly_chart(PlotlyBarras2(NumeroGirosNac[NumeroGirosNac['tipo_envio']=='Internacionales'],'Giros','ambito','Miles',1e3,'<b>Número de giros internacionales<br>por ámbito</b>',['rgb(0, 128, 255)','rgb(102,204,0)'],''),use_container_width=True)
+                    st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
 
                 if BarrasNGiros:
-                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',1,'Número de giros anuales por empresa',''),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',1,'Número de giros anuales por empresa','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
 
                 if PieNGiros:
                     figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
@@ -2934,6 +2962,7 @@ if select_seccion =='Postal':
                     figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
                     figPieGirNum.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     st.plotly_chart(figPieGirNum,use_container_width=True)
+                    st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
                     
             if ServiciosGiros=='Ingresos por número de giros':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
@@ -2957,6 +2986,7 @@ if select_seccion =='Postal':
                         st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Nacionales'],'Ingresos/Giros','ambito','Pesos',1,'<b>Ingresos por giros (nacionales)</b>',['rgb(122, 68, 242)'],''),use_container_width=True)
                     with col2:    
                         st.plotly_chart(PlotlyBarras2(IngresosPorNGirosNac[IngresosPorNGirosNac['tipo_envio']=='Internacionales'],'Ingresos/Giros','ambito','Pesos',1,'<b>Ingresos por giros (internacionales)<br>por ámbito</b>',['rgb(0, 128, 255)','rgb(102,204,0)'],''),use_container_width=True)
+                    st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
 
                 if BarrasIngNGiros:
-                    st.plotly_chart(PlotlyBarras(IngresosporGirosEmp,'Ingresos/Giros','Pesos',1,'Ingresos por giros por empresa',''),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(IngresosporGirosEmp,'Ingresos/Giros','Pesos',1,'Ingresos por giros por empresa','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
