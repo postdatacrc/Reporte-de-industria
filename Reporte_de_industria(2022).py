@@ -660,49 +660,49 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,TraficoSMSCodigosCortos,IngresosSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
     from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
     from APIs import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
 ## TV comunitaria
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVCom():
     from APIs import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
 ## Dinámica postal
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsDinPostal():
     from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
-#@st.cachettl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def TVabierta():
     TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
     return TVabierta
@@ -722,13 +722,13 @@ IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 ##
-#@st.cacheallow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def gdf_Suramerica():
     gdf_Int = gpd.read_file("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json")
     gdf_Int=gdf_Int.rename(columns=({'admin':'País'}))
     return gdf_Int
 gdf_Int=gdf_Suramerica()
-#@st.cacheallow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def data_Suramerica():    
     with urllib.request.urlopen("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json") as url:
         SURAMERICA = json.loads(url.read().decode())
@@ -2015,7 +2015,7 @@ if select_seccion =='Telecomunicaciones':
                     st.markdown(r"""<ul>
                     <li>En el año 2021 Colombia tenía 1.704 emisoras radiales, de las cuales 756 son emisoras comunitarias, 624 son comerciales y 324 son emisoras de interés público.</li>
                     <li>331 emisoras tienen frecuencia asignada en banda AM y las restantes 1.373 en la banda FM.</li>
-                    <li>Los ingresos de las principales emisoras comerciales fueron 492.8 mil millones de pesos en 2021, 29% más que los registrados el año inmediatamente anterior.</li>
+                    <li>Los ingresos de las principales emisoras comerciales fueron 492.8 mil millones de pesos en 2021, 33.4% más que los registrados el año inmediatamente anterior.</li>
                     </ul>""",unsafe_allow_html=True)
 
             nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
@@ -2135,8 +2135,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de TV abierta"):
                     st.markdown(r"""<ul>
-                    <li>Los ingresos por TV abierta alcanzaron 1.78 billones de pesos en 2021, creiciendo a una tasa de 37.2%</li>
-                    <li>Por servicio, la TV abierta privada representa el 66.4% de los ingresos y creció un 24.9%</li>
+                    <li>Los ingresos por TV abierta alcanzaron 1.78 billones de pesos en 2021, creciendo a una tasa de 41.8% en términos constantes.</li>
+                    <li>Por servicio, la TV abierta privada representa el 66.4% de los ingresos y creció un 40.9%</li>
                     <li>Los operadores de TV públicos (nacionales, regionales y local sin ánimo de lucro) obtienen ingresos principalmente por transferencias del gobierno nacional y local para su operación.</li>
                     </ul>""",unsafe_allow_html=True)
             st.markdown('') 
@@ -2730,7 +2730,6 @@ if select_seccion =='Postal':
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Puntos-postal2.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
 
-
     if select_secResumenPos=='Servicios postales':
         st.markdown(r"""<div class="titulo"><h3>Servicios postales</h3></div>""",unsafe_allow_html=True)
         st.markdown("<center>Para continuar, por favor seleccione el botón con el servicio del cual desea conocer la información</center>",unsafe_allow_html=True)
@@ -2745,8 +2744,8 @@ if select_seccion =='Postal':
             with col2:             
                 with st.expander("Datos relevantes de Correo"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 se contabilizaron 85.8 millones de envíos, representando una reducción de 18.3% frente a 2020. Por tipo de envío, los masivos se redujeron 17.8%, lo que corresponde al 83.53% del total de envíos en 2021.</li>
-                    <li>Los ingresos de correo en 2021 fueron de 94 mil millones de pesos, representando 12.7% menos que en 2020. Discriminando por tipo de envío, los ingresos de los envíos indivuales decrecieron un 11.9%. Por su parte, los ingresos en envíos masivos pasaron de 29.78 mil millones en 2020 a 25.38 mil millones en 2021.</li>
+                    <li>En 2021 se contabilizaron 85.8 millones de envíos, representando una reducción de 15.7% en términos constantes frente a 2020. Por tipo de envío, los masivos se redujeron 17.8%, lo que corresponde al 83.53% del total de envíos en 2021.</li>
+                    <li>Los ingresos de correo en 2021 fueron de 94 mil millones de pesos, representando 12.7% menos que en 2020. Discriminando por tipo de envío, los ingresos de los envíos indivuales decrecieron un 15% en términos reales. Por su parte, los ingresos en envíos masivos pasaron de 29.78 mil millones en 2020 a 25.38 mil millones en 2021.</li>
                     </ul>""",unsafe_allow_html=True)
 
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
@@ -2770,7 +2769,7 @@ if select_seccion =='Postal':
                 with st.expander("Datos relevantes de Mensajería expresa"):
                     st.markdown(r"""<ul>
                     <li>En 2021, a través del servicio de mensajería expresa se realizaron 281.5 millones de envíos, 0.6% más que en el año 2020. El 56.5% correspondieron a envíos masivos y el 43.5% restante a envíos individuales.</li>
-                    <li>En materia de ingresos, en 2021 la prestación de este servicio percibió 1.5 billones de pesos, 18.1% más que en 2020. Discriminando por tipo de envío, los envíos individuales acumularon un total de 1.297 mil millones de pesos, aumentando un 19.6% frente a 2020, mientras que los envíos masivos crecieron un 9.6%.</li>
+                    <li>En materia de ingresos, en 2021 la prestación de este servicio percibió 1.5 billones de pesos, 16.2% más que en 2020 en términos constantes. Discriminando por tipo de envío, los envíos individuales acumularon un total de 1.297 mil millones de pesos, aumentando un 15.4% frente a 2020 en términos constantes, mientras que los envíos masivos crecieron un 16.2%.</li>
                     </ul>""",unsafe_allow_html=True)
 
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
@@ -2850,7 +2849,7 @@ if select_seccion =='Postal':
                 with st.expander("Datos relevantes de Giros"):
                     st.markdown(r"""<ul>
                     <li>Los operadores de los servicios postales de pago movilizaron un total de 20.6 billones de pesos en 2021 en 127.7 millones de giros. El valor de los giros así como el número de envíos redujeron anualmente a tasas de 7.0% y 5.3% respectivamente</li>
-                    <li>Por la prestación de este servicio, los operadores recibieron ingresos de 718.4 mil millones, 11.9% menos que en 2020. Los giros nacionales representaron el 99.4% del total de ingresos.</li>
+                    <li>Por la prestación de este servicio, los operadores recibieron ingresos de 718.4 mil millones, 15.2% menos que en 2020 en términos constantes. Los giros nacionales representaron el 99.4% del total de ingresos.</li>
                     <li>En 2021, en promedio por cada giro lo operadores tuvieron ingresos de $5626, siendo menores 6.9% a los obtenidos en 2020. El operador con el costo por envío más bajo es MOVIIRED con $2421 y el de mayor costo es SERVICIOS POSTALES NACIONALES con $36448</li>
                     </ul>""",unsafe_allow_html=True)
             
