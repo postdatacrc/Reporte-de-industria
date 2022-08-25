@@ -1911,7 +1911,7 @@ if select_seccion =='Telecomunicaciones':
         
         col1,col2=st.columns(2)
         with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/ott.png'/><h4 style="text-align:left">Servicios Over the top (OTT)</h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/ott.png'/><h4 style="text-align:left"><center>Servicios Over the top (OTT)<br>de contenidos audiovisuales</center></h4></div>""",unsafe_allow_html=True)   
         with col2:             
             with st.expander("Datos relevantes de OTT"):
                 st.markdown(r"""<ul>
@@ -2931,7 +2931,6 @@ if select_seccion =='Postal':
                     with col2:
                         st.plotly_chart(figPieGirValorGiro,use_container_width=True)                  
                     st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
-
                         
             if ServiciosGiros=='Número de giros':
                 st.markdown('')
