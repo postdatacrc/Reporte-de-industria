@@ -761,31 +761,23 @@ A continuación, la Comisión de Regulación de Comunicaciones presenta el Repor
 """
 
 CartaEditorialSec1=r"""<p style='text-align:justify'>
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Resiliencia es “la capacidad de un sistema para recuperar su estado inicial cuando ha cesado la perturbación a la que había estado sometido.” La emergencia del COVID 19 fue el mayor factor perturbador global con efectos sincrónicos y de estrés para las empresas, los hogares y los gobiernos en más de 80 años. En 2021, en la medida que los países flexibilizaron las medidas para contención del virus, la economía colombiana se recuperó y pudo situarse en niveles incluso superiores al periodo pre-covid. 
 </p>
 """
 
 CartaEditorialSec2=r"""<p style='text-align:justify'>
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
-Lorem Ipsum is simply dummy text of the printing and typesetting industry
+Algunos factores que coadyuban a que los sistemas sean resilientes es la adaptabilidad, flexibilidad y la capacidad de lidiar con el cambio y la incertidumbre.  Para ello, el rol transversal de los servicios prestados por la industria TIC y Postal fueron claves. Más velocidad de descarga de Internet fijo, infraestructura para proveer más capacidad en el tráfico de datos de internet móvil, sistemas de pagos postales disponibles y respuesta de la mensajería expresa para responder al comercio electrónico, son solo algunos ejemplos de cómo nuestro sector se ajustó y permitió la adaptación del resto de actividades económicas y de los patrones de conectividad de los hogares. 
 </p>
 """
 
+CartaEditorialSec3=r"""<p style='text-align:justify'> 
+Mejores procesos para mejores resultados es la impronta de la Industria y la CRC en el cómo enfrentar los desafíos de respuesta rápida a los cambios y dinámicas de los mercados. Desde la Comisión estamos convencidos en apostar por la innovación como estrategia fundamental para garantizar una regulación colaborativa, inclusiva, simplificada y basada en la participación ciudadana.
+
+Y la participación no se puede dar sin información. Por ello, con el propósito de promover la transparencia de los mercados, este informe consolida la evolución anual de todo el sector TIC y Postal, y permite un mejor análisis temporal al realizar ajustes por inflación. De esta forma complementamos los informes de coyuntura de la Comisión que son nuestros Data Flash.
+
+Para esta versión, innovamos en nuestra presentación. Las cifras soportes del documento y herramientas gráficas están disponibles en una versión interactiva que permitirá una mayor apropiación de la información sectorial.
+</p>
+"""
 if select_seccion == 'Portada':
     st.title("Reporte de industria 2021")    
     st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
@@ -795,11 +787,13 @@ if select_seccion =='Carta editorial':
     st.title("Carta editorial")
     col1,col2=st.columns([2,1])
     with col1:
+        st.markdown("Paola Andrea Bonilla<br><b>Comisionada y Directora Ejecutiva</b>",unsafe_allow_html=True)
         st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
     with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/PaolaB.png', width=250)
-        st.markdown("Paola Andrea Bonilla<br><b>Comisionada y Directora Ejecutiva</b>",unsafe_allow_html=True)
-    st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
+        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/PaolaB.png', width=250)        
+    st.markdown(CartaEditorialSec2,unsafe_allow_html=True)
+    st.markdown(CartaEditorialSec3,unsafe_allow_html=True)
+
 
 if select_seccion =='Introducción':
     st.title("Introducción")
@@ -859,7 +853,7 @@ if select_seccion =='Telecomunicaciones':
             st.markdown("<p style='text-align:justify'>La prestación de servicios de telecomunicaciones en 2021 generó 24.3 billones de pesos, un 10.9% más, en términos reales, que en 2020. El 58% de los ingresos de 2021 correspondieron a los servicios de Internet fijo y móvil, los cuales crecieron a tasas reales de 18.9% y 10.4%, respectivamente, lo que refleja las necesidades de más conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos, del 7.9% en términos reales. Por el contrario, los servicios de telefonía fija y móvil fueron los únicos servicios que presentaron reducciones frente a los ingresos generados en 2020, a tasas reales del -2.9% y -6.8%, respectivamente.<br>De otra parte, los sectores expuestos a ingresos por pauta publicitaria, es decir, los servicios radiodifundidos de televisión y radio, mostraron variaciones reales superiores al 30%. En TV abierta, el crecimiento en ingresos en 2021 compensó la reducción de ingresos derivada del COVID-19 para el año 2020. En radio, a pesar del crecimiento mostrado en 2021, los ingresos se situaron por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Ingresos de los servicios de telecomunicaciones 2020-2021</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-TIC.png')
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Telecomunicaciones.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, Contaduría General de la Nación – CHIP.", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
@@ -867,7 +861,7 @@ if select_seccion =='Telecomunicaciones':
             st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2021, por encima del 7%, con excepción TV por suscripción que creció a una tasa de 1.74%. El servicio con mayor crecimiento en accesos en 2021 fue Internet móvil con 16.8%. El servicio con mayor penetración en móviles es la telefonía, con 147 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración es el Internet con 49.9 accesos por cada 100 hogares.</p>",unsafe_allow_html=True)
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Accesos y penetración de los servicios de telecomunicaciones fijos y móviles</b></p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Penetracion-TIC2.png')
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Accesos_telco.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, proyecciones de población y hogares de DANE.", unsafe_allow_html=True)
             
     if select_secResumenDinTic == 'Servicios móviles':
