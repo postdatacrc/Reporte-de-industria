@@ -742,34 +742,35 @@ select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Portada','Carta editorial','Introducción','Telecomunicaciones','Postal'])
 
 IntroReporte21Sec1=r"""<p style='text-align:justify'>
-El 2021 fue un año de recuperación económica para Colombia, en términos de Producto Interno Bruto -PIB-. Mientras en 2020 este indicador se redujo a 7% debido a la afectación generada por la pandemia del COVID-19, en 2021 el PIB se recuperó creciendo 10.7%, incluso 2.9% por encima de lo mostrado en 2019, año previo a la emergencia.
-</p>
+2021 fue un año de recuperación económica para Colombia en términos de Producto Interno Bruto -PIB-. Mientras en 2020 este indicador se redujo a 7% debido a la afectación generada por la pandemia del COVID-19, en 2021 el PIB se recuperó creciendo 10,7%, llegando a niveles incluso superiores en 2,9% de lo mostrado en 2019, año previo a la emergencia sanitaria.</p>
 """
 IntroReporte21Sec2=r"""<p style='text-align:justify'>
-Sin embargo, el mercado laboral, que es el principal camino para la generación de ingresos de los hogares, en 2021 mostró una recuperación frente a 2020, pero no así frente a 2019. La población ocupada promedio del año creció 6.3% frente a 2020, pero aún está por debajo de la observada en el periodo previo de la pandemia en 5.4%. El rezago en el mercado laboral ha conducido a que los ingresos de los hogares de los tres primeros quintiles en 2021 sean menores en más del 10% respecto de los que tenían en 2019 y de cerca del 6.9% para los quintiles cuatro y cinco . Previamente la CRC había señalado respecto del servicio de Internet que una limitada asequibilidad, es un factor que restringe el acceso a este servicio y a su vez su consumo
-</p>
+Por su parte, el mercado laboral, que corresponde al principal camino para la generación de ingresos de los hogares, mostró en 2021 una recuperación frente a 2020, mas no frente a 2019. La población ocupada promedio del año creció 6,3% frente a 2020, pero aún está por debajo de la observada en 2019 en 5,4%. El rezago en el mercado laboral ha conducido a que los ingresos de los hogares de los tres primeros quintiles en 2021 sean menores en más del 10% respecto de los que tenían en 2019 y de cerca del 6,9% para los quintiles cuatro y cinco .</p>
 """
 IntroReporte21Sec3=r"""<p style='text-align:justify'>
-La inflación que durante 2020 mostró una desaceleración producto de choque negativo de oferta y demanda, siendo esta de 1,61% anual frente a 3.8% de 2019, en 2021 inició escenarios de aceleración tanto por la recuperación en el ritmo de gasto de los hogares como por restricciones logísticas y de oferta. Es así como desde mayo de 2021, la inflación anualizada se situó por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5.62%.
-</p>
+En materia de inflación, mientras 2020 mostró una desaceleración producto del choque negativo de oferta y demanda, siendo del 1,61% anual frente a 3,8% de 2019, en 2021 el crecimiento en el índice de precios se aceleró derivado de la recuperación en el ritmo de gasto de los hogares, así como por presiones inflacionarias externas transmitidas a través de bienes finales e insumos importados. Es así como desde mayo de 2021, la inflación anualizada se situó por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5,62%.</p>
 """
 IntroReporte21Sec4=r"""<p style='text-align:justify'>
-En este contexto cambiante de los dos últimos años, las actividades económicas de Información y comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2.6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer a una tasa del 11.4%, mayor que el resto de la economía. Los cambios producidos por el trabajo y estudio en casa condujeron a la adaptación del sector, no solo garantizando los servicios de conectividad, sino ofreciendo mejores características como mayor velocidad para el Internet fijo y más capacidades de Internet móvil. Además, como expresión de la fortaleza del sector, los precios de los servicios de telecomunicaciones quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12.27% en 2021.</p>
-"""
+En este contexto cambiante de los dos últimos años, y con los ingresos de los hogares aún sin recuperar niveles de 2019, las actividades económicas del sector de Información y Comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2,6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer al sector a una tasa del 11,4%, valor mayor que el resto de la economía. Los cambios producidos por el trabajo y estudio en casa conllevaron modificaciones en los perfiles de consumo de servicios, privilegiando la conectividad individual y del hogar. Frente a este cambio de hábitos de consumo el sector TIC se adaptó, con la provisión de mayor velocidad de descarga en Internet fijo y facilitando servicios de Internet móvil con casi el doble de las capacidades existentes en 2020. Además, los precios de los servicios de telecomunicaciones quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12,27% en 2021."""
 IntroReporte21Sec5=r"""<p style='text-align:justify'>
-A continuación, la Comisión de Regulación de Comunicaciones presenta el Reporte de Industria de los sectores TIC y Postal de 2021, cuyo objetivo es presentar la información más relevante de estos sectores, para profundizar en el conocimiento de la industria y facilitar la toma de decisiones. </p>
+Ahora bien, en lo corrido de 2022, las presiones inflacionarias externas e internas se han fortalecido. Del lado externo, se han evidenciado choques de oferta a los precios de los energéticos y estrés en la oferta de cereales e insumos para la producción de alimentos. En materia interna, las presiones por factores climáticos como por la fortaleza en el crecimiento del PIB contribuyeron a que la inflación anual pasara de 3,3% en mayo de 2021 a 10,2% en julio de 2022. Como respuesta, el Banco de la República incrementó sus tasas de interés en más de 700 puntos básicos  pasando de 1,75% en agosto de 2021 a 9% en julio de 2022. Con el cambio de política monetaria se espera que conduzca a la moderación en el crecimiento del PIB, para cerrar el año con un crecimiento del 6,5% ."""
+IntroReporte21Sec6=r"""<p style='text-align:justify'> 
+Teniendo en cuenta el panorama económico general de 2021, la CRC pone a disposición el Reporte de Industria de os sectores TIC y Postal 2021, en el cual se encuentra compilado el comportamiento de cada uno de los servicios en esa vigencia y que permite comparar entre ellos y profundiza el conocimiento alrededor de la Industria. Respecto del sector TIC se muestra la evolución de los indicadores agregados más relevantes de la prestación de los servicios fijos, móviles y los servicios radiodifundidos (televisión abierta y radiodifusión sonora), con una descripción detallada de estos servicios en Colombia durante los últimos años, a partir del comportamiento del número de accesos, conexiones, tráfico, ingresos y participaciones de los operadores, entre otras variables. 
+
+Finalmente, se presenta una descripción de indicadores para el sector postal, a partir de los ingresos y tráficos de los servicios de correo, mensajería expresa y giros postales.
+
+</p>
 """
+
 
 CartaEditorialSec1=r"""<p style='text-align:justify'>
 Resiliencia es “la capacidad de un sistema para recuperar su estado inicial cuando ha cesado la perturbación a la que había estado sometido.” La emergencia del COVID 19 fue el mayor factor perturbador global con efectos sincrónicos y de estrés para las empresas, los hogares y los gobiernos en más de 80 años. En 2021, en la medida que los países flexibilizaron las medidas para contención del virus, la economía colombiana se recuperó y pudo situarse en niveles incluso superiores al periodo pre-covid. 
 </p>
 """
-
 CartaEditorialSec2=r"""<p style='text-align:justify'>
 Algunos factores que coadyuban a que los sistemas sean resilientes es la adaptabilidad, flexibilidad y la capacidad de lidiar con el cambio y la incertidumbre.  Para ello, el rol transversal de los servicios prestados por la industria TIC y Postal fueron claves. Más velocidad de descarga de Internet fijo, infraestructura para proveer más capacidad en el tráfico de datos de internet móvil, sistemas de pagos postales disponibles y respuesta de la mensajería expresa para responder al comercio electrónico, son solo algunos ejemplos de cómo nuestro sector se ajustó y permitió la adaptación del resto de actividades económicas y de los patrones de conectividad de los hogares. 
 </p>
 """
-
 CartaEditorialSec3=r"""<p style='text-align:justify'> 
 Mejores procesos para mejores resultados es la impronta de la Industria y la CRC en el cómo enfrentar los desafíos de respuesta rápida a los cambios y dinámicas de los mercados. Desde la Comisión estamos convencidos en apostar por la innovación como estrategia fundamental para garantizar una regulación colaborativa, inclusiva, simplificada y basada en la participación ciudadana.
 
@@ -797,18 +798,20 @@ if select_seccion =='Carta editorial':
 
 if select_seccion =='Introducción':
     st.title("Introducción")
+    st.markdown("")
     st.markdown(r"""<center><h2>Aspectos generales de los sectores <br>TIC y postal en 2021</h2></center>""",unsafe_allow_html=True)
     st.markdown(IntroReporte21Sec1,unsafe_allow_html=True)
+    st.markdown(IntroReporte21Sec2,unsafe_allow_html=True)
     col1,col2=st.columns([2,1])
     with col1:
-        st.markdown(IntroReporte21Sec2,unsafe_allow_html=True)
+        st.markdown(IntroReporte21Sec3,unsafe_allow_html=True)
     with col2:
         st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png', width=300)
     col1,col2=st.columns([2,1])
     with col2:
         st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png', width=300)
     with col1:
-        st.markdown(IntroReporte21Sec3,unsafe_allow_html=True)
+        st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
     col1,col2=st.columns([2,1])
     with col1:
         st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
@@ -816,6 +819,7 @@ if select_seccion =='Introducción':
         st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png', width=300)
     
     st.markdown(IntroReporte21Sec5,unsafe_allow_html=True)
+    st.markdown(IntroReporte21Sec6,unsafe_allow_html=True)
     
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
