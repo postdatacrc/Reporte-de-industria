@@ -742,22 +742,45 @@ select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Portada','Carta editorial','Introducción','Telecomunicaciones','Postal'])
 
 IntroReporte21Sec1=r"""<p style='text-align:justify'>
-2021 fue un año de recuperación económica para Colombia en términos de Producto Interno Bruto -PIB-. Mientras en 2020 este indicador se redujo a 7% debido a la afectación generada por la pandemia del COVID-19, en 2021 el PIB se recuperó creciendo 10,7%, llegando a niveles incluso superiores en 2,9% de lo mostrado en 2019, año previo a la emergencia sanitaria.</p>
+2021 fue un año de recuperación económica para Colombia en términos de Producto Interno Bruto -PIB-. Mientras en 2020 este indicador se redujo a 7% debido a la
+afectación generada por la pandemia del COVID-19, en 2021 el PIB se recuperó creciendo 10.7%, llegando a niveles incluso superiores en 2.9% de lo mostrado en 
+2019, año previo a la emergencia sanitaria.</p>
 """
 IntroReporte21Sec2=r"""<p style='text-align:justify'>
-Por su parte, el mercado laboral, que corresponde al principal camino para la generación de ingresos de los hogares, mostró en 2021 una recuperación frente a 2020, mas no frente a 2019. La población ocupada promedio del año creció 6,3% frente a 2020, pero aún está por debajo de la observada en 2019 en 5,4%. El rezago en el mercado laboral ha conducido a que los ingresos de los hogares de los tres primeros quintiles en 2021 sean menores en más del 10% respecto de los que tenían en 2019 y de cerca del 6,9% para los quintiles cuatro y cinco .</p>
+Por su parte, el mercado laboral, que corresponde al principal camino para la generación de ingresos de los hogares, mostró en 2021 una recuperación frente a 
+2020, mas no frente a 2019. La población ocupada promedio del año creció 6.3% frente a 2020, pero aún está por debajo de la observada en 2019 en 5.4%. El 
+rezago en el mercado laboral ha conducido a que los ingresos de los hogares de los tres primeros quintiles en 2021 sean menores en más del 10% respecto de los
+que tenían en 2019 y de cerca del 6.9% para los quintiles cuatro y cinco .</p>
 """
 IntroReporte21Sec3=r"""<p style='text-align:justify'>
-En materia de inflación, mientras 2020 mostró una desaceleración producto del choque negativo de oferta y demanda, siendo del 1,61% anual frente a 3,8% de 2019, en 2021 el crecimiento en el índice de precios se aceleró derivado de la recuperación en el ritmo de gasto de los hogares, así como por presiones inflacionarias externas transmitidas a través de bienes finales e insumos importados. Es así como desde mayo de 2021, la inflación anualizada se situó por encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5,62%.</p>
+En materia de inflación, mientras 2020 mostró una desaceleración producto del choque negativo de oferta y demanda, siendo del 1.61% anual frente a 3.8% de 
+2019, en 2021 el crecimiento en el índice de precios se aceleró derivado de la recuperación en el ritmo de gasto de los hogares, así como por presiones 
+inflacionarias externas transmitidas a través de bienes finales e insumos importados. Es así como desde mayo de 2021, la inflación anualizada se situó por 
+encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5.62%.</p>
 """
 IntroReporte21Sec4=r"""<p style='text-align:justify'>
-En este contexto cambiante de los dos últimos años, y con los ingresos de los hogares aún sin recuperar niveles de 2019, las actividades económicas del sector de Información y Comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2,6%, esta reducción fue menor que el total del PIB. Igualmente, en 2021, la recuperación económica le permitió crecer al sector a una tasa del 11,4%, valor mayor que el resto de la economía. Los cambios producidos por el trabajo y estudio en casa conllevaron modificaciones en los perfiles de consumo de servicios, privilegiando la conectividad individual y del hogar. Frente a este cambio de hábitos de consumo el sector TIC se adaptó, con la provisión de mayor velocidad de descarga en Internet fijo y facilitando servicios de Internet móvil con casi el doble de las capacidades existentes en 2020. Además, los precios de los servicios de telecomunicaciones quitaron presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12,27% en 2021."""
+En este contexto cambiante de los dos últimos años, y con los ingresos de los hogares aún sin recuperar niveles de 2019, las actividades económicas del sector
+de Información y Comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2.6%, esta reducción fue menor que el total del 
+PIB. Igualmente, en 2021, la recuperación económica le permitió crecer al sector a una tasa del 11.4%, valor mayor que el resto de la economía. Los cambios 
+producidos por el trabajo y estudio en casa conllevaron modificaciones en los perfiles de consumo de servicios, privilegiando la conectividad individual y del 
+hogar. Frente a este cambio de hábitos de consumo el sector TIC se adaptó, con la provisión de mayor velocidad de descarga en Internet fijo y facilitando 
+servicios de Internet móvil con casi el doble de las capacidades existentes en 2020. Además, los precios de los servicios de telecomunicaciones quitaron 
+presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12.27% en 2021."""
 IntroReporte21Sec5=r"""<p style='text-align:justify'>
-Ahora bien, en lo corrido de 2022, las presiones inflacionarias externas e internas se han fortalecido. Del lado externo, se han evidenciado choques de oferta a los precios de los energéticos y estrés en la oferta de cereales e insumos para la producción de alimentos. En materia interna, las presiones por factores climáticos como por la fortaleza en el crecimiento del PIB contribuyeron a que la inflación anual pasara de 3,3% en mayo de 2021 a 10,2% en julio de 2022. Como respuesta, el Banco de la República incrementó sus tasas de interés en más de 700 puntos básicos  pasando de 1,75% en agosto de 2021 a 9% en julio de 2022. Con el cambio de política monetaria se espera que conduzca a la moderación en el crecimiento del PIB, para cerrar el año con un crecimiento del 6,5% ."""
+Ahora bien, en lo corrido de 2022, las presiones inflacionarias externas e internas se han fortalecido. Del lado externo, se han evidenciado choques de oferta 
+a los precios de los energéticos y estrés en la oferta de cereales e insumos para la producción de alimentos. En materia interna, las presiones por factores 
+climáticos como por la fortaleza en el crecimiento del PIB contribuyeron a que la inflación anual pasara de 3.3% en mayo de 2021 a 10.2% en julio de 2022. 
+Como respuesta, el Banco de la República incrementó sus tasas de interés en más de 700 puntos básicos  pasando de 1.75% en agosto de 2021 a 9% en julio de 
+2022. Con el cambio de política monetaria se espera que conduzca a la moderación en el crecimiento del PIB, para cerrar el año con un crecimiento del 6.5% ."""
 IntroReporte21Sec6=r"""<p style='text-align:justify'> 
-Teniendo en cuenta el panorama económico general de 2021, la CRC pone a disposición el Reporte de Industria de os sectores TIC y Postal 2021, en el cual se encuentra compilado el comportamiento de cada uno de los servicios en esa vigencia y que permite comparar entre ellos y profundiza el conocimiento alrededor de la Industria. Respecto del sector TIC se muestra la evolución de los indicadores agregados más relevantes de la prestación de los servicios fijos, móviles y los servicios radiodifundidos (televisión abierta y radiodifusión sonora), con una descripción detallada de estos servicios en Colombia durante los últimos años, a partir del comportamiento del número de accesos, conexiones, tráfico, ingresos y participaciones de los operadores, entre otras variables. 
+Teniendo en cuenta el panorama económico general de 2021, la CRC pone a disposición el Reporte de Industria de os sectores TIC y Postal 2021, en el cual se 
+encuentra compilado el comportamiento de cada uno de los servicios en esa vigencia y que permite comparar entre ellos y profundiza el conocimiento alrededor 
+de la Industria. Respecto del sector TIC se muestra la evolución de los indicadores agregados más relevantes de la prestación de los servicios fijos, móviles 
+y los servicios radiodifundidos (televisión abierta y radiodifusión sonora), con una descripción detallada de estos servicios en Colombia durante los últimos 
+años, a partir del comportamiento del número de accesos, conexiones, tráfico, ingresos y participaciones de los operadores, entre otras variables. 
 
-Finalmente, se presenta una descripción de indicadores para el sector postal, a partir de los ingresos y tráficos de los servicios de correo, mensajería expresa y giros postales.
+Finalmente, se presenta una descripción de indicadores para el sector postal, a partir de los ingresos y tráficos de los servicios de correo, mensajería 
+expresa y giros postales.
 
 </p>
 """
