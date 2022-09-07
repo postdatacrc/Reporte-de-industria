@@ -877,7 +877,7 @@ if select_seccion =='Telecomunicaciones':
             st.markdown("<p style='text-align:justify'>La prestación de servicios de telecomunicaciones en 2021 generó 24.3 billones de pesos, un 10.9% más, en términos reales, que en 2020. El 58% de los ingresos de 2021 correspondieron a los servicios de Internet fijo y móvil, los cuales crecieron a tasas reales de 18.9% y 10.4%, respectivamente, lo que refleja las necesidades de más conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos, del 7.9% en términos reales. Por el contrario, los servicios de telefonía fija y móvil fueron los únicos servicios que presentaron reducciones frente a los ingresos generados en 2020, a tasas reales del -2.9% y -6.8%, respectivamente.<br>De otra parte, los sectores expuestos a ingresos por pauta publicitaria, es decir, los servicios radiodifundidos de televisión y radio, mostraron variaciones reales superiores al 30%. En TV abierta, el crecimiento en ingresos en 2021 compensó la reducción de ingresos derivada del COVID-19 para el año 2020. En radio, a pesar del crecimiento mostrado en 2021, los ingresos se situaron por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Ingresos de los servicios de telecomunicaciones 2020-2021</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Telecomunicaciones.png')
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_TelecomunicacionesFinal.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, Contaduría General de la Nación – CHIP.", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
@@ -885,7 +885,7 @@ if select_seccion =='Telecomunicaciones':
             st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2021, por encima del 7%, con excepción TV por suscripción que creció a una tasa de 1.74%. El servicio con mayor crecimiento en accesos en 2021 fue Internet móvil con 16.8%. El servicio con mayor penetración en móviles es la telefonía, con 147 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración es el Internet con 49.9 accesos por cada 100 hogares.</p>",unsafe_allow_html=True)
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Accesos y penetración de los servicios de telecomunicaciones fijos y móviles</b></p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Accesos_telco.png')
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Accesos_telcoFinal.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, proyecciones de población y hogares de DANE.", unsafe_allow_html=True)
             
     if select_secResumenDinTic == 'Servicios móviles':
@@ -2737,7 +2737,7 @@ if select_seccion =='Postal':
             st.markdown("<p style='text-align:justify'>En 2021, los operadores de servicios tuvieron ingresos por estos servicios por más de 2.3 billones de pesos, equivalente a un crecimiento real de 2.8% frente a 2020. Así mismo, se realizaron más de 495.1 millones de transacciones, de las cuales el 56.9% correspondió a envíos de mensajería expresa, 25.8% a giros y el 17.3% de envíos de correo realizados por el Operador Postal Oficial.</p>",unsafe_allow_html=True)
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Ingresos del sector postal según servicio</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Ingresos-Postal2.png')
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Postales_ingresos.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
@@ -2745,7 +2745,7 @@ if select_seccion =='Postal':
             st.markdown("<p style='text-align:justify'>Un indicador de alcance del servicio es el número de puntos de atención físicos. De los puntos físicos de correo provistos por el Operador Postal Oficial, el 84.5% de estos tuvieron presencia en municipios no capitales. Por el contrario, mensajería expresa tuvo una mayor proporción de puntos de atención en las ciudades capitales en las que se concentró el 61.8% de sus puntos. Finalmente, los operadores postales de pago pusieron a disposición más de 42 mil puntos de atención ubicados en el territorio nacional con presencia en las 32 capitales y 795 municipios más.  Sólo en 142 puntos es posible la realización de envíos o entregas de giros internacionales.</p>",unsafe_allow_html=True)
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Número de puntos de atención físicos de Servicios Postales según tipo de servicio</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Puntos-postal2.png')
+            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Postales_puntos.png')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
 
     if select_secResumenPos=='Servicios postales':
