@@ -799,9 +799,10 @@ Teniendo en cuenta lo anterior, y en alineación con su política de mejora regu
 
 El presente informe exhibe los principales datos de relevancia relacionados con los sectores regulados por la entidad, disponiendo por primera vez de una versión interactiva, a través de la cual es posible la profundización del contenido publicado, mediante la exploración de diferentes indicadores analizados</p>
 """
+
 if select_seccion == 'Portada':
     st.title("Reporte de industria 2021")    
-    st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte-de-industria-1140x500.png")
+    st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte_industria_2021Sep.png")
     st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
 if select_seccion =='Carta editorial':
@@ -814,7 +815,6 @@ if select_seccion =='Carta editorial':
         st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/PaolaB.png', width=250)        
     st.markdown(CartaEditorialSec2,unsafe_allow_html=True)
     st.markdown(CartaEditorialSec3,unsafe_allow_html=True)
-
 
 if select_seccion =='Introducción':
     st.title("Introducción")
