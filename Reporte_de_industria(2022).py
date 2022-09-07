@@ -764,20 +764,17 @@ Finalmente, se presenta una descripción de indicadores para el sector postal, a
 
 
 CartaEditorialSec1=r"""<p style='text-align:justify'>
-Resiliencia es “la capacidad de un sistema para recuperar su estado inicial cuando ha cesado la perturbación a la que había estado sometido.” La emergencia del COVID 19 fue el mayor factor perturbador global con efectos sincrónicos y de estrés para las empresas, los hogares y los gobiernos en más de 80 años. En 2021, en la medida que los países flexibilizaron las medidas para contención del virus, la economía colombiana se recuperó y pudo situarse en niveles incluso superiores al periodo pre-covid. 
-</p>
+Luego de vivir en el año 2020 un periodo complejo y lleno de incertidumbre derivado de la emergencia del COVID 19, en 2021 los servicios prestados por la industria TIC y Postal desempeñaron un rol fundamental para impulsar la reactivación económica. En este nuevo contexto, dichas industrias siguen evolucionando de manera positiva, sentando las bases para la transformación digital del país.</p>
 """
 CartaEditorialSec2=r"""<p style='text-align:justify'>
-Algunos factores que coadyuban a que los sistemas sean resilientes es la adaptabilidad, flexibilidad y la capacidad de lidiar con el cambio y la incertidumbre.  Para ello, el rol transversal de los servicios prestados por la industria TIC y Postal fueron claves. Más velocidad de descarga de Internet fijo, infraestructura para proveer más capacidad en el tráfico de datos de internet móvil, sistemas de pagos postales disponibles y respuesta de la mensajería expresa para responder al comercio electrónico, son solo algunos ejemplos de cómo nuestro sector se ajustó y permitió la adaptación del resto de actividades económicas y de los patrones de conectividad de los hogares. 
-</p>
+Mientras apoyaban transversalmente el proceso de recuperación de Colombia, las empresas que hacen parte de estos sectores registraron importantes avances en múltiples aspectos, entre otros, mayores velocidades de las conexiones de Internet, aumento en el despliegue de infraestructura de Internet móvil 4G y fibra óptica, mayor capilaridad y disponibilidad de puntos para giros postales y acciones para soportar un incrementos en el número de envíos del comercio electrónico a través de operadores postales ajustando sus servicios a los nuevos hábitos de consumo de los colombianos y permitiendo la adaptación del resto de actividades económicas.</p>
 """
 CartaEditorialSec3=r"""<p style='text-align:justify'> 
-Mejores procesos para mejores resultados es la impronta de la Industria y la CRC en el cómo enfrentar los desafíos de respuesta rápida a los cambios y dinámicas de los mercados. Desde la Comisión estamos convencidos en apostar por la innovación como estrategia fundamental para garantizar una regulación colaborativa, inclusiva, simplificada y basada en la participación ciudadana.
+A su vez, en su calidad de autoridad regulatoria, la CRC es cada vez más consciente de la importancia de contar con información y datos de calidad para el conocimiento de los mercados. Es por esta razón que el presente reporte constituye una herramienta que facilita la toma de decisiones por parte los usuarios y demás agentes, y es fundamental para el diseño de regulación colaborativa, inclusiva, simplificada y basada en los datos, que continue impulsando la mejora de los servicios de comunicaciones y postales en el país.
 
-Y la participación no se puede dar sin información. Por ello, con el propósito de promover la transparencia de los mercados, este informe consolida la evolución anual de todo el sector TIC y Postal, y permite un mejor análisis temporal al realizar ajustes por inflación. De esta forma complementamos los informes de coyuntura de la Comisión que son nuestros Data Flash.
+Teniendo en cuenta lo anterior, y en alineación con su política de mejora regulatoria, la Comisión pone a disposición de sus grupos de interés a nivel nacional e internacional el Reporte de Industria de los sectores TIC y Postal de 2021, el cual expone de manera general y amplia el panorama de estas industrias en el país, con la rigurosidad técnica y la transparencia que caracteriza al regulador.
 
-Para esta versión, innovamos en nuestra presentación. Las cifras soportes del documento y herramientas gráficas están disponibles en una versión interactiva que permitirá una mayor apropiación de la información sectorial.
-</p>
+El presente informe exhibe los principales datos de relevancia relacionados con los sectores regulados por la entidad, disponiendo por primera vez de una versión interactiva, a través de la cual es posible la profundización del contenido publicado, mediante la exploración de diferentes indicadores analizados</p>
 """
 if select_seccion == 'Portada':
     st.title("Reporte de industria 2021")    
