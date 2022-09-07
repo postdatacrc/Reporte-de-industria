@@ -651,7 +651,7 @@ Barra_superior="""
     </div>
     <div class="imagen-flotar" style="height: 80px; left: 300px; padding:2px">
         <a class="imagen-flotar" href="https://www.crcom.gov.co" title="CRC">
-            <img src="https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/banner-reporte-de-industria-980x76.png" alt="CRC" style="">
+            <img src="https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte_industria_2021SepF.png" alt="CRC" style="">
         </a>
     </div>    
 </div>"""
