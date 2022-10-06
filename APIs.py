@@ -409,14 +409,14 @@ def ReadApiTVSUSSus():
     consulta_anno='2018,2019,2020,2021'
     consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
              '&filters[mes_del_trimestre]=3&filters[anno]=' + consulta_anno + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=desc_empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
-             '&group_by=anno,trimestre,id_empresa,desc_empresa,id_tecnologia,tecnologia'\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
+             '&group_by=anno,trimestre,id_empresa,empresa,id_tecnologia,tecnologia'\
              '&sum=suscriptores' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     TV_SUS = pd.DataFrame(json_base['result']['records'])
     TV_SUS.sum_suscriptores = TV_SUS.sum_suscriptores.astype('int64')
-    TV_SUS = TV_SUS.rename(columns={'desc_empresa':'empresa','sum_suscriptores':'suscriptores'})
+    TV_SUS = TV_SUS.rename(columns={'sum_suscriptores':'suscriptores'})
     TV_SUS['periodo']=TV_SUS['anno']+'-T'+TV_SUS['trimestre']
     return TV_SUS 
 SuscriptoresTVSus=ReadApiTVSUSSus()    
@@ -426,16 +426,15 @@ def ReadApiTVSUSIng():
     consulta_anno='2018,2019,2020,2021'
     consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
              '&filters[anno]=' + consulta_anno + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=desc_empresa&fields[]=id_concepto&fields[]=concepto'\
-             '&group_by=anno,trimestre,id_empresa,desc_empresa'\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_concepto&fields[]=concepto'\
+             '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum=ingresos' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     TVSUS_ING = pd.DataFrame(json_base['result']['records'])
     TVSUS_ING.sum_ingresos = TVSUS_ING.sum_ingresos.astype('float').astype('int64')
-    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos','desc_empresa':'empresa'})
+    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos'})
     TVSUS_ING['periodo']=TVSUS_ING['anno']+'-T'+TVSUS_ING['trimestre']
-    TVSUS_ING=TVSUS_ING.rename(columns={'desc_empresa':'empresa'})
     return TVSUS_ING
 IngresosTVSus=ReadApiTVSUSIng()
 
