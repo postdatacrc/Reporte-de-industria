@@ -275,7 +275,7 @@ def ReadApiINTFIng():
 IngresosInternetFijo=ReadApiINTFIng()
 
 ########################################################### Telefonía fija
-## Ingresos
+## Lineas
 def ReadAPILinTL():
     resourceid_tl_lineas = '967fbbd1-1c10-42b8-a6af-88b2376d43e7'
     consulta_anno='2018,2019,2020,2021'
@@ -433,7 +433,7 @@ def ReadApiTVSUSIng():
     json_base = json.loads(response_base.read())
     TVSUS_ING = pd.DataFrame(json_base['result']['records'])
     TVSUS_ING.sum_ingresos = TVSUS_ING.sum_ingresos.astype('float').astype('int64')
-    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos'})
+    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos','desc_empresa':'empresa'})
     TVSUS_ING['periodo']=TVSUS_ING['anno']+'-T'+TVSUS_ING['trimestre']
     return TVSUS_ING
 IngresosTVSus=ReadApiTVSUSIng()
@@ -444,15 +444,15 @@ def ReadApiTVComunitariaAsociados():
     resourceid = '6a80e055-0a5c-427e-a6d8-fcb3526dbcd5'
     consulta_anno='2019,2020,2021'
     consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
-             '&filters[mes]=3&filters[anno]=' + consulta_anno + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=id_operador&fields[]=operador&fields[]=id_departamento&fields[]=departamento'\
-             '&group_by=anno,trimestre,id_operador,operador,id_departamento,departamento'\
+             '&filters[mes_del_trimestre]=3&filters[anno]=' + consulta_anno + ''\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_departamento&fields[]=departamento'\
+             '&group_by=anno,trimestre,id_empresa,empresa,id_departamento,departamento'\
              '&sum=total_asociados' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     TV_COM = pd.DataFrame(json_base['result']['records'])
     TV_COM.sum_total_asociados = TV_COM.sum_total_asociados.astype('int64')
-    TV_COM = TV_COM.rename(columns={'id_operador':'id_empresa','operador':'empresa','sum_total_asociados':'asociados'})
+    TV_COM = TV_COM.rename(columns={'sum_total_asociados':'asociados'})
     return TV_COM  
 AsociadosTVComunitaria=ReadApiTVComunitariaAsociados()
 
@@ -462,8 +462,8 @@ def ReadApiTVComunitariaIngresos():
     consulta_anno='2019,2020,2021'
     consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
              '&filters[anno]=' + consulta_anno + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=mes_del_trimestre&fields[]=id_empresa&fields[]=desc_empresa'\
-             '&group_by=anno,trimestre,mes_del_trimestre,id_empresa,desc_empresa'\
+             '&fields[]=anno&fields[]=trimestre&fields[]=mes_del_trimestre&fields[]=id_empresa&fields[]=empresa'\
+             '&group_by=anno,trimestre,mes_del_trimestre,id_empresa,empresa'\
              '&sum[]=ingresos_totales&sum[]=ingr_brutos_pauta_publicitaria&sum[]=ingresos_brutos_operacionales' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
@@ -474,7 +474,7 @@ def ReadApiTVComunitariaIngresos():
     TV_COM.sum_ingresos_brutos_operacionales = TV_COM.sum_ingresos_brutos_operacionales.astype('int64')
     TV_COM.trimestre=TV_COM.trimestre.astype('int64')
     TV_COM.mes_del_trimestre=TV_COM.mes_del_trimestre.astype('int64')
-    TV_COM = TV_COM.rename(columns={'desc_empresa':'empresa','sum_ingresos_totales':'Ing Total',
+    TV_COM = TV_COM.rename(columns={'sum_ingresos_totales':'Ing Total',
                                    'sum_ingr_brutos_pauta_publicitaria':'Ing Pauta publicitaria',
                                    'sum_ingresos_brutos_operacionales':'Ing Brutos operacionales'})
     return TV_COM  
