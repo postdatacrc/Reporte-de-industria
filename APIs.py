@@ -90,22 +90,22 @@ def ReadApiTelMovilIngresosSMS():
     return VOZ_TRAF
 IngresosSMSTelMovil=ReadApiTelMovilIngresosSMS()
 
-def ReadApiTelMovilTraficoCodigosCortos():
-    resourceid = '7c2910ca-29d4-4ee3-99ae-4fc2f09eeb86'
-    consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
-             '&filters[anno]=' + '2018,2019,2020,2021' + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-             '&group_by=anno,trimestre,id_empresa,empresa'\
-             '&sum[]=trafico_terminado&sum[]=trafico_originado' 
-    response_base = urlopen(consulta + '&limit=10000000') 
-    json_base = json.loads(response_base.read())
-    VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
-    VOZ_TRAF.sum_trafico_terminado = VOZ_TRAF.sum_trafico_terminado.astype('int64')
-    VOZ_TRAF.sum_trafico_originado = VOZ_TRAF.sum_trafico_originado.astype('int64')
-    VOZ_TRAF = VOZ_TRAF.rename(columns={'sum_trafico_terminado':'trafico terminado','sum_trafico_originado':'trafico originado'})
-    VOZ_TRAF['periodo']=VOZ_TRAF['anno']+'-T'+VOZ_TRAF['trimestre']
-    return VOZ_TRAF
-TraficoSMSCodigosCortos=ReadApiTelMovilTraficoCodigosCortos()
+# def ReadApiTelMovilTraficoCodigosCortos():
+    # resourceid = '7c2910ca-29d4-4ee3-99ae-4fc2f09eeb86'
+    # consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
+             # '&filters[anno]=' + '2018,2019,2020,2021' + ''\
+             # '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
+             # '&group_by=anno,trimestre,id_empresa,empresa'\
+             # '&sum[]=trafico_terminado&sum[]=trafico_originado' 
+    # response_base = urlopen(consulta + '&limit=10000000') 
+    # json_base = json.loads(response_base.read())
+    # VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
+    # VOZ_TRAF.sum_trafico_terminado = VOZ_TRAF.sum_trafico_terminado.astype('int64')
+    # VOZ_TRAF.sum_trafico_originado = VOZ_TRAF.sum_trafico_originado.astype('int64')
+    # VOZ_TRAF = VOZ_TRAF.rename(columns={'sum_trafico_terminado':'trafico terminado','sum_trafico_originado':'trafico originado'})
+    # VOZ_TRAF['periodo']=VOZ_TRAF['anno']+'-T'+VOZ_TRAF['trimestre']
+    # return VOZ_TRAF
+# TraficoSMSCodigosCortos=ReadApiTelMovilTraficoCodigosCortos()
 
 def ReadApiTelMovilIngresosCodigosCortos():
     resourceid = '2c9bba15-a735-41c0-9068-7bb8d280ee99'
@@ -428,12 +428,12 @@ def ReadApiTVSUSIng():
              '&filters[anno]=' + consulta_anno + ''\
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_concepto&fields[]=concepto'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
-             '&sum=ingresos' 
+             '&sum=ingresos_brutos_operacionales' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     TVSUS_ING = pd.DataFrame(json_base['result']['records'])
-    TVSUS_ING.sum_ingresos = TVSUS_ING.sum_ingresos.astype('float').astype('int64')
-    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos','desc_empresa':'empresa'})
+    TVSUS_ING.sum_ingresos_brutos_operacionales = TVSUS_ING.sum_ingresos_brutos_operacionales.astype('float').astype('int64')
+    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos_brutos_operacionales':'ingresos_brutos_operacionales','desc_empresa':'empresa'})
     TVSUS_ING['periodo']=TVSUS_ING['anno']+'-T'+TVSUS_ING['trimestre']
     return TVSUS_ING
 IngresosTVSus=ReadApiTVSUSIng()
