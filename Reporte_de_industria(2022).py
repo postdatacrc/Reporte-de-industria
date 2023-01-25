@@ -662,49 +662,49 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 
 ########################################### APIs
 ## Telefonía móvil
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
     from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
     from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
     from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
     from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
     from APIs import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
 ## TV comunitaria
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVCom():
     from APIs import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
 ## Dinámica postal
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsDinPostal():
     from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
-@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache(ttl=24*3600,allow_output_mutation=True)
 def TVabierta():
     TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
     return TVabierta
@@ -724,13 +724,13 @@ IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 ##
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def gdf_Suramerica():
     gdf_Int = gpd.read_file("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json")
     gdf_Int=gdf_Int.rename(columns=({'admin':'País'}))
     return gdf_Int
 gdf_Int=gdf_Suramerica()
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def data_Suramerica():    
     with urllib.request.urlopen("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json") as url:
         SURAMERICA = json.loads(url.read().decode())
