@@ -428,12 +428,14 @@ def ReadApiTVSUSIng():
              '&filters[anno]=' + consulta_anno + ''\
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_concepto&fields[]=concepto'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
-             '&sum=ingresos_brutos_operacionales' 
+             '&sum[]=ingresos_brutos_operacionales&sum[]=ingr_brutos_pauta_publicitaria' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     TVSUS_ING = pd.DataFrame(json_base['result']['records'])
     TVSUS_ING.sum_ingresos_brutos_operacionales = TVSUS_ING.sum_ingresos_brutos_operacionales.astype('float').astype('int64')
-    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos_brutos_operacionales':'ingresos_brutos_operacionales','desc_empresa':'empresa'})
+    TVSUS_ING.sum_ingr_brutos_pauta_publicitaria = TVSUS_ING.sum_ingr_brutos_pauta_publicitaria.astype('float').astype('int64')
+    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos_brutos_operacionales':'ingresos_brutos_operacionales','sum_ingr_brutos_pauta_publicitaria':'ingresos_pauta_publicitaria'})
+    TVSUS_ING['ingresos']=TVSUS_ING['ingresos_brutos_operacionales']+TVSUS_ING['ingresos_pauta_publicitaria']
     TVSUS_ING['periodo']=TVSUS_ING['anno']+'-T'+TVSUS_ING['trimestre']
     return TVSUS_ING
 IngresosTVSus=ReadApiTVSUSIng()
