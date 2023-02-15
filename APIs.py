@@ -4,6 +4,11 @@ import glob
 import os
 from urllib.request import urlopen
 import json
+import ssl
+
+context = ssl.create_default_context()
+context.check_hostname = False
+context.verify_mode = ssl.CERT_NONE
 
 ########################################################### Telefonía Móvil
 
@@ -15,7 +20,7 @@ def ReadApiTelMovilAbonados():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_proveedor&fields[]=proveedor&fields[]=modalidad'\
              '&group_by=anno,trimestre,modalidad,id_proveedor,proveedor'\
              '&sum=abonados' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000', context=context) 
     json_base = json.loads(response_base.read())
     VOZ_ABO = pd.DataFrame(json_base['result']['records'])
     VOZ_ABO.sum_abonados = VOZ_ABO.sum_abonados.astype('int64')
@@ -31,7 +36,7 @@ def ReadApiTelMovilTrafico():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=tipo_trafico'\
              '&group_by=anno,trimestre,tipo_trafico,id_empresa,empresa'\
              '&sum=trafico' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
     VOZ_TRAF.sum_trafico = VOZ_TRAF.sum_trafico.astype('int64')
@@ -47,7 +52,7 @@ def ReadApiTelMovilIngresos():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum[]=ingresos_totales&sum[]=ingresos_prepago&sum[]=ingresos_pospago'
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_ING = pd.DataFrame(json_base['result']['records'])
     VOZ_ING.sum_ingresos_totales = VOZ_ING.sum_ingresos_totales.astype('int64')
@@ -65,7 +70,7 @@ def ReadApiTelMovilTraficoSMS():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum=cantidad' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
     VOZ_TRAF.sum_cantidad = VOZ_TRAF.sum_cantidad.astype('int64')
@@ -82,7 +87,7 @@ def ReadApiTelMovilIngresosSMS():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum=ingresos' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
     VOZ_TRAF.sum_ingresos = VOZ_TRAF.sum_ingresos.astype('int64')
@@ -114,7 +119,7 @@ def ReadApiTelMovilIngresosCodigosCortos():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum[]=ingresos_sms' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_ING = pd.DataFrame(json_base['result']['records'])
     VOZ_ING.sum_ingresos_sms = VOZ_ING.sum_ingresos_sms.astype('int64')
@@ -133,7 +138,7 @@ def ReadApiIMAccesos():
                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                 '&group_by=anno,trimestre,id_empresa,empresa'\
                 '&sum=cantidad_suscriptores' 
-    response_base_cf = urlopen(consulta_cf + '&limit=10000000') 
+    response_base_cf = urlopen(consulta_cf + '&limit=10000000',context=context) 
     json_base_cf = json.loads(response_base_cf.read())
     IMCF_SUS = pd.DataFrame(json_base_cf['result']['records'])
     IMCF_SUS['modalidad']='Cargo Fijo'
@@ -145,7 +150,7 @@ def ReadApiIMAccesos():
                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                 '&group_by=anno,trimestre,id_empresa,empresa'\
                 '&sum=cantidad_abonados' 
-    response_base_dda = urlopen(consulta_dda + '&limit=10000000') 
+    response_base_dda = urlopen(consulta_dda + '&limit=10000000',context=context) 
     json_base_dda = json.loads(response_base_dda.read())
     IMDDA_ABO = pd.DataFrame(json_base_dda['result']['records'])
     IMDDA_ABO.sum_cantidad_abonados = IMDDA_ABO.sum_cantidad_abonados.astype('int64')
@@ -164,7 +169,7 @@ def ReadApiIMIng():
                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                 '&group_by=anno,trimestre,id_empresa,empresa'\
                 '&sum=ingresos' 
-    response_base_cf = urlopen(consulta_cf + '&limit=10000000000') 
+    response_base_cf = urlopen(consulta_cf + '&limit=10000000000',context=context) 
     json_base_cf = json.loads(response_base_cf.read())
     IMCF_ING = pd.DataFrame(json_base_cf['result']['records'])
     IMCF_ING.sum_ingresos = IMCF_ING.sum_ingresos.astype('int64')
@@ -175,7 +180,7 @@ def ReadApiIMIng():
                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                 '&group_by=anno,trimestre,id_empresa,empresa'\
                 '&sum=ingresos' 
-    response_base_dda = urlopen(consulta_dda + '&limit=1000000000') 
+    response_base_dda = urlopen(consulta_dda + '&limit=1000000000',context=context) 
     json_base_dda = json.loads(response_base_dda.read())
     IMDDA_ING = pd.DataFrame(json_base_dda['result']['records'])
     IMDDA_ING.sum_ingresos = IMDDA_ING.sum_ingresos.astype('int64')
@@ -195,7 +200,7 @@ def ReadApiIMTraf():
                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                 '&group_by=anno,trimestre,id_empresa,empresa'\
                 '&sum=trafico' 
-    response_base_cf = urlopen(consulta_cf + '&limit=10000000') 
+    response_base_cf = urlopen(consulta_cf + '&limit=10000000',context=context) 
     json_base_cf = json.loads(response_base_cf.read())
     IMCF_TRAF = pd.DataFrame(json_base_cf['result']['records'])
     IMCF_TRAF['modalidad']='Cargo Fijo'
@@ -206,7 +211,7 @@ def ReadApiIMTraf():
                 '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                 '&group_by=anno,trimestre,id_empresa,empresa'\
                 '&sum=trafico' 
-    response_base_dda = urlopen(consulta_dda + '&limit=10000000') 
+    response_base_dda = urlopen(consulta_dda + '&limit=10000000',context=context) 
     json_base_dda = json.loads(response_base_dda.read())
     IMDDA_TRAF = pd.DataFrame(json_base_dda['result']['records'])
     IMDDA_TRAF['modalidad']='Demanda'
@@ -230,7 +235,7 @@ def ReadApiINTFAccesosCorp():
                  '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
                  '&group_by=anno,trimestre,id_empresa,empresa,id_tecnologia,tecnologia'\
                  '&sum=accesos' 
-        response_base = urlopen(consulta + '&limit=10000000') 
+        response_base = urlopen(consulta + '&limit=10000000',context=context) 
         json_base = json.loads(response_base.read())
         ACCESOS = pd.DataFrame(json_base['result']['records'])
         INTF_ACCESOS = INTF_ACCESOS.append(ACCESOS)
@@ -249,7 +254,7 @@ def ReadApiINTFAccesosRes():
                  '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
                  '&group_by=anno,trimestre,id_empresa,empresa,id_tecnologia,tecnologia'\
                  '&sum=accesos' 
-        response_base = urlopen(consulta + '&limit=10000000') 
+        response_base = urlopen(consulta + '&limit=10000000',context=context) 
         json_base = json.loads(response_base.read())
         ACCESOS = pd.DataFrame(json_base['result']['records'])
         INTF_ACCESOS = INTF_ACCESOS.append(ACCESOS)
@@ -266,7 +271,7 @@ def ReadApiINTFIng():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum=ingresos' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     INTF_ING = pd.DataFrame(json_base['result']['records'])
     INTF_ING.sum_ingresos = INTF_ING.sum_ingresos.astype('int64')
@@ -284,7 +289,7 @@ def ReadAPILinTL():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa&fields[]=id_segmento'\
                         '&group_by=anno,trimestre,id_empresa,empresa,id_segmento'\
                         '&sum=lineas' 
-    response_tl_lineas = urlopen(consulta_tl_lineas + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_lineas = urlopen(consulta_tl_lineas + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_lineas = json.loads(response_tl_lineas.read())
     TL_LINEAS = pd.DataFrame(json_tl_lineas['result']['records'])
     TL_LINEAS.sum_lineas = TL_LINEAS.sum_lineas.astype('int64')
@@ -302,7 +307,7 @@ def ReadAPITrafTelefoniaLocal():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa'\
                         '&group_by=anno,trimestre,id_empresa,empresa'\
                         '&sum=trafico' 
-    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_traf = json.loads(response_tl_traf.read())
     TL_TRAF = pd.DataFrame(json_tl_traf['result']['records'])
     TL_TRAF.sum_trafico = TL_TRAF.sum_trafico.astype('int64')
@@ -318,7 +323,7 @@ def ReadAPITrafTelefoniaLDN():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa'\
                         '&group_by=anno,trimestre,id_empresa,empresa'\
                         '&sum=trafico' 
-    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_traf = json.loads(response_tl_traf.read())
     TL_TRAF = pd.DataFrame(json_tl_traf['result']['records'])
     TL_TRAF.sum_trafico = TL_TRAF.sum_trafico.astype('int64')
@@ -334,7 +339,7 @@ def ReadAPITrafTelefoniaLDI():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=empresa'\
                         '&group_by=anno,trimestre,id_empresa,empresa'\
                         '&sum=trafico' 
-    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_traf = urlopen(consulta_tl_traf + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_traf = json.loads(response_tl_traf.read())
     TL_TRAF = pd.DataFrame(json_tl_traf['result']['records'])
     TL_TRAF.sum_trafico = TL_TRAF.sum_trafico.astype('int64')
@@ -356,7 +361,7 @@ def ReadAPIIngTL():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                         '&group_by=anno,trimestre,id_empresa,empresa'\
                         '&sum=ingresos' 
-    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_ing = json.loads(response_tl_ing.read())
     TL_ING = pd.DataFrame(json_tl_ing['result']['records'])
     TL_ING.sum_ingresos = TL_ING.sum_ingresos.astype('int64')
@@ -372,7 +377,7 @@ def ReadAPIIngTLDN():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                         '&group_by=anno,trimestre,id_empresa,empresa'\
                         '&sum=ingresos' 
-    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_ing = json.loads(response_tl_ing.read())
     TL_ING = pd.DataFrame(json_tl_ing['result']['records'])
     TL_ING.sum_ingresos = TL_ING.sum_ingresos.astype('int64')
@@ -388,7 +393,7 @@ def ReadAPIIngTLDI():
                         '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
                         '&group_by=anno,trimestre,id_empresa,empresa'\
                         '&sum=ingresos' 
-    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000') # Se obtiene solo un registro para obtener el total de registros en la respuesta
+    response_tl_ing = urlopen(consulta_tl_ing + '&limit=10000000',context=context) # Se obtiene solo un registro para obtener el total de registros en la respuesta
     json_tl_ing = json.loads(response_tl_ing.read())
     TL_ING = pd.DataFrame(json_tl_ing['result']['records'])
     TL_ING.sum_ingresos = TL_ING.sum_ingresos.astype('int64')
@@ -412,7 +417,7 @@ def ReadApiTVSUSSus():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_tecnologia&fields[]=tecnologia'\
              '&group_by=anno,trimestre,id_empresa,empresa,id_tecnologia,tecnologia'\
              '&sum=suscriptores' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     TV_SUS = pd.DataFrame(json_base['result']['records'])
     TV_SUS.sum_suscriptores = TV_SUS.sum_suscriptores.astype('int64')
@@ -428,14 +433,12 @@ def ReadApiTVSUSIng():
              '&filters[anno]=' + consulta_anno + ''\
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_concepto&fields[]=concepto'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
-             '&sum[]=ingresos_brutos_operacionales&sum[]=ingr_brutos_pauta_publicitaria' 
+             '&sum[]=ingresos' 
     response_base = urlopen(consulta + '&limit=10000000') 
     json_base = json.loads(response_base.read())
     TVSUS_ING = pd.DataFrame(json_base['result']['records'])
-    TVSUS_ING.sum_ingresos_brutos_operacionales = TVSUS_ING.sum_ingresos_brutos_operacionales.astype('float').astype('int64')
-    TVSUS_ING.sum_ingr_brutos_pauta_publicitaria = TVSUS_ING.sum_ingr_brutos_pauta_publicitaria.astype('float').astype('int64')
-    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos_brutos_operacionales':'ingresos_brutos_operacionales','sum_ingr_brutos_pauta_publicitaria':'ingresos_pauta_publicitaria'})
-    TVSUS_ING['ingresos']=TVSUS_ING['ingresos_brutos_operacionales']+TVSUS_ING['ingresos_pauta_publicitaria']
+    TVSUS_ING.sum_ingresos = TVSUS_ING.sum_ingresos.astype('float').astype('int64')
+    TVSUS_ING = TVSUS_ING.rename(columns={'sum_ingresos':'ingresos'})
     TVSUS_ING['periodo']=TVSUS_ING['anno']+'-T'+TVSUS_ING['trimestre']
     return TVSUS_ING
 IngresosTVSus=ReadApiTVSUSIng()
@@ -450,7 +453,7 @@ def ReadApiTVComunitariaAsociados():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_departamento&fields[]=departamento'\
              '&group_by=anno,trimestre,id_empresa,empresa,id_departamento,departamento'\
              '&sum=total_asociados' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     TV_COM = pd.DataFrame(json_base['result']['records'])
     TV_COM.sum_total_asociados = TV_COM.sum_total_asociados.astype('int64')
@@ -467,7 +470,7 @@ def ReadApiTVComunitariaIngresos():
              '&fields[]=anno&fields[]=trimestre&fields[]=mes_del_trimestre&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,mes_del_trimestre,id_empresa,empresa'\
              '&sum[]=ingresos_totales&sum[]=ingr_brutos_pauta_publicitaria&sum[]=ingresos_brutos_operacionales' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     TV_COM = pd.DataFrame(json_base['result']['records'])
     TV_COM['periodo']=TV_COM['anno']+'-T'+TV_COM['trimestre']
@@ -492,7 +495,7 @@ def ReadApiCorreoEnviosIngresos():
              '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_envio'\
              '&group_by=anno,trimestre,ambito,tipo_envio'\
              '&sum[]=ingresos&sum[]=numero_total_envios' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     Correo = pd.DataFrame(json_base['result']['records'])
     Correo['periodo']=Correo['anno']+'-T'+Correo['trimestre']
@@ -513,7 +516,7 @@ def ReadApiMExpresaEnviosIngresos():
              '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_envio&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,ambito,tipo_envio,id_empresa,empresa'\
              '&sum[]=ingresos&sum[]=numero_total_envios' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     MExpresa = pd.DataFrame(json_base['result']['records'])
     MExpresa['periodo']=MExpresa['anno']+'-T'+MExpresa['trimestre']
@@ -534,7 +537,7 @@ def ReadApiGirosIngresos():
              '&fields[]=anno&fields[]=trimestre&fields[]=ambito&fields[]=tipo_giro&fields[]=id_empresa&fields[]=empresa'\
              '&group_by=anno,trimestre,ambito,tipo_giro,id_empresa,empresa'\
              '&sum[]=ingresos&sum[]=valor_total_giros&sum[]=numero_giros' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     Giros = pd.DataFrame(json_base['result']['records'])
     Giros['periodo']=Giros['anno']+'-T'+Giros['trimestre']
