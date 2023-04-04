@@ -49,14 +49,14 @@ def ReadApiTelMovilIngresos():
     resourceid = '43f0d3a9-cd5c-4f22-a996-74eae6cba9a3'
     consulta='https://www.postdata.gov.co/api/action/datastore/search.json?resource_id=' + resourceid + ''\
              '&filters[anno]=' + '2018,2019,2020,2021' + ''\
-             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
-             '&group_by=anno,trimestre,id_empresa,empresa'\
+             '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=desc_empresa'\
+             '&group_by=anno,trimestre,id_empresa,desc_empresa'\
              '&sum[]=ingresos_totales&sum[]=ingresos_prepago&sum[]=ingresos_pospago'
     response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_ING = pd.DataFrame(json_base['result']['records'])
     VOZ_ING.sum_ingresos_totales = VOZ_ING.sum_ingresos_totales.astype('int64')
-    VOZ_ING = VOZ_ING.rename(columns={'sum_ingresos_totales':'ingresos_totales','sum_ingresos_pospago':'ingresos_pospago','sum_ingresos_prepago':'ingresos_prepago'})
+    VOZ_ING = VOZ_ING.rename(columns={'desc_empresa':'empresa','sum_ingresos_totales':'ingresos_totales','sum_ingresos_pospago':'ingresos_pospago','sum_ingresos_prepago':'ingresos_prepago'})
     return VOZ_ING
 IngresosTelMovil=ReadApiTelMovilIngresos()
 
