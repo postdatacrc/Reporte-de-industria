@@ -664,9 +664,9 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 ## Telefonía móvil
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
-    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
-    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
-AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos = APISTelMovil()
+    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
+    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
+AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
