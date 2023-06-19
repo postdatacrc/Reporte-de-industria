@@ -102,7 +102,7 @@ def ReadApiTelMovilTraficoCodigosCortos():
               '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa'\
               '&group_by=anno,trimestre,id_empresa,empresa'\
               '&sum[]=trafico_terminado&sum[]=trafico_originado' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     VOZ_TRAF = pd.DataFrame(json_base['result']['records'])
     VOZ_TRAF.sum_trafico_terminado = VOZ_TRAF.sum_trafico_terminado.astype('int64')
@@ -434,7 +434,7 @@ def ReadApiTVSUSIng():
              '&fields[]=anno&fields[]=trimestre&fields[]=id_empresa&fields[]=empresa&fields[]=id_concepto&fields[]=concepto'\
              '&group_by=anno,trimestre,id_empresa,empresa'\
              '&sum[]=ingresos' 
-    response_base = urlopen(consulta + '&limit=10000000') 
+    response_base = urlopen(consulta + '&limit=10000000',context=context) 
     json_base = json.loads(response_base.read())
     TVSUS_ING = pd.DataFrame(json_base['result']['records'])
     TVSUS_ING.sum_ingresos = TVSUS_ING.sum_ingresos.astype('float').astype('int64')
