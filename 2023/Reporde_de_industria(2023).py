@@ -664,43 +664,43 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 ## Telefonía móvil
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
-    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
+    from APIs2 import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
-    from APIs import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
+    from APIs2 import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
-    from APIs import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
+    from APIs2 import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
-    from APIs import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
+    from APIs2 import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
-    from APIs import SuscriptoresTVSus,IngresosTVSus
+    from APIs2 import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
 ## TV comunitaria
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVCom():
-    from APIs import AsociadosTVComunitaria,IngresosTVComunitariaIng
+    from APIs2 import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
 ## Dinámica postal
 #@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsDinPostal():
-    from APIs import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
+    from APIs2 import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
