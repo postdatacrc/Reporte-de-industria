@@ -662,49 +662,49 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISTelMovil():
-    from APIs import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
-    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos
-AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos, TraficoSMSCodigosCortos = APISTelMovil()
+    from APIs_2023 import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
+    return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
+AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APISIntMovil():
-    from APIs2022 import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
+    from APIs_2023 import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsIntFijo():
-    from APIs2022 import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
+    from APIs_2023 import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTelFija():
-    from APIs2022 import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
+    from APIs_2023 import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVSus():
-    from APIs2022 import SuscriptoresTVSus,IngresosTVSus
+    from APIs_2023 import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
 ## TV comunitaria
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsTVCom():
-    from APIs2022 import AsociadosTVComunitaria,IngresosTVComunitariaIng
+    from APIs_2023 import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
 ## Dinámica postal
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def APIsDinPostal():
-    from APIs2022 import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
+    from APIs_2023 import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+@st.cache(ttl=24*3600,allow_output_mutation=True)
 def TVabierta():
     TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
     return TVabierta
@@ -724,13 +724,13 @@ IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 ##
-#@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def gdf_Suramerica():
     gdf_Int = gpd.read_file("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json")
     gdf_Int=gdf_Int.rename(columns=({'admin':'País'}))
     return gdf_Int
 gdf_Int=gdf_Suramerica()
-#@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True)
 def data_Suramerica():    
     with urllib.request.urlopen("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json") as url:
         SURAMERICA = json.loads(url.read().decode())
@@ -803,7 +803,7 @@ El presente informe exhibe los principales datos de relevancia relacionados con 
 """
 
 if select_seccion == 'Portada':
-    st.title("Reporte de industria 2021")    
+    st.title("Reporte de industria 2022")    
     st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte_industria_2021Sep.png")
     st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
@@ -1097,10 +1097,10 @@ if select_seccion =='Telecomunicaciones':
             AccesosInternetmovilTotal=AccesosInternetmovil.groupby(['anno','trimestre','id_empresa','empresa','periodo'])['accesos'].sum().reset_index()
             AccesosInternetmovilTotal['modalidad']='Total'
             AccesosInternetmovildf=pd.concat([AccesosInternetmovil,AccesosInternetmovilTotal]).sort_values(by=['periodo'])
-            AccesosInternetmovildf['empresa']=AccesosInternetmovildf['empresa'].replace({'COLOMBIA TELECOMUNICACIONES S.A. E.S.P.':'COLOMBIA TELECOMUNICACIONES S.A. ESP',
-            AccesosInternetmovildf['empresa'].unique().tolist()[13]:'COLOMBIA MOVIL S.A. E.S.P.','EMPRESA DE TELECOMUNICACIONES DE BOGOTA S.A. ESP':'EMPRESA DE TELECOMUNICACIONES DE BOGOTÁ S.A. ESP.',
-            'AVANTEL S.A.S':'AVANTEL S.A.S.','SUMA MOVIL S.A.S.':'SUMA'})
-            AccesosInternetmovildf=AccesosInternetmovildf[(AccesosInternetmovildf['anno']>'2017')&(AccesosInternetmovildf['anno']<'2022')]
+            #AccesosInternetmovildf['empresa']=AccesosInternetmovildf['empresa'].replace({'COLOMBIA TELECOMUNICACIONES S.A. E.S.P.':'COLOMBIA TELECOMUNICACIONES S.A. ESP',
+            #AccesosInternetmovildf['empresa'].unique().tolist()[13]:'COLOMBIA MOVIL S.A. E.S.P.','EMPRESA DE TELECOMUNICACIONES DE BOGOTA S.A. ESP':'EMPRESA DE TELECOMUNICACIONES DE BOGOTÁ S.A. ESP.',
+            #'AVANTEL S.A.S':'AVANTEL S.A.S.','SUMA MOVIL S.A.S.':'SUMA'})
+            AccesosInternetmovildf=AccesosInternetmovildf[(AccesosInternetmovildf['anno']>'2017')]
                         
             col1,col2 = st.columns(2)
             with col1:
