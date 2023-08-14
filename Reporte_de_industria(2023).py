@@ -520,7 +520,7 @@ Estilo_css="""<style type="text/css">
         width: 300px;
         top:100px;
         margin-left: -300px;}
-    h1{ background: rgb(215,235,252);
+    h1{ background: #a6c6fcff;
         text-align: center;
         padding: 15px;
         font-family: Poppins;
@@ -532,9 +532,21 @@ Estilo_css="""<style type="text/css">
         top:80px;
         left:0;
     }
+    h2{
+        background: #fffdf7;
+        text-align: center;
+        padding: 10px;
+        color: #fb771cff;
+        font-weight: bold;
+    }    
+    h6{
+        background: #fffdf7;
+        color: #5f7efbff;
+        font-weight: bold;
+    }      
     .barra-superior{top: 0;
         position: fixed;
-        background-color: #7a44f2;
+        background-color: #5f7efbff;
         width: 100%;
         color:white;
         z-index: 999;
@@ -570,23 +582,11 @@ Estilo_css="""<style type="text/css">
     .main > div {
         padding-left:30px;
         padding-right:30px;
-    }        
-    h2{
-        background: #fffdf7;
-        text-align: center;
-        padding: 10px;
-        color: #7a44f2;
-        font-weight: bold;
-    }    
-    h6{
-        background: #fffdf7;
-        color: #7a44f2;
-        font-weight: bold;
-    }        
+    }              
     .titulo {
       background: #fffdf7;
       display: flex;
-      color: #7a44f2;
+      color: #5f7efbff;
       font-size:25px;
       padding:10px;
       text-align:center;
@@ -648,12 +648,11 @@ Barra_superior="""
             <img src="https://www.postdata.gov.co/sites/all/themes/nuboot_radix/logo-crc-blanco.png" alt="CRC" style="height:40px">
         </a>
         <a class="imagen-flotar" style="padding-left:10px;" href="https://www.postdata.gov.co" title="Postdata">
-            <img src="https://www.postdata.gov.co/sites/default/files/postdata-logo.png" alt="Inicio" style="height:40px">
         </a>
     </div>
     <div class="imagen-flotar" style="height: 80px; left: 300px; padding:2px">
         <a class="imagen-flotar" href="https://www.crcom.gov.co" title="CRC">
-            <img src="https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte_industria_2021SepF.png" alt="CRC" style="">
+            <img src="https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Iconos/reporte-de-industria-2023-02.jpg" alt="CRC" style="">
         </a>
     </div>    
 </div>"""
@@ -662,75 +661,77 @@ st.markdown(Estilo_css+Barra_superior,unsafe_allow_html=True)
 
 ########################################### APIs
 ## Telefonía móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APISTelMovil():
     from APIs_2023 import AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
     return AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos
 AbonadosTelMovil,TraficoTelMovil,IngresosTelMovil,TraficoSMSTelMovil,IngresosSMSTelMovil,IngresosSMSCodigosCortos = APISTelMovil()
 ## Internet móvil
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APISIntMovil():
     from APIs_2023 import AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
     return AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil
 AccesosInternetmovil,IngresosInternetmovil,TraficoInternetMovil=APISIntMovil()
 ## Internet fijo
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APIsIntFijo():
     from APIs_2023 import AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
     return AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo
 AccesosCorpIntFijo,AccesosResIntFijo,IngresosInternetFijo=APIsIntFijo()    
 ## Telefonía fija
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APIsTelFija():
     from APIs_2023 import LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
     return LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija
 LineasTelefoníaLocal,TraficoTelefoniaFija,IngresosTelefoniaFija=APIsTelFija()    
 ## TV por suscripción
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APIsTVSus():
     from APIs_2023 import SuscriptoresTVSus,IngresosTVSus
     return SuscriptoresTVSus,IngresosTVSus
 SuscriptoresTVSus,IngresosTVSus=APIsTVSus()    
 ## TV comunitaria
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APIsTVCom():
     from APIs_2023 import AsociadosTVComunitaria,IngresosTVComunitariaIng
     return AsociadosTVComunitaria,IngresosTVComunitariaIng
 AsociadosTVComunitaria,IngresosTVComunitariaIng=APIsTVCom()  
 ## Dinámica postal
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def APIsDinPostal():
     from APIs_2023 import IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
     return IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros
 IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
-#@st.cache(ttl=24*3600,allow_output_mutation=True)
+#@st.cache
 def TVabierta():
     TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
     return TVabierta
 TVabierta=TVabierta()
 ## IPC
-IPC=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/IPC.csv',delimiter=';')
+IPC=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/IPC.csv',delimiter=';')
 IPC=IPC.fillna(0)
-IPC['anno']=IPC['anno'].astype('int64').astype('str')
+IPC['Año']=IPC['Año'].astype('int64').astype('str')
 IPC['mes']=IPC['mes'].astype('int64').astype('str')
 IPC['subclase-cod']=IPC['subclase-cod'].astype('int64').astype('str')
-IPC['fecha']=IPC['anno']+'-'+IPC['mes'].str.zfill(2)
+IPC['fecha']=IPC['Año']+'-'+IPC['mes'].str.zfill(2)
 IPC['trimestre']=IPC['mes'].apply(trim)
-IPC['periodo']=IPC['anno']+'-T'+IPC['trimestre']
-IPCTrim=IPC.groupby(['periodo','anno','trimestre','subclase-cod'])['indice2021'].mean().reset_index()
+IPC['periodo']=IPC['Año']+'-T'+IPC['trimestre']
+IPC['indice2018']=IPC['indice2018'].str.replace(',','.').astype('float')
+IPC['indice2022']=IPC['indice2022'].str.replace(',','.').astype('float')
+IPCTrim=IPC.groupby(['periodo','Año','trimestre','subclase-cod'])['indice2022'].mean().reset_index()
 IPCTrimMov=IPCTrim[IPCTrim['subclase-cod']=='8310400'].drop(columns={'subclase-cod'})
 IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
-IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2021'].mean().reset_index()
+IPCAnu=IPC.groupby(['Año','subclase-cod'])['indice2022'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 ##
-#@st.cache(allow_output_mutation=True)
+#@st.cache
 def gdf_Suramerica():
     gdf_Int = gpd.read_file("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json")
     gdf_Int=gdf_Int.rename(columns=({'admin':'País'}))
     return gdf_Int
 gdf_Int=gdf_Suramerica()
-#@st.cache(allow_output_mutation=True)
+#@st.cache
 def data_Suramerica():    
     with urllib.request.urlopen("https://raw.githubusercontent.com/postdatacrc/Mediciones_QoE/main/Suramerica.geo.json") as url:
         SURAMERICA = json.loads(url.read().decode())
@@ -804,8 +805,8 @@ El presente informe exhibe los principales datos de relevancia relacionados con 
 
 if select_seccion == 'Portada':
     st.title("Reporte de industria 2022")    
-    st.image("https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/reporte_industria_2021Sep.png")
-    st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2021, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
+    st.image("https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/reporte%20de%20industria%202023-01.png?raw=true")
+    st.markdown("La Comisión de Regulación de Comunicaciones (CRC) pone a disposición del sector y los agentes interesados el tablero interactivo del reporte de industria 2022, donde se destacan las tendencias de los sectores TIC y Postal y su evolución en los últimos años en el país, con el objetivo de profundizar en el conocimiento de la industria y facilitar la toma de decisiones.")
     
 if select_seccion =='Carta editorial':
     st.title("Carta editorial")
@@ -853,15 +854,15 @@ if select_seccion =='Telecomunicaciones':
 
         col1, col2, col3,col4,col5,col6 = st.columns(6)
         with col2:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/internet%20movil.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col3:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/telefonia%20movil.png?raw=true/></div>""",unsafe_allow_html=True) 
         with col4:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/internet%20fijo.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col5:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/telefonia%20fija.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col6:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/tv%20suscripcion.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col1:
             st.markdown("<h2>Accesos por servicio</h2>",unsafe_allow_html=True)
         col2.metric("Internet móvil", "37.96 M", "16.8%")
