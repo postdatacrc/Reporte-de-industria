@@ -218,7 +218,7 @@ def PlotlyIngresosPorAcceso(df,column,unidad,escalamiento,colores,titulo,textofu
     fig.update_layout(legend=dict(orientation="h",xanchor='center',y=1.1,x=0.5,font_size=11),showlegend=True)
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
-    fig.update_xaxes(tickvals=['T2<br>2018','T4<br>2018','T2<br>2019','T4<br>2019','T2<br>2020','T4<br>2020','T2<br>2021','T4<br>2021'])
+    fig.update_xaxes(tickvals=['T2<br>2018','T4<br>2018','T2<br>2019','T4<br>2019','T2<br>2020','T4<br>2020','T2<br>2021','T4<br>2021','T2<br>2022','T4<br>2022'])
     fig.update_layout(yaxis_tickformat ='d')
     fig.add_annotation(
     showarrow=False,
@@ -607,7 +607,7 @@ Estilo_css="""<style type="text/css">
     }
     .edgvbvh9 {
       font-weight: 600;
-      background-color: rgb(215,235,252);
+      background-color: #a6c6fcff;
       border: 0px solid rgba(0, 0, 0, 1); 
       color:black;
       padding: 0.6rem 0.6rem;
@@ -711,18 +711,18 @@ TVabierta=TVabierta()
 ## IPC
 IPC=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/IPC.csv',delimiter=';')
 IPC=IPC.fillna(0)
-IPC['Año']=IPC['Año'].astype('int64').astype('str')
+IPC['anno']=IPC['anno'].astype('int64').astype('str')
 IPC['mes']=IPC['mes'].astype('int64').astype('str')
 IPC['subclase-cod']=IPC['subclase-cod'].astype('int64').astype('str')
-IPC['fecha']=IPC['Año']+'-'+IPC['mes'].str.zfill(2)
+IPC['fecha']=IPC['anno']+'-'+IPC['mes'].str.zfill(2)
 IPC['trimestre']=IPC['mes'].apply(trim)
-IPC['periodo']=IPC['Año']+'-T'+IPC['trimestre']
+IPC['periodo']=IPC['anno']+'-T'+IPC['trimestre']
 IPC['indice2018']=IPC['indice2018'].str.replace(',','.').astype('float')
 IPC['indice2022']=IPC['indice2022'].str.replace(',','.').astype('float')
-IPCTrim=IPC.groupby(['periodo','Año','trimestre','subclase-cod'])['indice2022'].mean().reset_index()
+IPCTrim=IPC.groupby(['periodo','anno','trimestre','subclase-cod'])['indice2022'].mean().reset_index()
 IPCTrimMov=IPCTrim[IPCTrim['subclase-cod']=='8310400'].drop(columns={'subclase-cod'})
 IPCTrimTot=IPCTrim[IPCTrim['subclase-cod']=='0'].drop(columns={'subclase-cod'})
-IPCAnu=IPC.groupby(['Año','subclase-cod'])['indice2022'].mean().reset_index()
+IPCAnu=IPC.groupby(['anno','subclase-cod'])['indice2022'].mean().reset_index()
 IPCAnuTot=IPCAnu[IPCAnu['subclase-cod']=='0'].drop(columns={'subclase-cod'})
 ##
 #@st.cache
@@ -856,7 +856,7 @@ if select_seccion =='Telecomunicaciones':
         with col2:
             st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/internet%20movil.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col3:
-            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/telefonia%20movil.png?raw=true/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/telefonia%20movil.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col4:
             st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/internet%20fijo.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col5:
@@ -865,8 +865,8 @@ if select_seccion =='Telecomunicaciones':
             st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/tv%20suscripcion.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col1:
             st.markdown("<h2>Accesos por servicio</h2>",unsafe_allow_html=True)
-        col2.metric("Internet móvil", "37.96 M", "16.8%")
-        col3.metric("Telefonía móvil", "75.06 M", "10.9%")
+        col2.metric("Internet móvil", "40.11 M", "12.6%")
+        col3.metric("Telefonía móvil", "80.81 M", "7.7%")
         col4.metric("Internet fijo", "8.43M", "7.7%")
         col5.metric("Telefonía fija", "7.55M", "7.86%")
         col6.metric("TV por suscripción", "6.17M", "1.74%")
@@ -906,7 +906,7 @@ if select_seccion =='Telecomunicaciones':
             EmpresasTelMovil=['830122566','800153993','830114921','899999115']
             col1,col2=st.columns(2)
             with col1:                
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-movil.png'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/telefonia%20movil.png?raw=true'/><h4 style="text-align:left">Telefonía móvil</h4></div>""",unsafe_allow_html=True)   
             with col2:                
                 with st.expander("Datos relevantes de Telefonía móvil"):
                     st.markdown(r"""<ul>
@@ -949,19 +949,19 @@ if select_seccion =='Telecomunicaciones':
                 if BarrasAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
-                    EmpTelMovilAbonados=AboAnualTelMovl[AboAnualTelMovl['anno']=='2021'].sort_values(by='abonados',ascending=False)['id_empresa'].to_list()[0:5]
+                    EmpTelMovilAbonados=AboAnualTelMovl[AboAnualTelMovl['anno']=='2022'].sort_values(by='abonados',ascending=False)['id_empresa'].to_list()[0:5]
                     AboAnualTelMovl.loc[AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados)==False,'empresa']='Otros'
                     AboAnualTelMovl.loc[AboAnualTelMovl['id_empresa'].isin(EmpTelMovilAbonados)==False,'id_empresa']='Otros'
-                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()
+                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['anno'].isin(['2021','2022']))].groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(AboAnualTelMovl,'abonados','Millones',1e6,'<b>Abonados anuales por empresa','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                 if PieAbonadosTelmovil:
                     AbonadosTelMovil=AbonadosTelMovil[AbonadosTelMovil['trimestre']=='4']
                     AboAnualTelMovl=AbonadosTelMovil.groupby(['anno','empresa','id_empresa'])['abonados'].sum().reset_index()  
-                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['anno']=='2021')]
+                    AboAnualTelMovl=AboAnualTelMovl[(AboAnualTelMovl['anno']=='2022')]
                     AboAnualTelMovl['empresa']=AboAnualTelMovl['empresa'].replace(nombresComerciales)
                     AboAnualTelMovl['participacion']=round(100*AboAnualTelMovl['abonados']/AboAnualTelMovl['abonados'].sum(),1)
                     figPieTelMovil = px.pie(AboAnualTelMovl, values='abonados', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie, title='<b>Participación en abonados de telefonía móvil<br>(2021-T4)')
+                                 color_discrete_map=Colores_pie, title='<b>Participación en abonados de telefonía móvil<br>(2022-T4)')
                     figPieTelMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTelMovil.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -991,14 +991,14 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(Plotlylineatiempo(TrafTrimTelMovilTOTAL,'trafico','Miles de Millones de minutos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico Telefonía móvil por periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoTelmovil:
                     TrafAnualTelMovl=TraficoTelMovil.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    EmpTelMovilTrafico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:5]
+                    EmpTelMovilTrafico=TrafAnualTelMovl[TrafAnualTelMovl['anno']=='2022'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:5]
                     TrafAnualTelMovl.loc[TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTrafico)==False,'empresa']='Otros'
                     TrafAnualTelMovl.loc[TrafAnualTelMovl['id_empresa'].isin(EmpTelMovilTrafico)==False,'id_empresa']='Otros'                    
-                    TrafAnualTelMovl=TrafAnualTelMovl[(TrafAnualTelMovl['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
+                    TrafAnualTelMovl=TrafAnualTelMovl[(TrafAnualTelMovl['anno'].isin(['2021','2022']))].groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(TrafAnualTelMovl,'trafico','Miles de Millones de minutos',1e9,'<b>Tráfico anual por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)  
             
             if ServiciosTelMovil=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                     
                 col1,col2=st.columns(2)
                 with col1:
@@ -1007,10 +1007,10 @@ if select_seccion =='Telecomunicaciones':
                     BarrasIngresosTelmovil=st.button('Información por operadores')
                 
                 IngresosTelMovil=IngresosTelMovil.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-                IngresosTelMovil['ingresos_totales']=IngresosTelMovil['ingresos_totales']/IngresosTelMovil['indice2021']
+                IngresosTelMovil['ingresos_totales']=IngresosTelMovil['ingresos_totales']/IngresosTelMovil['indice2022']
                 IngresosTelMovil=IngresosTelMovil.astype({'ingresos_totales':'int64','ingresos_prepago':'int64','ingresos_pospago':'int64'})
-                IngresosTelMovil['ingresos_pospago']=IngresosTelMovil['ingresos_pospago']/IngresosTelMovil['indice2021']
-                IngresosTelMovil['ingresos_prepago']=IngresosTelMovil['ingresos_prepago']/IngresosTelMovil['indice2021']
+                IngresosTelMovil['ingresos_pospago']=IngresosTelMovil['ingresos_pospago']/IngresosTelMovil['indice2022']
+                IngresosTelMovil['ingresos_prepago']=IngresosTelMovil['ingresos_prepago']/IngresosTelMovil['indice2022']
                 
                 IngresosTelMovil2=pd.melt(IngresosTelMovil,id_vars=['periodo','id_empresa','empresa'],value_vars=['ingresos_totales','ingresos_prepago',
                                                                                         'ingresos_pospago'],var_name='modalidad', value_name='ingresos')
@@ -1053,21 +1053,21 @@ if select_seccion =='Telecomunicaciones':
                                                                                         'ingresos_pospago'],var_name='modalidad', value_name='ingresos')
                     IngresosTelMovil3=IngresosTelMovil3[IngresosTelMovil3['modalidad']=='ingresos_totales']                                                                  
                     IngresosTelMovil3Agg=IngresosTelMovil3.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()   
-                    EmpTelMovilIngresos=IngresosTelMovil3Agg[IngresosTelMovil3Agg['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+                    EmpTelMovilIngresos=IngresosTelMovil3Agg[IngresosTelMovil3Agg['anno']=='2022'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                     IngresosTelMovil3Agg.loc[IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos)==False,'empresa']='Otros'
                     IngresosTelMovil3Agg.loc[IngresosTelMovil3Agg['id_empresa'].isin(EmpTelMovilIngresos)==False,'id_empresa']='Otros'                    
-                    IngresosTelMovil3Agg=IngresosTelMovil3Agg[(IngresosTelMovil3Agg['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                    IngresosTelMovil3Agg=IngresosTelMovil3Agg[(IngresosTelMovil3Agg['anno'].isin(['2021','2022']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(IngresosTelMovil3Agg,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)  
                     ##
                     IngresosPorAbonadoTelMovil=IngresosPorAbonadoTelMovil[(IngresosPorAbonadoTelMovil['trimestre']=='4')&(IngresosPorAbonadoTelMovil['modalidad']=='TOTAL')]
                     IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil.groupby(['periodo','empresa_x','id_empresa']).agg({'ingresos':'sum','abonados':'sum'}).reset_index()
                     IngresosPorAbonadoTelMovil3['Ingresos/Abonado']=round(IngresosPorAbonadoTelMovil3['ingresos']/IngresosPorAbonadoTelMovil3['abonados'],2)
-                    IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil3[(IngresosPorAbonadoTelMovil3['id_empresa'].isin(EmpTelMovilIngresos))&(IngresosPorAbonadoTelMovil3['periodo'].isin(['2020-T4','2021-T4']))]
+                    IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil3[(IngresosPorAbonadoTelMovil3['id_empresa'].isin(EmpTelMovilIngresos))&(IngresosPorAbonadoTelMovil3['periodo'].isin(['2021-T4','2022-T4']))]
                     IngresosPorAbonadoTelMovil3=IngresosPorAbonadoTelMovil3.rename(columns={'empresa_x':'empresa','periodo':'anno'})
                     ##
                     IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil.groupby(['periodo','empresa_x','id_empresa']).agg({'ingresos':'sum','trafico':'sum'}).reset_index()
                     IngresosPorTraficoTelMovil3['Ingresos/Trafico']=round(IngresosPorTraficoTelMovil3['ingresos']/IngresosPorTraficoTelMovil3['trafico'],2)
-                    IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil3[(IngresosPorTraficoTelMovil3['id_empresa'].isin(EmpTelMovilIngresos))&(IngresosPorTraficoTelMovil3['periodo'].isin(['2020-T4','2021-T4']))]
+                    IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil3[(IngresosPorTraficoTelMovil3['id_empresa'].isin(EmpTelMovilIngresos))&(IngresosPorTraficoTelMovil3['periodo'].isin(['2021-T4','2022-T4']))]
                     IngresosPorTraficoTelMovil3=IngresosPorTraficoTelMovil3.rename(columns={'empresa_x':'empresa','periodo':'anno'})
                     
                     
@@ -1088,7 +1088,7 @@ if select_seccion =='Telecomunicaciones':
             ## Ingresos
             IngresosInternetmovil=IngresosInternetmovil[IngresosInternetmovil['ingresos']>0]
             IngresosInternetmovil=IngresosInternetmovil.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosInternetmovil['ingresos']=IngresosInternetmovil['ingresos']/IngresosInternetmovil['indice2021']
+            IngresosInternetmovil['ingresos']=IngresosInternetmovil['ingresos']/IngresosInternetmovil['indice2022']
             IngresosInternetmovilTotal=IngresosInternetmovil.groupby(['anno','trimestre','id_empresa','empresa','periodo'])['ingresos'].sum().reset_index()
             IngresosInternetmovilTotal['modalidad']='Total'
             IngresosInternetmovildf=pd.concat([IngresosInternetmovil,IngresosInternetmovilTotal]).sort_values(by=['periodo'])
@@ -1105,7 +1105,7 @@ if select_seccion =='Telecomunicaciones':
                         
             col1,col2 = st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-movil.png'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/internet%20movil.png?raw=true'/><h4>Internet móvil</h4></div>""",unsafe_allow_html=True) 
        
             with col2:             
                 with st.expander("Datos relevantes de Internet móvil"):
@@ -1135,19 +1135,19 @@ if select_seccion =='Telecomunicaciones':
                     AccesosInternetmovilNac['periodo_formato']=AccesosInternetmovilNac['periodo'].apply(periodoformato)
                     st.plotly_chart(Plotlylineatiempo(AccesosInternetmovilNac,'accesos','Millones',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Accesos Internet móvil por periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasAccesosIntmovil:
-                    AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
-                    EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
+                    AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2021','2022']))]
+                    EmpIntMovilAccesos=AccesosInternetmovilEmp[AccesosInternetmovilEmp['anno']=='2022'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:4]
                     AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)==False,'empresa']='Otros'
                     AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilAccesos)==False,'id_empresa']='Otros'     
                     AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(AccesosInternetmovilEmp,'accesos','Millones',1e6,'<b>Accesos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                 if PieAccesosIntmovil:
-                    AccesosInternetmovilPie=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2021']))]
+                    AccesosInternetmovilPie=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2022']))]
                     AccesosInternetmovilPie=AccesosInternetmovilPie.groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                     AccesosInternetmovilPie['empresa']=AccesosInternetmovilPie['empresa'].replace(nombresComerciales)
                     AccesosInternetmovilPie['participacion']=round(100*AccesosInternetmovilPie['accesos']/AccesosInternetmovilPie['accesos'].sum(),1)
                     figPieIntMovil = px.pie(AccesosInternetmovilPie, values='accesos', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie,title='<b>Participación en accesos de Internet móvil<br>(2021-T4)')
+                                 color_discrete_map=Colores_pie,title='<b>Participación en accesos de Internet móvil<br>(2022-T4)')
                     figPieIntMovil.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntMovil.update_layout(uniformtext_minsize=20,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieIntMovil.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -1171,34 +1171,34 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(Plotlylineatiempo(TraficoInternetMovilNac,'trafico','Millones de GB',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico Internet móvil por periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasTraficoIntmovil:
                     TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['anno','modalidad','empresa','id_empresa'])['trafico'].sum().reset_index()
-                    TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2020','2021']))]
-                    EmpIntMovilTrafico=TraficoInternetMovilEmp[TraficoInternetMovilEmp['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
+                    TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['modalidad']=='Total')&(TraficoInternetMovilEmp['anno'].isin(['2021','2022']))]
+                    EmpIntMovilTrafico=TraficoInternetMovilEmp[TraficoInternetMovilEmp['anno']=='2022'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
                     TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)==False,'empresa']='Otros'
                     TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilTrafico)==False,'id_empresa']='Otros'     
                     TraficoInternetMovilEmp=TraficoInternetMovilEmp.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(TraficoInternetMovilEmp,'trafico','Millones de GB',1e6,'<b>Tráfico anual por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
 
             if ServiciosIntMovil=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)                
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)                
                 IngresosInternetmovilNac=IngresosInternetmovildf.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
                 IngresosInternetmovilNac['periodo_formato']=IngresosInternetmovilNac['periodo'].apply(periodoformato)
                 
                 IngresosInternetmovilEmp=IngresosInternetmovildf.groupby(['anno','modalidad','empresa','id_empresa'])['ingresos'].sum().reset_index() 
-                IngresosInternetmovilEmp=IngresosInternetmovilEmp[(IngresosInternetmovilEmp['anno'].isin(['2020','2021']))&(IngresosInternetmovilEmp['modalidad']=='Total')]
+                IngresosInternetmovilEmp=IngresosInternetmovilEmp[(IngresosInternetmovilEmp['anno'].isin(['2021','2022']))&(IngresosInternetmovilEmp['modalidad']=='Total')]
                 EmpIntMovilIngresos=IngresosInternetmovilEmp[IngresosInternetmovilEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
                 IngresosInternetmovilEmp.loc[IngresosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'empresa']='Otros'
                 IngresosInternetmovilEmp.loc[IngresosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'id_empresa']='Otros'     
                 IngresosInternetmovilEmp=IngresosInternetmovilEmp.groupby(['anno','empresa','id_empresa','modalidad'])['ingresos'].sum().reset_index()
                 #
                 IngresosInternetmovilEmp2=IngresosInternetmovildf.groupby(['periodo','modalidad','empresa','id_empresa'])['ingresos'].sum().reset_index() 
-                IngresosInternetmovilEmp2=IngresosInternetmovilEmp2[(IngresosInternetmovilEmp2['periodo'].isin(['2020-T4','2021-T4']))&(IngresosInternetmovilEmp2['modalidad']=='Total')]
+                IngresosInternetmovilEmp2=IngresosInternetmovilEmp2[(IngresosInternetmovilEmp2['periodo'].isin(['2021-T4','2022-T4']))&(IngresosInternetmovilEmp2['modalidad']=='Total')]
                 IngresosInternetmovilEmp2.loc[IngresosInternetmovilEmp2['id_empresa'].isin(EmpIntMovilIngresos)==False,'empresa']='Otros'
                 IngresosInternetmovilEmp2.loc[IngresosInternetmovilEmp2['id_empresa'].isin(EmpIntMovilIngresos)==False,'id_empresa']='Otros'     
                 IngresosInternetmovilEmp2=IngresosInternetmovilEmp2.groupby(['periodo','empresa','id_empresa','modalidad'])['ingresos'].sum().reset_index()
                 
                 ## Limpieza accesos              
                 AccesosInternetmovilNac=AccesosInternetmovildf.groupby(['periodo','modalidad'])['accesos'].sum().reset_index()
-                AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2020','2021']))]
+                AccesosInternetmovilEmp=AccesosInternetmovildf[(AccesosInternetmovildf['modalidad']=='Total')&(AccesosInternetmovildf['trimestre']=='4')&(AccesosInternetmovildf['anno'].isin(['2021','2022']))]
                 AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'empresa']='Otros'
                 AccesosInternetmovilEmp.loc[AccesosInternetmovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'id_empresa']='Otros' 
                 AccesosInternetmovilEmp=AccesosInternetmovilEmp.groupby(['periodo','empresa','modalidad','id_empresa'])['accesos'].sum().reset_index()  
@@ -1207,7 +1207,7 @@ if select_seccion =='Telecomunicaciones':
            
                 TraficoInternetMovilNac=TraficoInternetMovildf.groupby(['periodo','modalidad'])['trafico'].sum().reset_index() 
                 TraficoInternetMovilEmp=TraficoInternetMovildf.groupby(['periodo','modalidad','id_empresa','empresa'])['trafico'].sum().reset_index()                 
-                TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['periodo'].isin(['2020-T4','2021-T4']))&(TraficoInternetMovilEmp['modalidad']=='Total')]
+                TraficoInternetMovilEmp=TraficoInternetMovilEmp[(TraficoInternetMovilEmp['periodo'].isin(['2021-T4','2022-T4']))&(TraficoInternetMovilEmp['modalidad']=='Total')]
                 TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'empresa']='Otros'
                 TraficoInternetMovilEmp.loc[TraficoInternetMovilEmp['id_empresa'].isin(EmpIntMovilIngresos)==False,'id_empresa']='Otros' 
                 TraficoInternetMovilEmp=TraficoInternetMovilEmp.groupby(['periodo','empresa','modalidad','id_empresa'])['trafico'].sum().reset_index()  
@@ -1314,12 +1314,12 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(PlotlyBarras(TraficoSMSCodigosCortosEmp,'tráfico','Millones de mensajes',1e6,'<b>Tráfico de códigos cortos por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)  
                 
             if ServiciosMenMovil=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 IngresosSMSTelMovil['periodo']=IngresosSMSTelMovil['anno']+'-T'+IngresosSMSTelMovil['trimestre']
                 IngresosSMSTelMovil=IngresosSMSTelMovil.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-                IngresosSMSTelMovil['ingresos']=IngresosSMSTelMovil['ingresos']/IngresosSMSTelMovil['indice2021']
+                IngresosSMSTelMovil['ingresos']=IngresosSMSTelMovil['ingresos']/IngresosSMSTelMovil['indice2022']
                 IngresosSMSCodigosCortos=IngresosSMSCodigosCortos.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-                IngresosSMSCodigosCortos['ingresos']=IngresosSMSCodigosCortos['ingresos']/IngresosSMSCodigosCortos['indice2021']
+                IngresosSMSCodigosCortos['ingresos']=IngresosSMSCodigosCortos['ingresos']/IngresosSMSCodigosCortos['indice2022']
                 
                 col1,col2=st.columns(2)
                 with col1:
@@ -1417,7 +1417,7 @@ if select_seccion =='Telecomunicaciones':
 
             col1,col2 = st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/internet-fijo.png'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/internet%20fijo.png?raw=true'/><h4 style="text-align:left">Internet fijo</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de Internet fijo"):
                     st.markdown(r"""<ul>
@@ -1455,7 +1455,7 @@ if select_seccion =='Telecomunicaciones':
             IngresosInternetFijo=IngresosInternetFijo[IngresosInternetFijo['ingresos']>0]
             IngresosInternetFijo['periodo']=IngresosInternetFijo['anno']+'-T'+IngresosInternetFijo['trimestre']
             IngresosInternetFijo=IngresosInternetFijo.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosInternetFijo['ingresos']=IngresosInternetFijo['ingresos']/IngresosInternetFijo['indice2021']
+            IngresosInternetFijo['ingresos']=IngresosInternetFijo['ingresos']/IngresosInternetFijo['indice2022']
             
             IngresosInternetFijoNac=IngresosInternetFijo.groupby(['periodo'])['ingresos'].sum().reset_index()
             IngresosInternetFijoNacProm=IngresosInternetFijo.groupby(['periodo'])['ingresos'].mean().reset_index()
@@ -1487,14 +1487,14 @@ if select_seccion =='Telecomunicaciones':
                 AccesosInternetFijoEmp2=pd.melt(AccesosInternetFijoEmp,id_vars=['anno','trimestre','id_empresa','empresa'],value_vars=['CORPORATIVOS',
                 'RESIDENCIALES','TOTAL'],var_name='modalidad',value_name='accesos')
                 AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['modalidad']=='TOTAL')&(AccesosInternetFijoEmp2['trimestre']=='4')]    
-                EmpIntFijoAccesos=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['anno']=='2021'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:8]
+                EmpIntFijoAccesos=AccesosInternetFijoEmp2[AccesosInternetFijoEmp2['anno']=='2022'].sort_values(by='accesos',ascending=False)['id_empresa'].to_list()[0:8]
                 AccesosInternetFijoEmp2.loc[AccesosInternetFijoEmp2['id_empresa'].isin(EmpIntFijoAccesos)==False,'empresa']='Otros'
                 AccesosInternetFijoEmp2.loc[AccesosInternetFijoEmp2['id_empresa'].isin(EmpIntFijoAccesos)==False,'id_empresa']='Otros'
-                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
+                AccesosInternetFijoEmp2=AccesosInternetFijoEmp2[(AccesosInternetFijoEmp2['anno'].isin(['2021','2022']))].groupby(['anno','empresa','id_empresa'])['accesos'].sum().reset_index()
                 ##
                 AccesosInternetFijoPie=pd.concat([AccesosCorpIntFijoPie,AccesosResIntFijoPie])
                 AccesosInternetFijoPieAgg=AccesosInternetFijoPie.groupby(['periodo','id_empresa','empresa'])['accesos'].sum().reset_index()
-                AccesosInternetFijoPieAgg=AccesosInternetFijoPieAgg[AccesosInternetFijoPieAgg['periodo']=='2021-T4']
+                AccesosInternetFijoPieAgg=AccesosInternetFijoPieAgg[AccesosInternetFijoPieAgg['periodo']=='2022-T4']
                 AccesosInternetFijoPieAgg['participacion']=round(100*AccesosInternetFijoPieAgg['accesos']/AccesosInternetFijoPieAgg['accesos'].sum(),1)
                 AccesosInternetFijoPieAgg.loc[AccesosInternetFijoPieAgg['participacion']<=1,'empresa']='Otros'
                 AccesosInternetFijoPieAgg['empresa']=AccesosInternetFijoPieAgg['empresa'].replace(nombresComerciales)
@@ -1519,7 +1519,7 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(PlotlyBarras(AccesosInternetFijoEmp2,'accesos','',1,'<b>Accesos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                 if PieAccesosIntFijo:
                     figPieIntFijo = px.pie(AccesosInternetFijoPieAgg, values='accesos', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2021-T4)')
+                                 color_discrete_map=Colores_pie2, title='<b>Participación en accesos de Internet fijo<br>(2022-T4)')
                     figPieIntFijo.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieIntFijo.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieIntFijo.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -1531,12 +1531,12 @@ if select_seccion =='Telecomunicaciones':
                     st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Las empresas con participación menor al 1% se agrupan en la categoría Otros</p>""",unsafe_allow_html=True)
                     
                 if TecnologiaAccesosIntFijo:
-                    st.download_button(label="Descargar CSV",data=convert_df(AccesosInternetFijoTecAgg),file_name='AccesosInternetFijoTecAgg.csv',mime='text/csv')                
+                    #st.download_button(label="Descargar CSV",data=convert_df(AccesosInternetFijoTecAgg),file_name='AccesosInternetFijoTecAgg.csv',mime='text/csv')                
                     AccesosInternetFijoTecAgg['periodo_formato']=AccesosInternetFijoTecAgg['periodo'].apply(periodoformato)
                     st.plotly_chart(PlotlylineatiempoTec(AccesosInternetFijoTecAgg,'accesos','Millones',1e6,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'<b>Accesos Internet fijo por tecnología y periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosIntFijo=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosIntFijo=st.button('Evolución temporal')
@@ -1555,10 +1555,11 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(Plotlylineatiempo(IngresosInternetFijoNac,'ingresos','Miles de Millones de pesos',1e9,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos Internet fijo por periodo</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                     st.plotly_chart(Plotlylineatiempo(IngresosPorAccesoIntFijo,'Ingresos/Accceso','Pesos',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por acceso</b>','<b>Fuente</b>:Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
                 if BarrasIngresosIntFijo:
-                    EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+                    EmpIntFijoIngresos=IngresosInternetFijoEmp[IngresosInternetFijoEmp['anno']=='2022'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+                    
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'empresa']='Otros'
                     IngresosInternetFijoEmp.loc[IngresosInternetFijoEmp['id_empresa'].isin(EmpIntFijoIngresos)==False,'id_empresa']='Otros'
-                    IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['anno'].isin(['2020','2021']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
+                    IngresosInternetFijoEmp=IngresosInternetFijoEmp[(IngresosInternetFijoEmp['anno'].isin(['2021','2022']))].groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
                     st.plotly_chart(PlotlyBarras(IngresosInternetFijoEmp,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)                  
 
             if ServiciosIntFijo=='Velocidades':
@@ -1584,7 +1585,7 @@ if select_seccion =='Telecomunicaciones':
 
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/telefonia-fija.png'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/telefonia%20fija.png?raw=true'/><h4 style="text-align:left">Telefonía fija</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de Telefonía fija"):
                     st.markdown(r"""<ul>
@@ -1594,7 +1595,7 @@ if select_seccion =='Telecomunicaciones':
                     </ul>""",unsafe_allow_html=True)
 
 
-            ServiciosTelFija=st.selectbox('Escoja el servicio de Telefonía fija',['Líneas','Tráfico','Ingresos','Ingresos por tráfico','Ingresos por líneas'])
+            ServiciosTelFija=st.selectbox('Escoja el servicio de Telefonía fija',['Líneas','Ingresos','Ingresos por líneas'])
             st.markdown('Escoja la dimensión del análisis')
             
             ## Líneas
@@ -1605,74 +1606,74 @@ if select_seccion =='Telecomunicaciones':
             LineasTelefoníaLocalNac=LineasTelefoníaLocal.groupby(['periodo','modalidad'])['lineas'].sum().reset_index()
             #
             LineasTelefoníaLocalEmp=LineasTelefoníaLocal.groupby(['anno','trimestre','id_empresa','empresa'])['lineas'].sum().reset_index()
-            LineasTelefoníaLocalEmp=LineasTelefoníaLocalEmp[(LineasTelefoníaLocalEmp['anno'].isin(['2020','2021']))&(LineasTelefoníaLocalEmp['trimestre']=='4')]
-            EmpTelfijaLineas=LineasTelefoníaLocalEmp[LineasTelefoníaLocalEmp['anno']=='2021'].sort_values(by='lineas',ascending=False)['id_empresa'].to_list()[0:4]
+            LineasTelefoníaLocalEmp=LineasTelefoníaLocalEmp[(LineasTelefoníaLocalEmp['anno'].isin(['2021','2022']))&(LineasTelefoníaLocalEmp['trimestre']=='4')]
+            EmpTelfijaLineas=LineasTelefoníaLocalEmp[LineasTelefoníaLocalEmp['anno']=='2022'].sort_values(by='lineas',ascending=False)['id_empresa'].to_list()[0:4]
             LineasTelefoníaLocalEmp.loc[LineasTelefoníaLocalEmp['id_empresa'].isin(EmpTelfijaLineas)==False,'empresa']='Otros'
             LineasTelefoníaLocalEmp.loc[LineasTelefoníaLocalEmp['id_empresa'].isin(EmpTelfijaLineas)==False,'id_empresa']='Otros'            
             LineasTelefoníaLocalEmp=LineasTelefoníaLocalEmp.groupby(['anno','empresa','id_empresa'])['lineas'].sum().reset_index()
             #
             LineasTelefoníaLocalPie=LineasTelefoníaLocal.groupby(['periodo','id_empresa','empresa'])['lineas'].sum().reset_index()
-            LineasTelefoníaLocalPie=LineasTelefoníaLocalPie[LineasTelefoníaLocalPie['periodo']=='2021-T4']
+            LineasTelefoníaLocalPie=LineasTelefoníaLocalPie[LineasTelefoníaLocalPie['periodo']=='2022-T4']
             LineasTelefoníaLocalPie['participacion']=round(100*LineasTelefoníaLocalPie['lineas']/LineasTelefoníaLocalPie['lineas'].sum(),1)
             LineasTelefoníaLocalPie.loc[LineasTelefoníaLocalPie['participacion']<=1,'empresa']='Otros'
             LineasTelefoníaLocalPie['empresa']=LineasTelefoníaLocalPie['empresa'].replace(nombresComerciales)    
             ## Tráfico
             TraficoTelefoniaFijaNac=TraficoTelefoniaFija.groupby(['periodo','modalidad'])['trafico'].sum().reset_index()
-            TraficoTelefoniaFijaEmp=TraficoTelefoniaFija[TraficoTelefoniaFija['anno'].isin(['2020','2021'])].groupby(['anno','periodo','modalidad','id_empresa','empresa'])['trafico'].sum().reset_index()
+            TraficoTelefoniaFijaEmp=TraficoTelefoniaFija[TraficoTelefoniaFija['anno'].isin(['2021','2022'])].groupby(['anno','periodo','modalidad','id_empresa','empresa'])['trafico'].sum().reset_index()
             
             TraficoTelefoniaFijaEmpTL=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['modalidad']=='Local'].groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()
-            EmpTelfijaLocal=TraficoTelefoniaFijaEmpTL[TraficoTelefoniaFijaEmpTL['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
+            EmpTelfijaLocal=TraficoTelefoniaFijaEmpTL[TraficoTelefoniaFijaEmpTL['anno']=='2022'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
             TraficoTelefoniaFijaEmpTL.loc[TraficoTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocal)==False,'empresa']='Otros'
             TraficoTelefoniaFijaEmpTL.loc[TraficoTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocal)==False,'id_empresa']='Otros'
             TraficoTelefoniaFijaEmpTL=TraficoTelefoniaFijaEmpTL.groupby(['anno','empresa','id_empresa'])['trafico'].sum().reset_index()           
             
             TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['modalidad']=='Larga distancia nacional'].groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()
-            EmpTelfijaLDN=TraficoTelefoniaFijaEmpTLDN[TraficoTelefoniaFijaEmpTLDN['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
+            EmpTelfijaLDN=TraficoTelefoniaFijaEmpTLDN[TraficoTelefoniaFijaEmpTLDN['anno']=='2022'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
             TraficoTelefoniaFijaEmpTLDN.loc[TraficoTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDN)==False,'empresa']='Otros'
             TraficoTelefoniaFijaEmpTLDN.loc[TraficoTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDN)==False,'id_empresa']='Otros'
             TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmpTLDN.groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()            
             #TraficoTelefoniaFijaEmpTLDN=TraficoTelefoniaFijaEmpTLDN[TraficoTelefoniaFijaEmpTLDN['empresa']!='Otros']
             
             TraficoTelefoniaFijaEmpTLDI=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['modalidad']=='Larga distancia internacional'].groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()
-            EmpTelfijaLDI=TraficoTelefoniaFijaEmpTLDI[TraficoTelefoniaFijaEmpTLDI['anno']=='2021'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
+            EmpTelfijaLDI=TraficoTelefoniaFijaEmpTLDI[TraficoTelefoniaFijaEmpTLDI['anno']=='2022'].sort_values(by='trafico',ascending=False)['id_empresa'].to_list()[0:4]
             TraficoTelefoniaFijaEmpTLDI.loc[TraficoTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDI)==False,'empresa']='Otros'
             TraficoTelefoniaFijaEmpTLDI.loc[TraficoTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDI)==False,'id_empresa']='Otros'
             TraficoTelefoniaFijaEmpTLDI=TraficoTelefoniaFijaEmpTLDI.groupby(['anno','id_empresa','empresa'])['trafico'].sum().reset_index()  
             
             ##Ingresos 
             IngresosTelefoniaFija=IngresosTelefoniaFija.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosTelefoniaFija['ingresos']=IngresosTelefoniaFija['ingresos']/IngresosTelefoniaFija['indice2021']
+            IngresosTelefoniaFija['ingresos']=IngresosTelefoniaFija['ingresos']/IngresosTelefoniaFija['indice2022']
             IngresosTelefoniaFijaNac=IngresosTelefoniaFija.groupby(['periodo','modalidad'])['ingresos'].sum().reset_index()
             IngresosTelefoniaFijaEmp=IngresosTelefoniaFija.groupby(['anno','periodo','modalidad','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             IngresosTelefoniaFijaEmpTL=IngresosTelefoniaFijaEmp[IngresosTelefoniaFijaEmp['modalidad']=='Local'].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
-            EmpTelfijaLocalIng=IngresosTelefoniaFijaEmpTL[IngresosTelefoniaFijaEmpTL['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            EmpTelfijaLocalIng=IngresosTelefoniaFijaEmpTL[IngresosTelefoniaFijaEmpTL['anno']=='2022'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
             IngresosTelefoniaFijaEmpTL.loc[IngresosTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocalIng)==False,'empresa']='Otros'
             IngresosTelefoniaFijaEmpTL.loc[IngresosTelefoniaFijaEmpTL['id_empresa'].isin(EmpTelfijaLocalIng)==False,'id_empresa']='Otros'
-            IngresosTelefoniaFijaEmpTL=IngresosTelefoniaFijaEmpTL[IngresosTelefoniaFijaEmpTL['anno'].isin(['2020','2021'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()         
+            IngresosTelefoniaFijaEmpTL=IngresosTelefoniaFijaEmpTL[IngresosTelefoniaFijaEmpTL['anno'].isin(['2021','2022'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()         
             #
-            IngresosTelefoniaFijaEmpTL2=IngresosTelefoniaFijaEmp[(IngresosTelefoniaFijaEmp['modalidad']=='Local')&(IngresosTelefoniaFijaEmp['periodo'].isin(['2020-T4','2021-T4']))].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
+            IngresosTelefoniaFijaEmpTL2=IngresosTelefoniaFijaEmp[(IngresosTelefoniaFijaEmp['modalidad']=='Local')&(IngresosTelefoniaFijaEmp['periodo'].isin(['2021-T4','2022-T4']))].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             IngresosTelefoniaFijaEmpTL2.loc[IngresosTelefoniaFijaEmpTL2['id_empresa'].isin(EmpTelfijaLocalIng)==False,'empresa']='Otros'
             IngresosTelefoniaFijaEmpTL2.loc[IngresosTelefoniaFijaEmpTL2['id_empresa'].isin(EmpTelfijaLocalIng)==False,'id_empresa']='Otros'
-            IngresosTelefoniaFijaEmpTL2=IngresosTelefoniaFijaEmpTL2[IngresosTelefoniaFijaEmpTL2['anno'].isin(['2020','2021'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()     
+            IngresosTelefoniaFijaEmpTL2=IngresosTelefoniaFijaEmpTL2[IngresosTelefoniaFijaEmpTL2['anno'].isin(['2021','2022'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()     
                         
             IngresosTelefoniaFijaEmpTLDN=IngresosTelefoniaFijaEmp[IngresosTelefoniaFijaEmp['modalidad']=='Larga distancia nacional'].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             EmpTelfijaLDNIng=IngresosTelefoniaFijaEmpTLDN[IngresosTelefoniaFijaEmpTLDN['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
             IngresosTelefoniaFijaEmpTLDN.loc[IngresosTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDNIng)==False,'empresa']='Otros'
             IngresosTelefoniaFijaEmpTLDN.loc[IngresosTelefoniaFijaEmpTLDN['id_empresa'].isin(EmpTelfijaLDNIng)==False,'id_empresa']='Otros'
-            IngresosTelefoniaFijaEmpTLDN=IngresosTelefoniaFijaEmpTLDN[IngresosTelefoniaFijaEmpTLDN['anno'].isin(['2020','2021'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
+            IngresosTelefoniaFijaEmpTLDN=IngresosTelefoniaFijaEmpTLDN[IngresosTelefoniaFijaEmpTLDN['anno'].isin(['2021','2022'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             IngresosTelefoniaFijaEmpTLDI=IngresosTelefoniaFijaEmp[IngresosTelefoniaFijaEmp['modalidad']=='Larga distancia internacional'].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             EmpTelfijaLDIIng=IngresosTelefoniaFijaEmpTLDI[IngresosTelefoniaFijaEmpTLDI['anno']=='2021'].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
             IngresosTelefoniaFijaEmpTLDI.loc[IngresosTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDIIng)==False,'empresa']='Otros'
             IngresosTelefoniaFijaEmpTLDI.loc[IngresosTelefoniaFijaEmpTLDI['id_empresa'].isin(EmpTelfijaLDIIng)==False,'id_empresa']='Otros'
-            IngresosTelefoniaFijaEmpTLDI=IngresosTelefoniaFijaEmpTLDI[IngresosTelefoniaFijaEmpTLDI['anno'].isin(['2020','2021'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
+            IngresosTelefoniaFijaEmpTLDI=IngresosTelefoniaFijaEmpTLDI[IngresosTelefoniaFijaEmpTLDI['anno'].isin(['2021','2022'])].groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             ## Ingresos por tráfico
             IngresosPorTraficoTelFijo=IngresosTelefoniaFijaNac.merge(TraficoTelefoniaFijaNac,left_on=['periodo','modalidad'],right_on=['periodo','modalidad'])
             IngresosPorTraficoTelFijo['Ingresos/Tráfico']=round(IngresosPorTraficoTelFijo['ingresos']/IngresosPorTraficoTelFijo['trafico'],2)
             
-            IngPorTrafTelFija=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['periodo'].isin(['2020-T4','2021-T4'])].merge(IngresosTelefoniaFijaEmp, left_on=['anno','periodo','modalidad','empresa','id_empresa'],right_on=['anno','periodo','modalidad','empresa','id_empresa'])
+            IngPorTrafTelFija=TraficoTelefoniaFijaEmp[TraficoTelefoniaFijaEmp['periodo'].isin(['2021-T4','2022-T4'])].merge(IngresosTelefoniaFijaEmp, left_on=['anno','periodo','modalidad','empresa','id_empresa'],right_on=['anno','periodo','modalidad','empresa','id_empresa'])
             EmpTelfijaLocalIngTraf=list(set(EmpTelfijaLocalIng)&set(EmpTelfijaLocal))
             EmpTelfijaLDNIngTraf=list(set(EmpTelfijaLDNIng)&set(EmpTelfijaLDN))
             EmpTelfijaLDIIngTraf=list(set(EmpTelfijaLDIIng)&set(EmpTelfijaLDI))
@@ -1682,21 +1683,21 @@ if select_seccion =='Telecomunicaciones':
             IngresosPorTraficoTelLocalEmp.loc[IngresosPorTraficoTelLocalEmp['id_empresa'].isin(EmpTelfijaLocalIngTraf)==False,'id_empresa']='Otros'
             IngresosPorTraficoTelLocalEmp=IngresosPorTraficoTelLocalEmp.groupby(['anno','id_empresa','empresa']).agg({'trafico':'sum','ingresos':'sum'}).reset_index()
             IngresosPorTraficoTelLocalEmp['Ingresos/Tráfico']=round(IngresosPorTraficoTelLocalEmp['ingresos']/IngresosPorTraficoTelLocalEmp['trafico'],2)            
-            IngresosPorTraficoTelLocalEmp['anno']=IngresosPorTraficoTelLocalEmp['anno'].replace({'2020':'2020-T4','2021':'2021-T4'})
+            IngresosPorTraficoTelLocalEmp['anno']=IngresosPorTraficoTelLocalEmp['anno'].replace({'2021':'2021-T4','2022':'2022-T4'})
             
             IngresosPorTraficoTelLDNEmp=IngPorTrafTelFija[IngPorTrafTelFija['modalidad']=='Local']
             IngresosPorTraficoTelLDNEmp.loc[IngresosPorTraficoTelLDNEmp['id_empresa'].isin(EmpTelfijaLDNIngTraf)==False,'empresa']='Otros'
             IngresosPorTraficoTelLDNEmp.loc[IngresosPorTraficoTelLDNEmp['id_empresa'].isin(EmpTelfijaLDNIngTraf)==False,'id_empresa']='Otros'
             IngresosPorTraficoTelLDNEmp=IngresosPorTraficoTelLDNEmp.groupby(['anno','id_empresa','empresa']).agg({'trafico':'sum','ingresos':'sum'}).reset_index()
             IngresosPorTraficoTelLDNEmp['Ingresos/Tráfico']=round(IngresosPorTraficoTelLDNEmp['ingresos']/IngresosPorTraficoTelLDNEmp['trafico'],2)            
-            IngresosPorTraficoTelLDNEmp['anno']=IngresosPorTraficoTelLDNEmp['anno'].replace({'2020':'2020-T4','2021':'2021-T4'})            
+            IngresosPorTraficoTelLDNEmp['anno']=IngresosPorTraficoTelLDNEmp['anno'].replace({'2021':'2021-T4','2022':'2022-T4'})            
 
             IngresosPorTraficoTelLDIEmp=IngPorTrafTelFija[IngPorTrafTelFija['modalidad']=='Local']
             IngresosPorTraficoTelLDIEmp.loc[IngresosPorTraficoTelLDIEmp['id_empresa'].isin(EmpTelfijaLDIIngTraf)==False,'empresa']='Otros'
             IngresosPorTraficoTelLDIEmp.loc[IngresosPorTraficoTelLDIEmp['id_empresa'].isin(EmpTelfijaLDIIngTraf)==False,'id_empresa']='Otros'
             IngresosPorTraficoTelLDIEmp=IngresosPorTraficoTelLDIEmp.groupby(['anno','id_empresa','empresa']).agg({'trafico':'sum','ingresos':'sum'}).reset_index()
             IngresosPorTraficoTelLDIEmp['Ingresos/Tráfico']=round(IngresosPorTraficoTelLDIEmp['ingresos']/IngresosPorTraficoTelLDIEmp['trafico'],2)            
-            IngresosPorTraficoTelLDIEmp['anno']=IngresosPorTraficoTelLDIEmp['anno'].replace({'2020':'2020-T4','2021':'2021-T4'})    
+            IngresosPorTraficoTelLDIEmp['anno']=IngresosPorTraficoTelLDIEmp['anno'].replace({'2021':'2021-T4','2022':'2022-T4'})    
  
             ## Ingresos por líneas
             LineasTelefoníaLocalTotalTL=LineasTelefoníaLocalNac.groupby(['periodo'])['lineas'].sum().reset_index()
@@ -1724,7 +1725,7 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(PlotlyBarras(LineasTelefoníaLocalEmp,'lineas','',1,'<b>Líneas anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
                 if PieLineasTelFija:
                     figPieTelFija = px.pie(LineasTelefoníaLocalPie, values='lineas', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie2, title='<b>Participación en líneas de Telefonía local<br>(2021-T4)')
+                                 color_discrete_map=Colores_pie2, title='<b>Participación en líneas de Telefonía local<br>(2022-T4)')
                     figPieTelFija.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTelFija.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTelFija.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -1734,26 +1735,26 @@ if select_seccion =='Telecomunicaciones':
                     font=dict(size=11), xref='x domain',x=0.5,yref='y domain',y=-0.2)
                     st.plotly_chart(figPieTelFija,use_container_width=True)                            
             
-            if ServiciosTelFija=='Tráfico':
-                col1,col2=st.columns(2)
-                with col1:
-                    LineaTiempoTraficoTelFija=st.button('Evolución temporal')
-                with col2:
-                    BarrasTraficoTelFija=st.button('Información por operadores')   
-                    
-                if LineaTiempoTraficoTelFija:
-                    TraficoTelefoniaFijaNac['periodo_formato']=TraficoTelefoniaFijaNac['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico telefonía fija por periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                if BarrasTraficoTelFija:
-                    st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTL,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía local por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
-                    col1,col2=st.columns(2)
-                    with col1:
-                        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDN,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía LDN por empresa</b>',''),use_container_width=True)
-                    with col2:
-                        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDI,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía LDI por empresa</b>',''),use_container_width=True)
+            #if ServiciosTelFija=='Tráfico':
+            #    col1,col2=st.columns(2)
+            #    with col1:
+            #        LineaTiempoTraficoTelFija=st.button('Evolución temporal')
+            #    with col2:
+            #        BarrasTraficoTelFija=st.button('Información por operadores')   
+            #        
+            #    if LineaTiempoTraficoTelFija:
+            #        TraficoTelefoniaFijaNac['periodo_formato']=TraficoTelefoniaFijaNac['periodo'].apply(periodoformato)                    
+            #        st.plotly_chart(Plotlylineatiempo(TraficoTelefoniaFijaNac,'trafico','Millones de minutos',1e6,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Tráfico telefonía fija por periodo</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+            #    if BarrasTraficoTelFija:
+            #        st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTL,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía local por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
+            #        col1,col2=st.columns(2)
+            #        with col1:
+            #            st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDN,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía LDN por empresa</b>',''),use_container_width=True)
+            #        with col2:
+            #            st.plotly_chart(PlotlyBarras(TraficoTelefoniaFijaEmpTLDI,'trafico','Millones de minutos',1e6,'<b>Tráfico anual de Telefonía LDI por empresa</b>',''),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosTelFija=st.button('Evolución temporal')
@@ -1771,27 +1772,27 @@ if select_seccion =='Telecomunicaciones':
                     with col2:
                         st.plotly_chart(PlotlyBarras(IngresosTelefoniaFijaEmpTLDI,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales de Telefonía LDI por empresa</b>',''),use_container_width=True)
                     
-            if ServiciosTelFija=='Ingresos por tráfico':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
-                col1,col2=st.columns(2)
-                with col1:
-                    LineaTiempoIngresosportraficoTelFija=st.button('Evolución temporal')
-                with col2:
-                    BarrasIngresosportraficoTelFija=st.button('Información por operadores') 
+            #if ServiciosTelFija=='Ingresos por tráfico':
+            #    st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
+            #    col1,col2=st.columns(2)
+            #    with col1:
+            #        LineaTiempoIngresosportraficoTelFija=st.button('Evolución temporal')
+            #    with col2:
+            #        BarrasIngresosportraficoTelFija=st.button('Información por operadores') 
                 
-                if LineaTiempoIngresosportraficoTelFija:
-                    IngresosPorTraficoTelFijo['periodo_formato']=IngresosPorTraficoTelFijo['periodo'].apply(periodoformato)                    
-                    st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelFijo,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por tráfico</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
-                if BarrasIngresosportraficoTelFija:
-                    st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLocalEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos por tráfico de Telefonía local por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
-                    col1,col2=st.columns(2)
-                    with col1:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDNEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos/tráfico de Telefonía LDN por empresa</b>',''),use_container_width=True)
-                    with col2:
-                        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos/tráfico de Telefonía LDI por empresa</b>',''),use_container_width=True)
+            #    if LineaTiempoIngresosportraficoTelFija:
+            #        IngresosPorTraficoTelFijo['periodo_formato']=IngresosPorTraficoTelFijo['periodo'].apply(periodoformato)                    
+            #        st.plotly_chart(Plotlylineatiempo(IngresosPorTraficoTelFijo,'Ingresos/Tráfico','Pesos/Min',1,['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102,204,0)'],'<b>Ingresos trimestrales por tráfico</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
+            #    if BarrasIngresosportraficoTelFija:
+            #        st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLocalEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos por tráfico de Telefonía local por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
+            #        col1,col2=st.columns(2)
+            #        with col1:
+            #            st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDNEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos/tráfico de Telefonía LDN por empresa</b>',''),use_container_width=True)
+            #        with col2:
+            #            st.plotly_chart(PlotlyBarras(IngresosPorTraficoTelLDIEmp,'Ingresos/Tráfico','Pesos/Min',1,'<b>Ingresos/tráfico de Telefonía LDI por empresa</b>',''),use_container_width=True)
 
             if ServiciosTelFija=='Ingresos por líneas':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosporlineaTelFija=st.button('Evolución temporal')
@@ -1809,7 +1810,7 @@ if select_seccion =='Telecomunicaciones':
 
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-por-suscripcion.png'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/tv%20suscripcion.png?raw=true'/><h4 style="text-align:left">TV por suscripción</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de TV por suscripción"):
                     st.markdown(r"""<ul>
@@ -1821,24 +1822,24 @@ if select_seccion =='Telecomunicaciones':
             SuscriptoresTVSusNac=SuscriptoresTVSus.groupby(['periodo'])['suscriptores'].sum().reset_index()
             #
             SuscriptoresTVSusEmp=SuscriptoresTVSus.groupby(['anno','trimestre','id_empresa','empresa'])['suscriptores'].sum().reset_index()
-            SuscriptoresTVSusEmp=SuscriptoresTVSusEmp[(SuscriptoresTVSusEmp['anno'].isin(['2020','2021']))&(SuscriptoresTVSusEmp['trimestre']=='4')]
-            EmpSuscriptoresTVSusEmp=SuscriptoresTVSusEmp[SuscriptoresTVSusEmp['anno']=='2021'].sort_values(by='suscriptores',ascending=False)['id_empresa'].to_list()[0:4]
+            SuscriptoresTVSusEmp=SuscriptoresTVSusEmp[(SuscriptoresTVSusEmp['anno'].isin(['2021','2022']))&(SuscriptoresTVSusEmp['trimestre']=='4')]
+            EmpSuscriptoresTVSusEmp=SuscriptoresTVSusEmp[SuscriptoresTVSusEmp['anno']=='2022'].sort_values(by='suscriptores',ascending=False)['id_empresa'].to_list()[0:4]
             SuscriptoresTVSusEmp.loc[SuscriptoresTVSusEmp['id_empresa'].isin(EmpSuscriptoresTVSusEmp)==False,'empresa']='Otros'
             SuscriptoresTVSusEmp.loc[SuscriptoresTVSusEmp['id_empresa'].isin(EmpSuscriptoresTVSusEmp)==False,'id_empresa']='Otros'
             SuscriptoresTVSusEmp=SuscriptoresTVSusEmp.groupby(['anno','id_empresa','empresa'])['suscriptores'].sum().reset_index()
             #
             SuscriptoresTVSusPie=SuscriptoresTVSus.groupby(['periodo','id_empresa','empresa'])['suscriptores'].sum().reset_index()
-            SuscriptoresTVSusPie=SuscriptoresTVSusPie[SuscriptoresTVSusPie['periodo']=='2021-T4']
+            SuscriptoresTVSusPie=SuscriptoresTVSusPie[SuscriptoresTVSusPie['periodo']=='2022-T4']
             SuscriptoresTVSusPie['participacion']=round(100*SuscriptoresTVSusPie['suscriptores']/SuscriptoresTVSusPie['suscriptores'].sum(),1)
             SuscriptoresTVSusPie.loc[SuscriptoresTVSusPie['participacion']<=1,'empresa']='Otros'
             SuscriptoresTVSusPie['empresa']=SuscriptoresTVSusPie['empresa'].replace(nombresComerciales) 
             #
             SuscriptoresTVSus['tecnologia']=SuscriptoresTVSus['tecnologia'].replace({'IPTV por Fibra':'IPTV'})
-            SuscriptoresTVSusTec=SuscriptoresTVSus[SuscriptoresTVSus['anno']=='2021'].groupby(['periodo','tecnologia'])['suscriptores'].sum().reset_index()
+            SuscriptoresTVSusTec=SuscriptoresTVSus[SuscriptoresTVSus['anno']=='2022'].groupby(['periodo','tecnologia'])['suscriptores'].sum().reset_index()
             SuscriptoresTVSusTec=SuscriptoresTVSusTec.rename(columns={'tecnologia':'CodTec'})
             ##Ingresos
             IngresosTVSus=IngresosTVSus.merge(IPCTrimMov,left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosTVSus['ingresos']=IngresosTVSus['ingresos']/IngresosTVSus['indice2021']
+            IngresosTVSus['ingresos']=IngresosTVSus['ingresos']/IngresosTVSus['indice2022']
 
             IngresosTVSus['concepto']=IngresosTVSus['concepto'].replace({'Cargo fijo plan básico de televisión por suscripción':'Cargo fijo plan básico',
             'Otros ingresos operacionales televisión por suscripción':'Otros ingresos operacionales','Cargo fijo plan premium de televisión por suscripción':'Cargo fijo plan premium',
@@ -1846,15 +1847,15 @@ if select_seccion =='Telecomunicaciones':
             IngresosTVSusNac=IngresosTVSus.groupby(['periodo'])['ingresos'].sum().reset_index()
             #
             IngresosTVSusEmp=IngresosTVSus.groupby(['anno','trimestre','empresa','id_empresa'])['ingresos'].sum().reset_index()
-            IngresosTVSusEmp=IngresosTVSusEmp[(IngresosTVSusEmp['anno'].isin(['2020','2021']))]
-            EmpIngresosTVSusEmp=IngresosTVSusEmp[(IngresosTVSusEmp['anno']=='2021')&(IngresosTVSusEmp['trimestre']=='4')].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosTVSusEmp=IngresosTVSusEmp[(IngresosTVSusEmp['anno'].isin(['2021','2022']))]
+            EmpIngresosTVSusEmp=IngresosTVSusEmp[(IngresosTVSusEmp['anno']=='2022')&(IngresosTVSusEmp['trimestre']=='4')].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
             IngresosTVSusEmp.loc[IngresosTVSusEmp['id_empresa'].isin(EmpIngresosTVSusEmp)==False,'empresa']='Otros'
             IngresosTVSusEmp.loc[IngresosTVSusEmp['id_empresa'].isin(EmpIngresosTVSusEmp)==False,'id_empresa']='Otros'
             IngresosTVSusEmp=IngresosTVSusEmp.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
             
             #
             IngresosTVSusEmp2=IngresosTVSus.groupby(['anno','trimestre','empresa','id_empresa'])['ingresos'].sum().reset_index()
-            IngresosTVSusEmp2=IngresosTVSusEmp2[(IngresosTVSusEmp2['anno'].isin(['2020','2021']))&(IngresosTVSusEmp2['trimestre']=='4')]
+            IngresosTVSusEmp2=IngresosTVSusEmp2[(IngresosTVSusEmp2['anno'].isin(['2021','2022']))&(IngresosTVSusEmp2['trimestre']=='4')]
             IngresosTVSusEmp2.loc[IngresosTVSusEmp2['id_empresa'].isin(EmpIngresosTVSusEmp)==False,'empresa']='Otros'
             IngresosTVSusEmp2.loc[IngresosTVSusEmp2['id_empresa'].isin(EmpIngresosTVSusEmp)==False,'id_empresa']='Otros'
             IngresosTVSusEmp2=IngresosTVSusEmp2.groupby(['anno','id_empresa','empresa'])['ingresos'].sum().reset_index()
@@ -1867,7 +1868,7 @@ if select_seccion =='Telecomunicaciones':
             #
             IngresosPorSuscriptoresTVEmp=IngresosTVSusEmp2.merge(SuscriptoresTVSusEmp,left_on=['anno','id_empresa','empresa'],right_on=['anno','id_empresa','empresa'])
             IngresosPorSuscriptoresTVEmp['Ingresos/Suscriptores']=round(IngresosPorSuscriptoresTVEmp['ingresos']/IngresosPorSuscriptoresTVEmp['suscriptores'],2)
-            IngresosPorSuscriptoresTVEmp['anno']=IngresosPorSuscriptoresTVEmp['anno'].replace({'2020':'2020-T4','2021':'2021-T4'})
+            IngresosPorSuscriptoresTVEmp['anno']=IngresosPorSuscriptoresTVEmp['anno'].replace({'2021':'2021-T4','2022':'2022-T4'})
             
             ServiciosTVporSus=st.selectbox('Escoja el servicio de TV por suscripción',['Suscriptores','Ingresos'])
             st.markdown('Escoja la dimensión del análisis')
@@ -1892,7 +1893,7 @@ if select_seccion =='Telecomunicaciones':
                 
                 if PieSuscriptoresTVSus:
                     figPieTVSus = px.pie(SuscriptoresTVSusPie, values='suscriptores', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie2, title='<b>Participación en suscriptores de TV por suscripción<br>(2021-T4)')
+                                 color_discrete_map=Colores_pie2, title='<b>Participación en suscriptores de TV por suscripción<br>(2022-T4)')
                     figPieTVSus.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieTVSus.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.9,y=0.3),title_x=0.5)
                     figPieTVSus.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -1909,7 +1910,7 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(PlotlylineatiempoTec(SuscriptoresTVSusTec,'suscriptores','',1,['rgb(255, 51, 51)','rgb(255, 153, 51)','rgb(153,255,51)','rgb(153,51,255)','rgb(51, 153, 255)'],'Suscriptores TV por suscripción por tecnología y periodo','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'), use_container_width=True)
 
             if ServiciosTVporSus=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC de la subclase "Servicios de comunicación fija y movil y provisión a internet". Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 col1,col2=st.columns(2)
                 with col1:
                     LineaTiempoIngresosTVSus=st.button('Evolución temporal')
@@ -2050,7 +2051,7 @@ if select_seccion =='Telecomunicaciones':
             IngresosRadio['anno']=IngresosRadio['anno'].astype('str')
             IngresosRadio=IngresosRadio.rename(columns={'empresa  ':'empresa','ingresos ordinarios':'ingresos'})
             IngresosRadio=IngresosRadio.merge(IPCAnuTot,left_on=['anno'],right_on=['anno'])
-            IngresosRadio['ingresos']=IngresosRadio['ingresos']/IngresosRadio['indice2021']
+            IngresosRadio['ingresos']=IngresosRadio['ingresos']/IngresosRadio['indice2022']
             IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
             ##Número emisoras
             NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='latin-1')
@@ -2071,7 +2072,7 @@ if select_seccion =='Telecomunicaciones':
             ServiciosRadio=st.selectbox('Escoja el servicio de radio',['Ingresos','Número de emisoras'])
             
             if ServiciosRadio=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos en radio por empresa</b>',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
                 'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)'],''),use_container_width=True)
        
@@ -2171,7 +2172,7 @@ if select_seccion =='Telecomunicaciones':
             IPCAnuTot2=IPCAnuTot.copy()
             IPCAnuTot2['anno']=IPCAnuTot2['anno'].astype('int64')
             TVabierta=TVabierta.merge(IPCAnuTot2,left_on=['anno'],right_on=['anno'])
-            TVabierta['ingresos']=TVabierta['ingresos']/TVabierta['indice2021']
+            TVabierta['ingresos']=TVabierta['ingresos']/TVabierta['indice2022']
             TVabierta=TVabierta.rename(columns={'nit':'id_empresa','razon social':'empresa'})   
             TVabiertaNac=TVabierta.groupby(['anno','modalidad'])['ingresos'].sum().reset_index()
             #
@@ -2184,7 +2185,7 @@ if select_seccion =='Telecomunicaciones':
             TVPublica=TVPublica.fillna(0)
             
             if IngresosTVabierta=='Ingresos por servicio':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 st.markdown('Escoja la dimensión del análisis')  
                 col1,col2=st.columns(2)
                 with col1:
@@ -2773,13 +2774,13 @@ if select_seccion =='Postal':
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
             ##Número de envíos e ingresos
             IngresosyEnviosCorreo=IngresosyEnviosCorreo.merge(IPCTrimTot, left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosyEnviosCorreo['Ingresos']=IngresosyEnviosCorreo['Ingresos']/IngresosyEnviosCorreo['indice2021']
+            IngresosyEnviosCorreo['Ingresos']=IngresosyEnviosCorreo['Ingresos']/IngresosyEnviosCorreo['indice2022']
             IngresosyEnviosCorreoNac=IngresosyEnviosCorreo.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
             if ServiciosCorreo=='Número de envíos':
                 st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Envíos','Millones','<b>Número de envíos por tipo de envío y ámbito</b>',1e6,'<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
             
             if ServiciosCorreo=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 st.plotly_chart(PlotyMultiIndexBarra(IngresosyEnviosCorreoNac,'Ingresos','Miles de Millones de pesos','<b>Ingresos por tipo de envío y ámbito</b>',1e9,'<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
 
         if select_DinPos=='Mensajería expresa':
@@ -2797,7 +2798,7 @@ if select_seccion =='Postal':
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
             ##Número de envíos e ingresos
             IngresosyEnviosMExpresa=IngresosyEnviosMExpresa.merge(IPCTrimTot, left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosyEnviosMExpresa['Ingresos']=IngresosyEnviosMExpresa['Ingresos']/IngresosyEnviosMExpresa['indice2021']
+            IngresosyEnviosMExpresa['Ingresos']=IngresosyEnviosMExpresa['Ingresos']/IngresosyEnviosMExpresa['indice2022']
             IngresosyEnviosMexpresaNac=IngresosyEnviosMExpresa.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
             IngresosyEnviosMexpresaEMp=IngresosyEnviosMExpresa.groupby(['anno','id_empresa','empresa']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()    
             EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
@@ -2829,7 +2830,7 @@ if select_seccion =='Postal':
                    st.plotly_chart(PlotlyBarras(IngresosyEnviosMexpresaEMpEnv,'Envíos','Millones',1e6,'<b>Envíos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True) 
                     
             if ServiciosCorreo=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 col1,col2,col3=st.columns(3)
                 with col1:
                     LineaTiempoIngresosMenExpresa=st.button('Evolución temporal')
@@ -2879,7 +2880,7 @@ if select_seccion =='Postal':
             
             IngresosGiros=IngresosGiros.rename(columns={'sum_numero_giros':'Giros'})
             IngresosGiros=IngresosGiros.merge(IPCTrimTot, left_on=['anno','trimestre','periodo'],right_on=['anno','trimestre','periodo'])
-            IngresosGiros['Ingresos']=IngresosGiros['Ingresos']/IngresosGiros['indice2021']            
+            IngresosGiros['Ingresos']=IngresosGiros['Ingresos']/IngresosGiros['indice2022']            
             ##Ingresos
             IngresosGirosNac=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
             IngresosGirosNac=IngresosGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
@@ -2911,7 +2912,7 @@ if select_seccion =='Postal':
             IngresosGiros2=IngresosGiros.groupby(['anno','ambito','tipo_giro']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
             
             if ServiciosGiros=='Ingresos':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 st.markdown('')
                 col1,col2,col3=st.columns(3)
                 with col1:
@@ -2985,7 +2986,7 @@ if select_seccion =='Postal':
                     st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
                     
             if ServiciosGiros=='Ingresos por número de giros':
-                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2021</p></center>""",unsafe_allow_html=True)
+                st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 IngresosPorNGirosNac=IngresosGirosNac.merge(NumeroGirosNac,left_on=['anno','ambito','tipo_envio'],right_on=['anno','ambito','tipo_envio'])
                 IngresosPorNGirosNac['Ingresos/Giros']=round(IngresosPorNGirosNac['Ingresos']/IngresosPorNGirosNac['Giros'],3)
                 IngresosporGirosEmp=IngresosGiros[IngresosGiros['periodo'].isin(['2020-T4','2021-T4'])]
