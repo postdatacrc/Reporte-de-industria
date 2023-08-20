@@ -836,11 +836,10 @@ if select_seccion =='Introducción':
         st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
     col1,col2=st.columns([2,1])
     with col1:
-        st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
+        st.markdown(IntroReporte21Sec5,unsafe_allow_html=True)
     with col2:
         st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png', width=300)
     
-    st.markdown(IntroReporte21Sec5,unsafe_allow_html=True)
     st.markdown(IntroReporte21Sec6,unsafe_allow_html=True)
     
 if select_seccion =='Telecomunicaciones':
