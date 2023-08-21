@@ -506,7 +506,7 @@ def PlotlyBarrasInt(df,column,unidad,escalamiento,titulo,textofuente):
     return fig
 
 st.set_page_config(
-    page_title="Reporte de industria 2021", page_icon=LogoComision,layout="wide",initial_sidebar_state="expanded")
+    page_title="Reporte de industria 2022", page_icon=LogoComision,layout="wide",initial_sidebar_state="expanded")
  
 Estilo_css="""<style type="text/css">
     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); 
@@ -705,9 +705,18 @@ IngresosyEnviosCorreo,IngresosyEnviosMExpresa,IngresosGiros=APIsDinPostal()
 ##TV abierta
 #@st.cache
 def TVabierta():
-    TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_abierta.csv',delimiter=';')
-    return TVabierta
+    TVabierta=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/tv_abierta.csv',delimiter=';')
+    TVabierta['ingresos']=TVabierta['ingresos'].str.replace('.','').astype('float')
+    return TVabierta    
 TVabierta=TVabierta()
+#@st.cache
+def TVpublica():
+    TVPublica=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/tv_publica.csv',delimiter=';')
+    TVPublica=TVPublica.fillna(0)
+    TVPublica=TVPublica.rename(columns={'Operador':'empresa'})
+    return TVPublica
+TVPublica=TVpublica()
+
 ## IPC
 IPC=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/IPC.csv',delimiter=';')
 IPC=IPC.fillna(0)
@@ -744,47 +753,33 @@ st.sidebar.markdown("""<b>Índice</b>""", unsafe_allow_html=True)
 select_seccion = st.sidebar.selectbox('Escoja la sección del reporte',
                                     ['Portada','Carta editorial','Introducción','Telecomunicaciones','Postal'])
 
-IntroReporte21Sec1=r"""<p style='text-align:justify'>
-2021 fue un año de recuperación económica para Colombia en términos de Producto Interno Bruto -PIB-. Mientras en 2020 este indicador se redujo a 7% debido a la
-afectación generada por la pandemia del COVID-19, en 2021 el PIB se recuperó creciendo 10.7%, llegando a niveles incluso superiores en 2.9% de lo mostrado en 
-2019, año previo a la emergencia sanitaria.</p>
+IntroReporteSec1=r"""<p style='text-align:justify'>
+El 2022 la economía colombiana registró un crecimiento del Producto Interno Bruto -PIB- de 7,3% apalancado en la demanda interna. La senda evidenciada permitió ubicar 
+el nivel del producto en un valor superior en 10,44% a lo evidenciado en 2019, previo a la pandemia del COVID-19. En tanto, la recuperación en el mercado laboral había 
+estado rezagado respecto del evidenciado en el PIB. El número de ocupados en todos los meses de 2022 fue superior a los mismos periodos de 2019. La tasa de desempleo continuó 
+con la tendencia decreciente hasta cerrar el 2022 con una tasa anual de 11,2%, inferior en 2,6 puntos porcentuales a la registrada en 2021.</p>
 """
-IntroReporte21Sec2=r"""<p style='text-align:justify'>
-Por su parte, el mercado laboral, que corresponde al principal camino para la generación de ingresos de los hogares, mostró en 2021 una recuperación frente a 
-2020, mas no frente a 2019. La población ocupada promedio del año creció 6.3% frente a 2020, pero aún está por debajo de la observada en 2019 en 5.4%. El 
-rezago en el mercado laboral ha conducido a que los ingresos de los hogares de los tres primeros quintiles en 2021 sean menores en más del 10% respecto de los
-que tenían en 2019 y de cerca del 6.9% para los quintiles cuatro y cinco .</p>
+IntroReporteSec2=r"""<p style='text-align:justify'>
+En tanto, presiones inflacionarias internas como externas llevaron a que la inflación de 2022 alcanzara la cifra más alta en 23 años, llegando hasta el 13,1%. En este contexto, 
+el Banco de la República continuó con el proceso de normalización monetaria para contener presiones inflacionarias. Este proceso inició en octubre de 2021, llevando la tasa de 
+intervención del 1,75% hasta 11% en diciembre de 2022. Los incrementos en la tasa de intervención incluso han continuado en el primer semestre de 2023.</p>
 """
-IntroReporte21Sec3=r"""<p style='text-align:justify'>
-En materia de inflación, mientras 2020 mostró una desaceleración producto del choque negativo de oferta y demanda, siendo del 1.61% anual frente a 3.8% de 
-2019, en 2021 el crecimiento en el índice de precios se aceleró derivado de la recuperación en el ritmo de gasto de los hogares, así como por presiones 
-inflacionarias externas transmitidas a través de bienes finales e insumos importados. Es así como desde mayo de 2021, la inflación anualizada se situó por 
-encima de la meta de largo plazo del Banco de la República de 3%, alcanzando al cierre de 2021 una variación de 5.62%.</p>
+IntroReporteSec3=r"""<p style='text-align:justify'>
+En este contexto, las actividades económicas de Información y comunicaciones tuvieron un crecimiento más robusto, y no se observó el traslado de las presiones inflacionarias a
+estos servicios. Así, el crecimiento del valor agregado de estas actividades fue de 11,3%, superior en 6,7 puntos porcentuales al total de PIB y en materia de inflación, los 
+servicios de comunicación fija y móvil y provisión a internet fue de 0% en 2022, en contraste a las variaciones negativas observadas en 2021.</p>
 """
-IntroReporte21Sec4=r"""<p style='text-align:justify'>
-En este contexto cambiante de los dos últimos años, y con los ingresos de los hogares aún sin recuperar niveles de 2019, las actividades económicas del sector
-de Información y Comunicaciones se mostraron más fuertes que el resto de la economía. En 2020, aunque cayó el 2.6%, esta reducción fue menor que el total del 
-PIB. Igualmente, en 2021, la recuperación económica le permitió crecer al sector a una tasa del 11.4%, valor mayor que el resto de la economía. Los cambios 
-producidos por el trabajo y estudio en casa conllevaron modificaciones en los perfiles de consumo de servicios, privilegiando la conectividad individual y del 
-hogar. Frente a este cambio de hábitos de consumo el sector TIC se adaptó, con la provisión de mayor velocidad de descarga en Internet fijo y facilitando 
-servicios de Internet móvil con casi el doble de las capacidades existentes en 2020. Además, los precios de los servicios de telecomunicaciones quitaron 
-presión sobre la inflación total del año, al mostrar variaciones negativas anuales del 12.27% en 2021."""
-IntroReporte21Sec5=r"""<p style='text-align:justify'>
-Ahora bien, en lo corrido de 2022, las presiones inflacionarias externas e internas se han fortalecido. Del lado externo, se han evidenciado choques de oferta 
-a los precios de los energéticos y estrés en la oferta de cereales e insumos para la producción de alimentos. En materia interna, las presiones por factores 
-climáticos como por la fortaleza en el crecimiento del PIB contribuyeron a que la inflación anual pasara de 3.3% en mayo de 2021 a 10.2% en julio de 2022. 
-Como respuesta, el Banco de la República incrementó sus tasas de interés en más de 700 puntos básicos  pasando de 1.75% en agosto de 2021 a 9% en julio de 
-2022. Con el cambio de política monetaria se espera que conduzca a la moderación en el crecimiento del PIB, para cerrar el año con un crecimiento del 6.5% ."""
-IntroReporte21Sec6=r"""<p style='text-align:justify'> 
-Teniendo en cuenta el panorama económico general de 2021, la CRC pone a disposición el Reporte de Industria de os sectores TIC y Postal 2021, en el cual se 
-encuentra compilado el comportamiento de cada uno de los servicios en esa vigencia y que permite comparar entre ellos y profundiza el conocimiento alrededor 
-de la Industria. Respecto del sector TIC se muestra la evolución de los indicadores agregados más relevantes de la prestación de los servicios fijos, móviles 
-y los servicios radiodifundidos (televisión abierta y radiodifusión sonora), con una descripción detallada de estos servicios en Colombia durante los últimos 
-años, a partir del comportamiento del número de accesos, conexiones, tráfico, ingresos y participaciones de los operadores, entre otras variables. 
-
-Finalmente, se presenta una descripción de indicadores para el sector postal, a partir de los ingresos y tráficos de los servicios de correo, mensajería 
-expresa y giros postales.
-
+IntroReporteSec4=r"""<p style='text-align:justify'>
+A continuación, la Comisión de Regulación de Comunicaciones presenta el Reporte de Industria de los sectores TIC y Postal de 2022, cuyo objetivo es presentar la información más 
+relevante de estos sectores, para profundizar en el conocimiento de la industria y facilitar la toma de decisiones.<br>
+Además de una versión escrita que contiene los datos más relevantes, la CRC dispone de ésta versión interactiva con información más detallada sobre los servicios de telecomunicaciones 
+y postales. Así mismo, toda esta información se complementa con diferentes documentos (Data Flash) publicados por la CRC sobre los diferentes servicios, que pueden ser consultados en la 
+plataforma de datos abiertos de la CRC <a href='www.postdata.gov.co'>Postdata</a>, así como también con los conjuntos de datos y tableros interactivos contenidos en el portal."""
+IntroReporteSec5=r"""<p style='text-align:justify'>
+A continuación, se muestra la evolución de los indicadores agregados más relevantes del sector de telecomunicaciones en el país, con una descripción detallada de estos servicios en Colombia 
+durante los últimos años, a partir del comportamiento del número de accesos, conexiones, tráfico, ingresos y participaciones de los operadores, entre otras variables."""
+IntroReporteSec6=r"""<p style='text-align:justify'> 
+Finalmente, se presenta una descripción de indicadores para el sector postal, a partir de los ingresos y tráficos de los servicios de correo, mensajería expresa y giros postales.
 </p>
 """
 
@@ -812,37 +807,24 @@ if select_seccion =='Carta editorial':
     st.title("Carta editorial")
     col1,col2=st.columns([2,1])
     with col1:
-        st.markdown("Paola Andrea Bonilla<br><b>Comisionada y Directora Ejecutiva</b>",unsafe_allow_html=True)
-        st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
+        st.markdown("Nicolás Silva Cortés<br><b>Comisionado y Director Ejecutivo</b>",unsafe_allow_html=True)
+        #st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
     with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/PaolaB.png', width=250)        
-    st.markdown(CartaEditorialSec2,unsafe_allow_html=True)
-    st.markdown(CartaEditorialSec3,unsafe_allow_html=True)
+        st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Nicolas_Silva_Dir.jpg?raw=true', width=250)        
+    #st.markdown(CartaEditorialSec2,unsafe_allow_html=True)
+    #st.markdown(CartaEditorialSec3,unsafe_allow_html=True)
 
 if select_seccion =='Introducción':
     st.title("Introducción")
     st.markdown("")
-    st.markdown(r"""<center><h2>Aspectos generales de los sectores <br>TIC y postal en 2021</h2></center>""",unsafe_allow_html=True)
-    st.markdown(IntroReporte21Sec1,unsafe_allow_html=True)
-    st.markdown(IntroReporte21Sec2,unsafe_allow_html=True)
-    col1,col2=st.columns([2,1])
-    with col1:
-        st.markdown(IntroReporte21Sec3,unsafe_allow_html=True)
-    with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI2.png', width=300)
-    col1,col2=st.columns([2,1])
-    with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI5.png', width=300)
-    with col1:
-        st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
-    col1,col2=st.columns([2,1])
-    with col1:
-        st.markdown(IntroReporte21Sec4,unsafe_allow_html=True)
-    with col2:
-        st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/icono-RI4.png', width=300)
-    
-    st.markdown(IntroReporte21Sec5,unsafe_allow_html=True)
-    st.markdown(IntroReporte21Sec6,unsafe_allow_html=True)
+    st.markdown(r"""<center><h2>Aspectos generales de los sectores <br>TIC y postal en 2022</h2></center>""",unsafe_allow_html=True)
+    st.markdown("<hr>",unsafe_allow_html=True)
+    st.markdown(IntroReporteSec1,unsafe_allow_html=True)
+    st.markdown(IntroReporteSec2,unsafe_allow_html=True)
+    st.markdown(IntroReporteSec3,unsafe_allow_html=True)
+    st.markdown(IntroReporteSec4,unsafe_allow_html=True)
+    st.markdown(IntroReporteSec5,unsafe_allow_html=True)
+    st.markdown(IntroReporteSec6,unsafe_allow_html=True)
     
 if select_seccion =='Telecomunicaciones':
     st.title("Sector de telecomunicaciones")
@@ -865,27 +847,26 @@ if select_seccion =='Telecomunicaciones':
             st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/tv%20suscripcion.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col1:
             st.markdown("<h2>Accesos por servicio</h2>",unsafe_allow_html=True)
-        col2.metric("Internet móvil", "40.11 M", "12.6%")
-        col3.metric("Telefonía móvil", "80.81 M", "7.7%")
-        col4.metric("Internet fijo", "8.43M", "7.7%")
-        col5.metric("Telefonía fija", "7.25M", "7.86%")
-        col6.metric("TV por suscripción", "6.30M", "2.15%")
-        st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2020 </p>",unsafe_allow_html=True)
+        col2.metric("Internet móvil", "40,11 M", "12,6%")
+        col3.metric("Telefonía móvil", "80,81 M", "7,7%")
+        col4.metric("Internet fijo", "8,80M", "4,1%")
+        col5.metric("Telefonía fija", "7,25M", "-4,16%")
+        col6.metric("TV por suscripción", "6,30M", "2,15%")
+        st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2021 </p>",unsafe_allow_html=True)
         st.markdown('')
         st.markdown('<hr>',unsafe_allow_html=True)
         st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
         st.markdown('')
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>La prestación de servicios de telecomunicaciones en 2021 generó 24.3 billones de pesos, un 10.9% más, en términos reales, que en 2020. El 58% de los ingresos de 2021 correspondieron a los servicios de Internet fijo y móvil, los cuales crecieron a tasas reales de 18.9% y 10.4%, respectivamente, lo que refleja las necesidades de más conectividad de los hogares y las empresas. Igualmente, la TV por suscripción evidenció incremento en los ingresos, del 7.9% en términos reales. Por el contrario, los servicios de telefonía fija y móvil fueron los únicos servicios que presentaron reducciones frente a los ingresos generados en 2020, a tasas reales del -2.9% y -6.8%, respectivamente.<br>De otra parte, los sectores expuestos a ingresos por pauta publicitaria, es decir, los servicios radiodifundidos de televisión y radio, mostraron variaciones reales superiores al 30%. En TV abierta, el crecimiento en ingresos en 2021 compensó la reducción de ingresos derivada del COVID-19 para el año 2020. En radio, a pesar del crecimiento mostrado en 2021, los ingresos se situaron por debajo de los generados en 2019.</p>",unsafe_allow_html=True)       
+            st.markdown("<p style='text-align:justify'>En 2022 los servicios de telecomunicaciones obtuvieron ingresos por 25,4 billones de pesos, un 9,9% más, en términos reales  que en 2021. Los servicios de Internet fijo y móvil representaron el 59,7% del total de ingresos de 2022. En tanto, la variación real en los ingresos de los servicios voz fija y móvil presentó comportamientos contrarios. Mientras telefonía fija se contrajo 0,9%, la telefonía móvil creció 2,9%. <br><br>De otra parte, los sectores expuestos a ingresos por pauta publicitaria, es decir, los servicios radiodifundidos de televisión y radio, mostraron variaciones reales en tendencias contrarias. En TV abierta, el crecimiento en los ingresos no fue suficiente para compensar la inflación del año 2022 y cayeron en términos reales el 0,2%. En tanto, los ingresos de radio crecieron en términos reales el 6,5%.</p>",unsafe_allow_html=True)       
         with col2:
-            st.markdown("<center><p style='font-size:10px'><b>Ingresos de los servicios de telecomunicaciones 2020-2021</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_TelecomunicacionesFinal.png')
+            st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Ingresos_servicio_2022.png?raw=true')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, Contaduría General de la Nación – CHIP.", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2021, por encima del 7%, con excepción TV por suscripción que creció a una tasa de 1.74%. El servicio con mayor crecimiento en accesos en 2021 fue Internet móvil con 16.8%. El servicio con mayor penetración en móviles es la telefonía, con 147 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración es el Internet con 49.9 accesos por cada 100 hogares.</p>",unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2022. El servicio con mayor crecimiento en accesos fue Internet móvil con 12,6%.El servicio con mayor penetración en móviles fue la telefonía, con 156 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración fue el Internet, con 51 accesos por cada 100 hogares</p>",unsafe_allow_html=True)
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Accesos y penetración de los servicios de telecomunicaciones fijos y móviles</b></p>", unsafe_allow_html=True)
             st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Accesos_telcoFinal.png')
@@ -910,9 +891,9 @@ if select_seccion =='Telecomunicaciones':
             with col2:                
                 with st.expander("Datos relevantes de Telefonía móvil"):
                     st.markdown(r"""<ul>
-                    <li>En abonados, se observó un incremento de más de 5 millones entre el primer y cuarto trimestre de 2021, para un total de 75.06 millones.</li>
-                    <li>En tráfico, en el 2021 se obtuvo un valor de 161.7 miles de millones de minutos, lo que corresponde a un decrecimiento del 7.7% respecto al valor de 2020.</li>
-                    <li>En 2021, el servicio de telefonía móvil generó ingresos por un valor de 2,446.58 miles de millones de pesos, lo que equivale a un reducción de 296.21 mil millones de pesos respecto a 2020.</li>
+                    <li>El total de abonados a telefonía móvil alcanzó los 80,81 millones al cierre de 2022, 5,7 millones más que en 2021.</li>
+                    <li>En tráfico, en el 2022 se obtuvo un valor de 135,6 miles de millones de minutos, lo que corresponde a un decrecimiento del 16,2% respecto al valor de 2021.</li>
+                    <li>En 2022, el servicio de telefonía móvil generó ingresos por un valor de 2,446.58 miles de millones de pesos, lo que equivale a un reducción de 296.21 mil millones de pesos respecto a 2020.</li>
                     </ul>""",unsafe_allow_html=True)
 
      
@@ -1110,9 +1091,9 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Internet móvil"):
                     st.markdown(r"""<ul>
-                    <li>Entre el cuarto trimestre de 2020 y 2021, los accesos de Internet móvil se incrementaron en más de 5.4 millones, alcanzando 37.96 millones al cierre de 2021</li>
-                    <li>El tráfico alcanzó un valor de 1895 millones de GB, lo que corresponde a un crecimiento de 84.8% frente a 2020.</li>     
-                    <li>Los ingresos ascendieron a 7962.47 miles de millones de pesos, equivalente a un crecimiento de 6.4% frente al año anterior.</li>        
+                    <li>Entre el cuarto trimestre de 2021 y 2022, los accesos de Internet móvil se incrementaron en más de 4.5 millones, alcanzando 40.11 millones al cierre de 2022</li>
+                    <li>El tráfico alcanzó un valor de 3084,5 millones de GB, lo que corresponde a un crecimiento de 62.8% frente a 2021.</li>     
+                    <li>Los ingresos ascendieron a 8,7 billones de pesos, equivalente a un crecimiento de 17% frente al año anterior.</li>        
                     </ul>""",unsafe_allow_html=True)
             
             
@@ -1258,12 +1239,12 @@ if select_seccion =='Telecomunicaciones':
         
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/sms.png'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/sms.png?raw=true'/><h4>Mensajería móvil</h4></div>""",unsafe_allow_html=True)
             with col2:             
                 with st.expander("Datos relevantes de Mensajería móvil"):
                     st.markdown(r"""<ul>
                     <li>Los ingresos por concepto de mensajería de texto fueron de 150,39 mil millones de pesos en 2021 de los cuales el 78,7% son generados por mensajes cursados entre usuarios.</li>
-                    <li>En cuando al servicio de SMS, este se compone de los mensajes cursados entre usuarios y mensajes de texto a través de códigos cortos. El tráfico del primer tipo fue de 1.791,6 millones de mensajes en 2021 y se redujo a tasa anual de 17,9%. En tanto, los segundos fueron 41.464.7millones de mensajes y creció 35,5% frente al año anterior.</li>
+                    <li>En cuando al servicio de SMS, este se compone de los mensajes cursados entre usuarios y mensajes de texto a través de códigos cortos. El tráfico del primer tipo fue de 1.448,3 millones de mensajes en 2022 y se redujo a tasa anual de 19,2%. En tanto, los segundos fueron 45,019.7 millones de mensajes y creció 8,6% frente al año anterior.</li>
                     </ul>""",unsafe_allow_html=True)
             
             ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
@@ -1421,8 +1402,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Internet fijo"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 se alcanzaron 8.43 millones de accesos, de los cuales el 91% pertenecen al segemento residencial. Esto corresponde a 600000 accesos más que en 2020.</li>
-                    <li>En 2021 los PRST alcanzaron 6177.1 miles millones de pesos, que representa un crecimiento de 14.6% respecto al año anterior</li>
+                    <li>En 2022 se alcanzaron 8.8 millones de accesos, de los cuales el 89,7% pertenecen al segemento residencial. Esto corresponde a XXXXX accesos más que en 2021.</li>
+                    <li>En 2022 los PRST alcanzaron 6475.6 miles millones de pesos, que representa un crecimiento de 4.6% respecto al año anterior</li>
                     </ul>""",unsafe_allow_html=True)
 
             
@@ -1589,9 +1570,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Telefonía fija"):
                     st.markdown(r"""<ul>
-                    <li>Al cierre de 2021 se contabilizaron 7.55 millones de líneas, de las cuales el 86,5% son líneas residenciales. En comparación con el año 2020, las líneas residenciales crecieron 6% en 2021. En tanto, las líneas corporativas continúan en descenso.</li>
-                    <li>Los ingresos por telefonía fija ascendieron a 1.88 billones de pesos, de los cuales el 83.5% se originó en telefonía local. Respecto del año anterior, sus tres componentes tuvieron reducciones cercanas al 6%, local (6,1%), Larga Distancia Nacional (6.6%) y Larga Distancia Internacional (6.4%). </li>
-                    <li>En cuanto al tráfico, este se redujo a tasas mayores que los ingresos alcanzando un total de 9955 millones de minutos de los cuales: telefonía local se redujo el 29.4%, LDN ý LDI decrecieron 12.8% y 3.7% respectivamente.</li>
+                    <li>Al cierre de 2022 se contabilizaron 7.25 millones de líneas, de las cuales el 88% son líneas residenciales. En comparación con el año 2021, las líneas residenciales disminuyeron en un 6% en 2022, y de igual manera, las líneas corporativas continúan en descenso.</li>
+                    <li>Los ingresos por telefonía fija ascendieron a 1.74 billones de pesos, de los cuales el 92% se originó en telefonía fija nacional. El valor total representa una reducción real del 0,9% en comparación con 2021. </li>
                     </ul>""",unsafe_allow_html=True)
 
 
@@ -1719,8 +1699,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de TV por suscripción"):
                     st.markdown(r"""<ul>
-                    <li>Los ingresos en 2021 fueron de 3402.9 miles de millones de pesos, 137.9 mil millones más que el año anterior</li>    
-                    <li>En materia de suscriptores, al cuarto trimestre de 2021 superó 6.17 millones, 106 mil más que en el mismo periodo de 2020</li>    
+                    <li>Los ingresos en 2022 fueron de 3421.1 miles de millones de pesos, 13.1 mil millones más que el año anterior</li>    
+                    <li>En materia de suscriptores, al cuarto trimestre de 2022 superó 6.30 millones, 132 mil más que en el mismo periodo de 2021</li>    
                     </ul>""",unsafe_allow_html=True)
 
             ##Suscriptores
@@ -1839,20 +1819,21 @@ if select_seccion =='Telecomunicaciones':
         
         col1,col2=st.columns(2)
         with col1:
-            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/ott.png'/><h4 style="text-align:left"><center>Servicios Over the top (OTT)<br>de contenidos audiovisuales</center></h4></div>""",unsafe_allow_html=True)   
+            st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/ott.png?raw=true'/><h4 style="text-align:left"><center>Servicios Over the top (OTT)<br>de contenidos audiovisuales</center></h4></div>""",unsafe_allow_html=True)   
         with col2:             
             with st.expander("Datos relevantes de OTT"):
                 st.markdown(r"""<ul>
-                <li>En el cuarto trimestre de 2021, el 86,4% de los hogares con Internet consumieron contenidos audiovisuales a través de plataformas de servicios OTT.</li>
-                <li>Los modelos de negocio de servicios OTT audiovisuales con mayor penetración en los hogares colombianos son: video por demanda gratuito o con publicidad (87%), seguido de servicios de video por demanda con suscripción (75%) y los servicios de TV everywhere (39%).</li>
-                <li>De los hogares con Internet, el 10.58% manifestaron haber renunciado al servicio de TV por suscripción (cord-cutters), de los cuales el 17.98% de los hogares señaló el motivo fue que podía encontrar el mismo contenido por Internet</li>
+                <li>En el cuarto trimestre de 2022, el 91,3% de los hogares con Internet consumieron contenidos audiovisuales a través de plataformas de servicios OTT.</li>
+                <li>Los modelos de negocio de servicios OTT audiovisuales con mayor penetración en los hogares colombianos son: video por demanda gratuito o con publicidad (89%), seguido de servicios de video por demanda con suscripción (79%) y los servicios de TV everywhere (38%).</li>
+                <li>De los hogares con Internet, el 13.58% manifestaron haber renunciado al servicio de TV por suscripción (cord-cutters), de los cuales el 27.8% de los hogares señaló el motivo fue que podía encontrar el mismo contenido por Internet</li>
                 </ul>""",unsafe_allow_html=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True) 
         st.markdown('')
-        OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/OTT.csv',delimiter=';')
+        OTT=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/OTT_resumen.csv',delimiter=';')
         OTT['periodo']=OTT['periodo'].replace({r'Q':'-T'},regex=True)
-        OTT['penetracion']=OTT['penetracion'].replace({r'%':''},regex=True).astype('float')
-        OTTAgg=OTT[(OTT['concepto']=='Penetracion modelo de negocio')&(OTT['periodo'].isin(['2018-T4','2019-T4','2020-T4','2021-T4']))].groupby(['periodo','modelo_negocio'])['penetracion'].sum().reset_index()
+        OTT['penetracion'] = OTT['penetracion'].replace({r' ': '', r'%': '', r',': '.'}, regex=True).astype(float)
+        
+        OTTAgg=OTT[(OTT['concepto']=='Penetracion modelo de negocio')&(OTT['periodo'].isin(['2018-T4','2019-T4','2020-T4','2021-T4','2022-T4']))].groupby(['periodo','modelo_negocio'])['penetracion'].sum().reset_index()
         OTT2=OTTAgg[OTTAgg['modelo_negocio'].isin(['AVOD','FVOD'])]
         OTTAgg2=OTT2.groupby(['periodo'])['penetracion'].sum().reset_index()
         OTTAgg2['modelo_negocio']='FVOD-AVOD'
@@ -1860,15 +1841,17 @@ if select_seccion =='Telecomunicaciones':
         OTTdf=OTTdf[OTTdf['modelo_negocio'].isin(['AVOD','FVOD'])==False]
         OTTdf['modelo_negocio']=OTTdf['modelo_negocio'].replace({'TV Everywhere pago':'TV Everywhere<br>pago'})
         #
-        OTTMotivos=OTT[OTT['concepto']=='Motivos cutterss']
+        OTTMotivos=OTT[OTT['concepto']=='Motivos cutters']
         OTTMotivos=OTTMotivos.rename(columns={'modelo_negocio':'motivos'})
-        Motivos21T4=OTTMotivos[OTTMotivos['periodo']=='2021-T4'].sort_values(by='penetracion',ascending=False)['motivos'].values.tolist()[0:5]
+        Motivos21T4=OTTMotivos[OTTMotivos['periodo']=='2022-T4'].sort_values(by='penetracion',ascending=False)['motivos'].values.tolist()[0:5]
         OTTMotivos=OTTMotivos[OTTMotivos['motivos'].isin(Motivos21T4)]
-        OTTMotivos['penetracion']=OTTMotivos['penetracion']*100
+        OTTMotivos['penetracion']=OTTMotivos['penetracion']
         reshape_motivos={'Es muy caro.':'Servicio muy caro','No lo estaba utilizando.':'No lo utilizaba',
                         'Estaba obligado a pagar por muchos canales que luego no miraba realmente.':'Obligado a pagar<br>canales que no<br>miraba',
                         'Puedo ver los mismos contenidos en internet y gratis.':'Mismo contenido gratis<br>en internet',
-                        'El servicio al cliente es muy malo.':'Pésimo servicio al cliente'}
+                        'El servicio al cliente es muy malo.':'Pésimo servicio al cliente',
+                        'Me mudé y en mi nuevo hogar ya no quiero tener ese gasto.':'Mudanza',
+                        'Lo reemplacé por Servicios Pagos de contenidos online (películas, series, eventos,\x85).':'Reemplazo por servicios<br>pagos de contenidos online'}
         OTTMotivos['motivos']=OTTMotivos['motivos'].replace(reshape_motivos)
         
                     
@@ -1881,7 +1864,7 @@ if select_seccion =='Telecomunicaciones':
         if ModeloOTT:
             st.markdown("""<p style="font-size:12px"><b>Nota:</b> Los siguientes modelos son los modelos de negocio de servicios OTT de contenidos audiovisuales. SVOD: video por demanda por suscripción; FVOD: video por demanda gratuito; AVOD: video por demanda gratuito que monetizan sus servicios a través de terceros, por ejemplo publicidad; TVOD: video por demanda en la que se abona por cada contenido al que se accede por alquiler o compra; TV everywhere: hace referencia al modelo en el que se accede a las plataformas a través de una suscripción a TV, servicios de Internet o Telefonía el cual es ofrecido por programadores o cableoperadores; TV everywhere pago: se diferencia del TV everywhere ya que hay que realizar un pago adicional para el acceso a este servicio. “Ilegal”: “ilegal” se refiere las plataformas no pagan a los dueños de los derechos de los contenidos dispuestos. Un ejemplo de esto son los servicios P2P, plataformas como Cuevana, pelisplus, pelisflix y similares que no pagan por los contenidos que trasmiten. Fuente: Business Bureau.</p>""",unsafe_allow_html=True)
         
-            figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
+            figModeloOTT = px.bar(OTTdf, x='modelo_negocio',y='penetracion', color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00',"#ff6666"])
             figModeloOTT.update_layout(barmode='group')
             figModeloOTT.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text=None,row=1, col=1,
             zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
@@ -1904,7 +1887,7 @@ if select_seccion =='Telecomunicaciones':
             st.plotly_chart(figModeloOTT,use_container_width=True)
             
         if MotivosOTT:
-            figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00'])
+            figMotivosOTT = px.bar(OTTMotivos, x='penetracion',y='motivos',orientation='h',color='periodo', height=400,color_discrete_sequence=['rgb(122, 68, 242)','rgb(0, 128, 255)','rgb(102, 204,0)','#ffbf00',"#ff6666"])
             figMotivosOTT.update_layout(barmode='group')
             figMotivosOTT.update_xaxes(tickangle=0, tickfont=dict(family='Poppins', color='black', size=16),title_text='Porcentaje (%)',row=1, col=1,
             zeroline=True,linecolor = "rgba(192, 192, 192, 0.8)",zerolinewidth=2)
@@ -1937,13 +1920,13 @@ if select_seccion =='Telecomunicaciones':
 
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/radio.png'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/radio.png?raw=true'/><h4 style="text-align:left">Radio</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de Radio"):
                     st.markdown(r"""<ul>
-                    <li>En el año 2021 Colombia tenía 1.704 emisoras radiales, de las cuales 756 son emisoras comunitarias, 624 son comerciales y 324 son emisoras de interés público.</li>
-                    <li>331 emisoras tienen frecuencia asignada en banda AM y las restantes 1.373 en la banda FM.</li>
-                    <li>Los ingresos de las principales emisoras comerciales fueron 492.8 mil millones de pesos en 2021, 33.4% más que los registrados el año inmediatamente anterior.</li>
+                    <li>En el año 2022 Colombia tenía 1.718 emisoras radiales, de las cuales 770 son emisoras comunitarias, 620 son comerciales y 328 son emisoras de interés público.</li>
+                    <li>328 emisoras tienen frecuencia asignada en banda AM y las restantes 1.390 en la banda FM.</li>
+                    <li>Los ingresos de las principales emisoras comerciales fueron 586,1 mil millones de pesos en 2022, 6,5% más en términos constantes que los registrados el año inmediatamente anterior.</li>
                     </ul>""",unsafe_allow_html=True)
 
             nombres_Radio={'CARACOL PRIMERA CADENA RADIAL COLOMBIANA S.A.':'Caracol Radio','COMPANIA DE COMUNICACIONES DE COLOMBIA S.A.S':'Comunicaciones<br>de Colombia',
@@ -1951,17 +1934,17 @@ if select_seccion =='Telecomunicaciones':
             'SERVICIO RADIAL INTEGRADO SAS':'Servicio radial<br>integrado','PRODUCCIONES WILLVIN S A':'Producciones Willvin','ORGANIZACION RADIAL OLIMPICA S.A.':'Olimpica organización<br>radial',
             'CHAR DIAZ SAS':'Char Diaz','VITAL INVERSIONES S.A.':'Vital inversiones','ALIANZA INTEGRAL COM SAS':'Alianza integral','CARACOL TELEVISIÓN S.A.':'Caracol Televisión'}
             ##Ingresos Radio
-            IngresosRadio=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/radio_ingresos.csv',delimiter=';',encoding='latin-1')
-            IngresosRadio['ingresos ordinarios']=IngresosRadio['ingresos ordinarios'].astype('int64')            
-            IngresosRadio['anno']=IngresosRadio['anno'].astype('str')
-            IngresosRadio=IngresosRadio.rename(columns={'empresa  ':'empresa','ingresos ordinarios':'ingresos'})
+            IngresosRadio=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/radio_ingresos.csv',delimiter=';',encoding='utf-8')
+            IngresosRadio['Ingresos de actividades ordinarias']=IngresosRadio['Ingresos de actividades ordinarias'].str.replace('.','').astype('int64')
+            IngresosRadio['Año']=IngresosRadio['Año'].astype('str')       
+            IngresosRadio=IngresosRadio.rename(columns={'Grupo Radial':'empresa','Ingresos de actividades ordinarias':'ingresos','Año':'anno'})
             IngresosRadio=IngresosRadio.merge(IPCAnuTot,left_on=['anno'],right_on=['anno'])
             IngresosRadio['ingresos']=IngresosRadio['ingresos']/IngresosRadio['indice2022']
             IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
             ##Número emisoras
-            NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='latin-1')
+            NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='utf-8')
             NumeroEmisoras=NumeroEmisoras.rename(columns={'CLASE DE\nEMISORA':'CLASE DE EMISORA'})
-            NumeroEmisoras['DEPARTAMENTO']=NumeroEmisoras['DEPARTAMENTO'].replace({'ARCHIPIELAGO DE SAN ANDRÉS. PROVIDENCIA Y SANTA CATALINA':'SAN ANDRÉS Y PROV.',
+            NumeroEmisoras['DEPARTAMENTO']=NumeroEmisoras['DEPARTAMENTO'].replace({'ARCHIPIÉLAGO DE SAN ANDRÉS, PROVIDENCIA Y SANTA CATALINA':'SAN ANDRÉS Y PROV.',
                                                                           'NORTE DE\nSANTANDER':'N.SANTANDER','NORTE DE SANTANDER':'N.SANTANDER'})        
             #
             NumeroEmisorasAgg=NumeroEmisoras.groupby(['CLASE DE EMISORA','BANDA'])['CODIGO EMISORA'].nunique().reset_index()
@@ -1978,7 +1961,7 @@ if select_seccion =='Telecomunicaciones':
             
             if ServiciosRadio=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
-                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos en radio por empresa</b>',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
+                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Millones de pesos',1e6,'<b>Ingresos en radio por empresa</b>',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
                 'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)'],''),use_container_width=True)
        
       
@@ -2001,7 +1984,7 @@ if select_seccion =='Telecomunicaciones':
                     figPartNEmis.update_layout(height=550,legend_title=None)
                     figPartNEmis.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
-                    'text':'<b>Participación en el número de emisoras por clase de emisora y banda<br>(2021)',
+                    'text':'<b>Participación en el número de emisoras por clase de emisora y banda<br>(2022)',
                     'y':0.9,
                     'x':0.5,
                     'xanchor': 'center',
@@ -2059,7 +2042,7 @@ if select_seccion =='Telecomunicaciones':
         if ServiciosRadiodifusion=='TV abierta':
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/tv-abierta.png'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/tv%20abierta.png?raw=true'/><h4 style="text-align:left">TV abierta</h4></div>""",unsafe_allow_html=True)   
             with col2:             
                 with st.expander("Datos relevantes de TV abierta"):
                     st.markdown(r"""<ul>
@@ -2082,12 +2065,10 @@ if select_seccion =='Telecomunicaciones':
             TVabiertaNac=TVabierta.groupby(['anno','modalidad'])['ingresos'].sum().reset_index()
             #
             TVabiertaEmp=TVabierta.groupby(['anno','empresa','id_empresa'])['ingresos'].sum().reset_index()
-            TVabiertaEmp=TVabiertaEmp[TVabiertaEmp['anno'].isin([2020,2021])]
-            EmpTVAbierta=TVabiertaEmp[TVabiertaEmp['anno']==2021].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            TVabiertaEmp=TVabiertaEmp[TVabiertaEmp['anno'].isin([2021,2022])]
+            EmpTVAbierta=TVabiertaEmp[TVabiertaEmp['anno']==2022].sort_values(by='ingresos',ascending=False)['id_empresa'].to_list()[0:4]
             TVabiertaEmp=TVabiertaEmp[(TVabiertaEmp['id_empresa'].isin(EmpTVAbierta))]
-            ##TV Pública
-            TVPublica=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Datos_Sin_API/tv_publica.csv',delimiter=';')
-            TVPublica=TVPublica.fillna(0)
+            ##Ingresos TV Pública
             
             if IngresosTVabierta=='Ingresos por servicio':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
@@ -2124,7 +2105,7 @@ if select_seccion =='Telecomunicaciones':
                     'x':0.5,
                     'xanchor': 'center',
                     'yanchor': 'top'})        
-                    figTVabiertaMod.update_layout(legend=dict(orientation="h",y=1.12,x=0.2,font_size=12),showlegend=True)
+                    figTVabiertaMod.update_layout(legend=dict(orientation="h",y=1.12,x=0.1,font_size=12),showlegend=True)
                     figTVabiertaMod.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)',yaxis_tickformat='d')
                     figTVabiertaMod.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(192, 192, 192, 0.8)')
                     figTVabiertaMod.add_annotation(
@@ -2137,15 +2118,16 @@ if select_seccion =='Telecomunicaciones':
                     st.plotly_chart(PlotlyBarras(TVabiertaEmp,'ingresos','Miles de Millones de pesos',1e9,'<b>Ingresos anuales por empresa</b>','<b>Fuente</b>: Elaboración CRC con base en estados financieros Contaduría general de la Nación y liquidación de contribución FUTIC'),use_container_width=True)            
             
             if IngresosTVabierta=='Ingresos TV pública':    
-                TVPublica=TVPublica.fillna(0)
-                TVPublica=TVPublica.rename(columns={'Operador':'empresa'})
+                columnas_corregir = ['Oper_TV(%)', 'Otros_servicios(%)', 'Transferencias(%)']
+                for column in columnas_corregir:
+                    TVPublica[column] = TVPublica[column].str.replace(',', '.').astype(float)
                 TVPublicaAgg=TVPublica.groupby(['anno','empresa']).agg({'Oper_TV(%)':'sum','Otros_servicios(%)':'sum','Transferencias(%)':'sum'}).reset_index()
                 TVPublicaAgg[['Oper_TV(%)','Otros_servicios(%)','Transferencias(%)']]=TVPublicaAgg[['Oper_TV(%)','Otros_servicios(%)','Transferencias(%)']]*100
                 TVPublicaAgg=TVPublicaAgg.rename(columns={'Oper_TV(%)':'Operativo TV','Otros_servicios(%)':'Otros servicios','Transferencias(%)':'Transferencias'})
                 TVPublicaAgg2=pd.melt(TVPublicaAgg,id_vars=['anno','empresa'],value_vars=['Operativo TV','Otros servicios','Transferencias'],
                                      var_name='ambito',value_name='Porcentaje')
-                TVPublicaAgg2=TVPublicaAgg2[TVPublicaAgg2['anno'].isin([2020,2021])]
-                
+                TVPublicaAgg2=TVPublicaAgg2[TVPublicaAgg2['anno'].isin([2021,2022])]
+
                 color_ambitoTVPu={'Operativo TV':'rgb(178,102,255)','Otros servicios':'rgb(102,255,102)',
                              'Transferencias':'rgb(102,178,255)'}
                 figTVPublica = make_subplots(rows=1,cols=1)
@@ -2628,34 +2610,32 @@ if select_seccion =='Postal':
         with col1:
             st.markdown("<h2>Envíos por servicio</h2>",unsafe_allow_html=True)
         with col2:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/correo.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col3:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/mensajeria%20expresa.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col4:
-            st.markdown(r"""<div><img height="100px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/></div>""",unsafe_allow_html=True) 
+            st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/giros.png?raw=true'/></div>""",unsafe_allow_html=True) 
 
-        col2.metric("Correo", "85.8 M", "-18.3%")
-        col3.metric("Mensajería expresa", "281.5 M", "0.6%")
-        col4.metric("Giros", "127.7M", "-5.3%")      
-        st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2020 </p>",unsafe_allow_html=True)
+        col2.metric("Correo", "45,6 M", "-46,9%")
+        col3.metric("Mensajería expresa", "279,2 M", "0,81%")
+        col4.metric("Giros", "106,1 M", "-5,3%")      
+        st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto al número de envíos registrados en 2021 </p>",unsafe_allow_html=True)
         st.markdown('')
         st.markdown('<hr>',unsafe_allow_html=True)
         st.markdown(r"""<h2>Panorama del sector</h2>""",unsafe_allow_html=True)
         st.markdown("")    
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>En 2021, los operadores de servicios tuvieron ingresos por estos servicios por más de 2.3 billones de pesos, equivalente a un crecimiento real de 2.8% frente a 2020. Así mismo, se realizaron más de 495.1 millones de transacciones, de las cuales el 56.9% correspondió a envíos de mensajería expresa, 25.8% a giros y el 17.3% de envíos de correo realizados por el Operador Postal Oficial.</p>",unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>En 2022, los operadores de servicios postales tuvieron ingresos por 2,4 billones de pesos, equivalente a una reducción de 6,2% en términos reales frente a 2021. Así mismo, se realizaron más de 495,1 millones de transacciones, de las cuales el 56,9% correspondió a envíos de mensajería expresa, 25,8% a giros y el 17,3% de envíos de correo realizados por el Operador Postal Oficial.</p>",unsafe_allow_html=True)
         with col2:
-            st.markdown("<center><p style='font-size:10px'><b>Ingresos del sector postal según servicio</b>(Miles de millones de pesos)</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Postales_ingresos.png')
+            st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Ingresos_servicio_postales2022.png?raw=true')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
 
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>Un indicador de alcance del servicio es el número de puntos de atención físicos. De los puntos físicos de correo provistos por el Operador Postal Oficial, el 84.5% de estos tuvieron presencia en municipios no capitales. Por el contrario, mensajería expresa tuvo una mayor proporción de puntos de atención en las ciudades capitales en las que se concentró el 61.8% de sus puntos. Finalmente, los operadores postales de pago pusieron a disposición más de 42 mil puntos de atención ubicados en el territorio nacional con presencia en las 32 capitales y 795 municipios más.  Sólo en 142 puntos es posible la realización de envíos o entregas de giros internacionales.</p>",unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>Para la prestación de los servicios postales Operador Postal Oficial dispuso 1.315 puntos físicos, de los cuales el 84,8% de estos tuvieron presencia fuera de las capitales de departamento. Por el contrario, mensajería expresa tuvo una mayor proporción de puntos de atención en las ciudades capitales en las que se concentró el 61,8% de sus puntos. Finalmente, los operadores postales de pago pusieron a disposición más de 46 mil puntos de atención ubicados en el territorio nacional con presencia en las 32 capitales y 795 municipios más. Sólo en 142 puntos es posible la realización de envíos o entregas de giros internacionales. </p>",unsafe_allow_html=True)
         with col2:
-            st.markdown("<center><p style='font-size:10px'><b>Número de puntos de atención físicos de Servicios Postales según tipo de servicio</p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Postales_puntos.png')
+            st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Num_puntosfisicos_servpost.png?raw=true')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC", unsafe_allow_html=True)
 
     if select_secResumenPos=='Servicios postales':
@@ -2668,12 +2648,12 @@ if select_seccion =='Postal':
         if select_DinPos=='Correo':
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/correo.png'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/correo.png?raw=true'/><h4>Correo</h4></div>""",unsafe_allow_html=True)
             with col2:             
                 with st.expander("Datos relevantes de Correo"):
                     st.markdown(r"""<ul>
-                    <li>En 2021 se contabilizaron 85.8 millones de envíos, representando una reducción de 15.7% en términos constantes frente a 2020. Por tipo de envío, los masivos se redujeron 17.8%, lo que corresponde al 83.53% del total de envíos en 2021.</li>
-                    <li>Los ingresos de correo en 2021 fueron de 94 mil millones de pesos, representando 12.7% menos que en 2020. Discriminando por tipo de envío, los ingresos de los envíos indivuales decrecieron un 15% en términos reales. Por su parte, los ingresos en envíos masivos pasaron de 29.78 mil millones en 2020 a 25.38 mil millones en 2021.</li>
+                    <li>En 2022 se contabilizaron 45.6 millones de envíos, representando una reducción de 46.9% frente a 2021. Por tipo de envío, los masivos se redujeron 50.7%, lo que corresponde al 77.5% del total de envíos en 2022.</li>
+                    <li>Los ingresos de correo en 2022 fueron de 83,7 mil millones de pesos, representando 19% menos que en 2021. Discriminando por tipo de envío, los ingresos de los envíos indivuales decrecieron un 15,1% en términos reales. Por su parte, los ingresos en envíos masivos se redujeron 29,6% en términos reales respecto de 2021.</li>
                     </ul>""",unsafe_allow_html=True)
 
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
@@ -2692,12 +2672,12 @@ if select_seccion =='Postal':
 
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/mensajeria-expresa.png'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/mensajeria%20expresa.png?raw=true'/><h4>Mensajería expresa</h4></div>""",unsafe_allow_html=True)
             with col2:             
                 with st.expander("Datos relevantes de Mensajería expresa"):
                     st.markdown(r"""<ul>
-                    <li>En 2021, a través del servicio de mensajería expresa se realizaron 281.5 millones de envíos, 0.6% más que en el año 2020. El 56.5% correspondieron a envíos masivos y el 43.5% restante a envíos individuales.</li>
-                    <li>En materia de ingresos, en 2021 la prestación de este servicio percibió 1.5 billones de pesos, 16.2% más que en 2020 en términos constantes. Discriminando por tipo de envío, los envíos individuales acumularon un total de 1.297 mil millones de pesos, aumentando un 15.4% frente a 2020 en términos constantes, mientras que los envíos masivos crecieron un 16.2%.</li>
+                    <li>En 2022, a través del servicio de mensajería expresa se realizaron 279,2 millones de envíos, 0,8% menos que en el año 2021. El 53.2% correspondieron a envíos masivos y el 46.8% restante a envíos individuales.</li>
+                    <li>En materia de ingresos, en 2022 la prestación de este servicio percibió 1.74 billones de pesos, 4,9% más que en 2021 en términos reales. Discriminando por tipo de envío, los envíos individuales acumularon un total de 1.59 mil millones de pesos, aumentando un 7,1% frente a 2021 en términos constantes. Por ámbito, los envíos nacionales representaron el 74,3% de los ingresos, seguido del ámbito local en 13,7%.</li>
                     </ul>""",unsafe_allow_html=True)
 
             ServiciosCorreo=st.selectbox('Escoja el ámbito de Correo',['Número de envíos','Ingresos'])
@@ -2706,11 +2686,11 @@ if select_seccion =='Postal':
             IngresosyEnviosMExpresa['Ingresos']=IngresosyEnviosMExpresa['Ingresos']/IngresosyEnviosMExpresa['indice2022']
             IngresosyEnviosMexpresaNac=IngresosyEnviosMExpresa.groupby(['anno','ambito','tipo_envio']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()
             IngresosyEnviosMexpresaEMp=IngresosyEnviosMExpresa.groupby(['anno','id_empresa','empresa']).agg({'Envíos':'sum','Ingresos':'sum'}).reset_index()    
-            EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
-            EmpMensExpIng=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-            IngresosyEnviosMexpresaEMpEnv=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpNumEnv))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
-            IngresosyEnviosMexpresaEMpIng=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpIng))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2020','2021']))]
-            IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2021'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
+            EmpMensExpNumEnv=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2022'].sort_values(by='Envíos',ascending=False)['id_empresa'].to_list()[0:4]
+            EmpMensExpIng=IngresosyEnviosMexpresaEMp[IngresosyEnviosMexpresaEMp['anno']=='2022'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosyEnviosMexpresaEMpEnv=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpNumEnv))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2021','2022']))]
+            IngresosyEnviosMexpresaEMpIng=IngresosyEnviosMexpresaEMp[(IngresosyEnviosMexpresaEMp['id_empresa'].isin(EmpMensExpIng))&(IngresosyEnviosMexpresaEMp['anno'].isin(['2021','2022']))]
+            IngresosMenExpEmp=IngresosyEnviosMExpresa[IngresosyEnviosMExpresa['anno']=='2022'].groupby(['tipo_envio','id_empresa','empresa']).agg({'Ingresos':'sum'}).reset_index()   
             #
             IngresosMenExpEmpInd=IngresosMenExpEmp[IngresosMenExpEmp['tipo_envio']=='Individuales']
             IngresosMenExpEmpInd['participacion']=round(100*IngresosMenExpEmpInd['Ingresos']/IngresosMenExpEmpInd['Ingresos'].sum(),1)
@@ -2751,7 +2731,7 @@ if select_seccion =='Postal':
                 if PieIngresosMenExpresa:
                     col1,col2=st.columns(2)
                     figPieMenExpInd = px.pie(IngresosMenExpEmpInd, values='Ingresos', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2021)')
+                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa individual (2022)')
                     figPieMenExpInd.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieMenExpInd.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
                     figPieMenExpInd.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -2759,9 +2739,9 @@ if select_seccion =='Postal':
                         st.plotly_chart(figPieMenExpInd,use_container_width=True)
 
                     figPieMenExpMas = px.pie(IngresosMenExpEmpMas, values='Ingresos', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos(2021)')
+                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de<br>mensajería expresa masivos (2022)')
                     figPieMenExpMas.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
-                    figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.2,y=-0.1,orientation='h'),title_x=0.5)
+                    figPieMenExpMas.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(x=0.1,y=-0.1,orientation='h'),title_x=0.5)
                     figPieMenExpMas.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     with col2:
                         st.plotly_chart(figPieMenExpMas,use_container_width=True)  
@@ -2772,13 +2752,13 @@ if select_seccion =='Postal':
 
             col1,col2=st.columns(2)
             with col1:
-                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/giro-postal.png'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
+                st.markdown(r"""<div class='IconoTitulo'><img height="200px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/giros.png?raw=true'/><h4>Giros</h4></div>""",unsafe_allow_html=True)  
             with col2:             
                 with st.expander("Datos relevantes de Giros"):
                     st.markdown(r"""<ul>
-                    <li>Los operadores de los servicios postales de pago movilizaron un total de 20.6 billones de pesos en 2021 en 127.7 millones de giros. El valor de los giros así como el número de envíos redujeron anualmente a tasas de 7.0% y 5.3% respectivamente</li>
-                    <li>Por la prestación de este servicio, los operadores recibieron ingresos de 718.4 mil millones, 15.2% menos que en 2020 en términos constantes. Los giros nacionales representaron el 99.4% del total de ingresos.</li>
-                    <li>En 2021, en promedio por cada giro lo operadores tuvieron ingresos de $5626, siendo menores 6.9% a los obtenidos en 2020. El operador con el costo por envío más bajo es MOVIIRED con $2421 y el de mayor costo es SERVICIOS POSTALES NACIONALES con $36448</li>
+                    <li>Los operadores de los servicios postales de pago movilizaron un total de 18,3 billones de pesos en 2021 en 106,1 millones de giros. El valor de los giros así como el número de envíos redujeron anualmente a tasas (real) de 19,8% y 16,9% respectivamente</li>
+                    <li>Por la prestación de este servicio, los operadores recibieron ingresos de 572,1 mil millones, 27,72% menos que en 2021 en términos reales. Los giros nacionales representaron el 99,3% del total de ingresos.</li>
+                    <li>En 2022, en promedio por cada giro lo operadores tuvieron ingresos de $5.450, siendo menores en 2,8% a los obtenidos en 2020.</li>
                     </ul>""",unsafe_allow_html=True)
             
             ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros','Ingresos por número de giros'])
@@ -2791,10 +2771,10 @@ if select_seccion =='Postal':
             IngresosGirosNac=IngresosGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
             #
             IngresosGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Ingresos':'sum'}).reset_index()
-            EmpGirosIng=IngresosGirosEmp[IngresosGirosEmp['anno']=='2021'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
-            IngresosGirosEmp=IngresosGirosEmp[(IngresosGirosEmp['anno'].isin(['2020','2021']))&(IngresosGirosEmp['id_empresa'].isin(EmpGirosIng))]
+            EmpGirosIng=IngresosGirosEmp[IngresosGirosEmp['anno']=='2022'].sort_values(by='Ingresos',ascending=False)['id_empresa'].to_list()[0:4]
+            IngresosGirosEmp=IngresosGirosEmp[(IngresosGirosEmp['anno'].isin(['2021','2022']))&(IngresosGirosEmp['id_empresa'].isin(EmpGirosIng))]
             #
-            IngresosGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
+            IngresosGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2022')].groupby(['id_empresa','empresa']).agg({'Ingresos':'sum','Valor total giros':'sum'}).reset_index()
             IngresosGirosPie['participacion']=round(100*IngresosGirosPie['Ingresos']/IngresosGirosPie['Ingresos'].sum(),3)
             IngresosGirosPie['participacion_2']=round(100*IngresosGirosPie['Valor total giros']/IngresosGirosPie['Valor total giros'].sum(),3)
             IngresosGirosPie['empresa']=IngresosGirosPie['empresa'].replace(nombresComerciales) 
@@ -2806,10 +2786,10 @@ if select_seccion =='Postal':
             NumeroGirosNac=NumeroGirosNac.rename(columns={'tipo_giro':'tipo_envio'})
             #
             NumeroGirosEmp=IngresosGiros.groupby(['anno','empresa','id_empresa']).agg({'Giros':'sum'}).reset_index()
-            EmpGirosNum=NumeroGirosEmp[NumeroGirosEmp['anno']=='2021'].sort_values(by='Giros',ascending=False)['id_empresa'].to_list()[0:4]
-            NumeroGirosEmp=NumeroGirosEmp[(NumeroGirosEmp['anno'].isin(['2020','2021']))&(NumeroGirosEmp['id_empresa'].isin(EmpGirosNum))]
+            EmpGirosNum=NumeroGirosEmp[NumeroGirosEmp['anno']=='2022'].sort_values(by='Giros',ascending=False)['id_empresa'].to_list()[0:4]
+            NumeroGirosEmp=NumeroGirosEmp[(NumeroGirosEmp['anno'].isin(['2021','2022']))&(NumeroGirosEmp['id_empresa'].isin(EmpGirosNum))]
             #
-            NumeroGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2021')].groupby(['id_empresa','empresa']).agg({'Giros':'sum'}).reset_index()
+            NumeroGirosPie=IngresosGiros[(IngresosGiros['tipo_giro']=='Nacionales')&(IngresosGiros['anno']=='2022')].groupby(['id_empresa','empresa']).agg({'Giros':'sum'}).reset_index()
             NumeroGirosPie['participacion']=round(100*NumeroGirosPie['Giros']/NumeroGirosPie['Giros'].sum(),3)
             NumeroGirosPie['empresa']=NumeroGirosPie['empresa'].replace(nombresComerciales)         
 
@@ -2843,13 +2823,13 @@ if select_seccion =='Postal':
                 
                 if PieIngresosGiros:
                     figPieGirIng = px.pie(IngresosGirosPie, values='Ingresos', names='empresa', color='empresa',
-                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2021)')
+                                 color_discrete_map=Colores_pie3, title='<b>Participación en ingresos de giros<br>(2022)')
                     figPieGirIng.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieGirIng.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
                     figPieGirIng.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
                     #
                     figPieGirValorGiro = px.pie(IngresosGirosPie, values='Valor total giros', names='empresa', color='empresa',
-                     color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2021)')
+                     color_discrete_map=Colores_pie3, title='<b>Participación en el valor<br>total de giros (2022)')
                     figPieGirValorGiro.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieGirValorGiro.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
                     figPieGirValorGiro.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -2879,11 +2859,11 @@ if select_seccion =='Postal':
                     st.markdown("<center><p style='font-size:11px'><b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC</p></center>",unsafe_allow_html=True)            
 
                 if BarrasNGiros:
-                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','',1,'Número de giros anuales por empresa','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
+                    st.plotly_chart(PlotlyBarras(NumeroGirosEmp,'Giros','Millones',1e6,'Número de giros anuales por empresa','<b>Fuente</b>: Elaboración CRC con base en los reportes de información al sistema Colombia TIC'),use_container_width=True)
 
                 if PieNGiros:
                     figPieGirNum = px.pie(NumeroGirosPie, values='Giros', names='empresa', color='empresa',
-                     color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2021)')
+                     color_discrete_map=Colores_pie3, title='<b>Participación en número de giros<br>(2022)')
                     figPieGirNum.update_traces(textposition='inside',textinfo='percent',hoverinfo='label+percent',textfont_color='black')
                     figPieGirNum.update_layout(uniformtext_minsize=18,uniformtext_mode='hide',showlegend=True,legend=dict(xanchor='center',x=0.5,y=-0.1,orientation='h'),title_x=0.5)
                     figPieGirNum.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20)
@@ -2894,7 +2874,7 @@ if select_seccion =='Postal':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
                 IngresosPorNGirosNac=IngresosGirosNac.merge(NumeroGirosNac,left_on=['anno','ambito','tipo_envio'],right_on=['anno','ambito','tipo_envio'])
                 IngresosPorNGirosNac['Ingresos/Giros']=round(IngresosPorNGirosNac['Ingresos']/IngresosPorNGirosNac['Giros'],3)
-                IngresosporGirosEmp=IngresosGiros[IngresosGiros['periodo'].isin(['2020-T4','2021-T4'])]
+                IngresosporGirosEmp=IngresosGiros[IngresosGiros['periodo'].isin(['2021-T4','2022-T4'])]
                 IngresosporGirosEmp=IngresosporGirosEmp.groupby(['periodo','empresa','id_empresa']).agg({'Ingresos':'sum','Giros':'sum'}).reset_index()
                 IngresosporGirosEmp['Ingresos/Giros']=round(IngresosporGirosEmp['Ingresos']/IngresosporGirosEmp['Giros'],3)
                 IngresosporGirosEmp=IngresosporGirosEmp.rename(columns={'periodo':'anno'})
