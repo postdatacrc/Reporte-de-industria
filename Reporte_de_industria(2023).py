@@ -849,8 +849,8 @@ if select_seccion =='Telecomunicaciones':
             st.markdown("<h2>Accesos por servicio</h2>",unsafe_allow_html=True)
         col2.metric("Internet móvil", "40,11 M", "12,6%")
         col3.metric("Telefonía móvil", "80,81 M", "7,7%")
-        col4.metric("Internet fijo", "8,80M", "4,1%")
-        col5.metric("Telefonía fija", "7,25M", "-4,16%")
+        col4.metric("Internet fijo", "8,9M", "5,3%")
+        col5.metric("Telefonía fija", "7,58M", "0,2%")
         col6.metric("TV por suscripción", "6,30M", "2,15%")
         st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2021 </p>",unsafe_allow_html=True)
         st.markdown('')
@@ -866,10 +866,10 @@ if select_seccion =='Telecomunicaciones':
 
         col1,col2=st.columns(2)
         with col1:
-            st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2022. El servicio con mayor crecimiento en accesos fue Internet móvil con 12,6%.El servicio con mayor penetración en móviles fue la telefonía, con 156 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración fue el Internet, con 51 accesos por cada 100 hogares</p>",unsafe_allow_html=True)
+            st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2022. El servicio con mayor crecimiento en accesos fue Internet móvil con 12,6%. El servicio con mayor penetración en móviles fue la telefonía, con 156 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración fue el Internet, con 51 accesos por cada 100 hogares</p>",unsafe_allow_html=True)
         with col2:
             st.markdown("<center><p style='font-size:10px'><b>Accesos y penetración de los servicios de telecomunicaciones fijos y móviles</b></p>", unsafe_allow_html=True)
-            st.image('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/Iconos/Cuadro_Accesos_telcoFinal.png')
+            st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Accesos_TIC.png?raw=true')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, proyecciones de población y hogares de DANE.", unsafe_allow_html=True)
             
     if select_secResumenDinTic == 'Servicios móviles':
@@ -1938,9 +1938,11 @@ if select_seccion =='Telecomunicaciones':
             IngresosRadio['Ingresos de actividades ordinarias']=IngresosRadio['Ingresos de actividades ordinarias'].str.replace('.','').astype('int64')
             IngresosRadio['Año']=IngresosRadio['Año'].astype('str')       
             IngresosRadio=IngresosRadio.rename(columns={'Grupo Radial':'empresa','Ingresos de actividades ordinarias':'ingresos','Año':'anno'})
+            IngresosRadio=IngresosRadio.groupby(['anno','empresa'])['ingresos'].sum().reset_index()
             IngresosRadio=IngresosRadio.merge(IPCAnuTot,left_on=['anno'],right_on=['anno'])
             IngresosRadio['ingresos']=IngresosRadio['ingresos']/IngresosRadio['indice2022']
             IngresosRadio['empresa']=IngresosRadio['empresa'].replace(nombres_Radio)
+           
             ##Número emisoras
             NumeroEmisoras=pd.read_csv('https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Datos_Sin_API/listado_emisoras_radio.csv',delimiter=';',encoding='utf-8')
             NumeroEmisoras=NumeroEmisoras.rename(columns={'CLASE DE\nEMISORA':'CLASE DE EMISORA'})
@@ -1961,8 +1963,8 @@ if select_seccion =='Telecomunicaciones':
             
             if ServiciosRadio=='Ingresos':
                 st.markdown("""<center><p style="font-size:12px"><b>Nota:</b> Ingresos ajustados por inflación, usando el IPC total. Periodo base, diciembre 2022</p></center>""",unsafe_allow_html=True)
-                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Millones de pesos',1e6,'<b>Ingresos en radio por empresa</b>',['rgb(0,76,153)','rgb(255,153,51)','rgb(255,255,51)','rgb(102,204,0)','rgb(192,192,192)',
-                'rgb(153,76,0)','rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)'],''),use_container_width=True)
+                st.plotly_chart(PlotlyBarrasEmp(IngresosRadio,'ingresos','Miles de Millones de pesos',1e6,'<b>Ingresos en radio por empresa</b>',['rgb(0,76,153)','rgb(255,153,51)',
+                'rgb(0,204,102)','#f27234','rgb(188,143,143)','rgb(221,160,221)','rgb(123,104,238)','rgb(220,11,11)'],''),use_container_width=True)
        
       
             if ServiciosRadio=='Número de emisoras':
@@ -1978,9 +1980,16 @@ if select_seccion =='Telecomunicaciones':
                     ClasedeEmisoraRadio=st.button('Clase de emisora')
                 
                 if ParticipacionNEmmisoras:
-                    figPartNEmis = px.sunburst(NumeroEmisorasAgg, path=['CLASE DE EMISORA', 'BANDA'], values='Número emisoras',color='CLASE DE EMISORA',
-                                      color_discrete_map={'COMUNITARIA':'rgb(122, 68, 242)','COMERCIAL':'rgb(0, 128, 255)','INTERÉS<br>PÚBLICO':'rgb(102,204,0)'
-                                                         })
+                    figPartNEmis =go.Figure(go.Sunburst(
+                        ids=["COMERCIAL", "INTERÉS<br>PÚBLICO", "COMUNITARIA","FM","AM","FM2","AM2"],
+                        labels=["COMERCIAL", "INTERÉS<br>PÚBLICO", "COMUNITARIA","FM","AM","FM","AM"],
+                        parents=["","","","INTERÉS<br>PÚBLICO","INTERÉS<br>PÚBLICO","COMERCIAL","COMERCIAL"],
+                        values=[ 620,328,770,311,17,309,311],
+                        branchvalues="total",
+                        marker=dict(colors=['rgb(0, 128, 255)','rgb(102, 204, 0)','rgb(122, 68, 242)']),
+                    ))
+                    figPartNEmis.update_layout(margin = dict(t=0, l=0, r=0, b=0))
+
                     figPartNEmis.update_layout(height=550,legend_title=None)
                     figPartNEmis.update_layout(font_color="Black",font_family="Poppins",title_font_color="Black",titlefont_size=20,
                     title={
