@@ -868,7 +868,6 @@ if select_seccion =='Telecomunicaciones':
         with col1:
             st.markdown("<p style='text-align:justify'>En materia de accesos, todos los servicios de telecomunicaciones mostraron tasas de crecimientos positivas en 2022. El servicio con mayor crecimiento en accesos fue Internet móvil con 12,6%. El servicio con mayor penetración en móviles fue la telefonía, con 156 accesos por cada 100 personas, mientras que en servicios fijos el de mayor penetración fue el Internet, con 51 accesos por cada 100 hogares</p>",unsafe_allow_html=True)
         with col2:
-            st.markdown("<center><p style='font-size:10px'><b>Accesos y penetración de los servicios de telecomunicaciones fijos y móviles</b></p>", unsafe_allow_html=True)
             st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Accesos_TIC.png?raw=true')
             st.markdown("<p style='font-size:10px'><b>Fuente:</b> Elaboración CRC con base en los reportes de información al sistema Colombia TIC, proyecciones de población y hogares de DANE.", unsafe_allow_html=True)
             
