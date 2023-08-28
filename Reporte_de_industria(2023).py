@@ -847,7 +847,7 @@ if select_seccion =='Telecomunicaciones':
             st.markdown(r"""<div><img height="100px" src='https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/tv%20suscripcion.png?raw=true'/></div>""",unsafe_allow_html=True) 
         with col1:
             st.markdown("<h2>Accesos por servicio</h2>",unsafe_allow_html=True)
-        col2.metric("Internet móvil", "40,11 M", "12,6%")
+        col2.metric("Internet móvil", "40,11 M", "5,6%")
         col3.metric("Telefonía móvil", "80,81 M", "7,7%")
         col4.metric("Internet fijo", "8,9M", "5,3%")
         col5.metric("Telefonía fija", "7,58M", "0,2%")
@@ -892,7 +892,7 @@ if select_seccion =='Telecomunicaciones':
                     st.markdown(r"""<ul>
                     <li>El total de abonados a telefonía móvil alcanzó los 80,81 millones al cierre de 2022, 5,7 millones más que en 2021.</li>
                     <li>En tráfico, en el 2022 se obtuvo un valor de 135,6 miles de millones de minutos, lo que corresponde a un decrecimiento del 16,2% respecto al valor de 2021.</li>
-                    <li>En 2022, el servicio de telefonía móvil generó ingresos por un valor de 2,446.58 miles de millones de pesos, lo que equivale a un reducción de 296.21 mil millones de pesos respecto a 2020.</li>
+                    <li>En 2022, el servicio de telefonía móvil generó ingresos por un valor de 2,334.6 miles de millones de pesos, lo que equivale a un reducción de 2,4% respecto a 2021. El 70,4% correspondió a la modalidad pospago.</li>
                     </ul>""",unsafe_allow_html=True)
 
      
@@ -1090,7 +1090,7 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Internet móvil"):
                     st.markdown(r"""<ul>
-                    <li>Entre el cuarto trimestre de 2021 y 2022, los accesos de Internet móvil se incrementaron en más de 4.5 millones, alcanzando 40.11 millones al cierre de 2022</li>
+                    <li>Entre el cuarto trimestre de 2021 y 2022, los accesos de Internet móvil se incrementaron en más de 2.15 millones, alcanzando 40.11 millones al cierre de 2022</li>
                     <li>El tráfico alcanzó un valor de 3084,5 millones de GB, lo que corresponde a un crecimiento de 62.8% frente a 2021.</li>     
                     <li>Los ingresos ascendieron a 8,7 billones de pesos, equivalente a un crecimiento de 17% frente al año anterior.</li>        
                     </ul>""",unsafe_allow_html=True)
@@ -1242,8 +1242,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Mensajería móvil"):
                     st.markdown(r"""<ul>
-                    <li>Los ingresos por concepto de mensajería de texto fueron de 150,39 mil millones de pesos en 2021 de los cuales el 78,7% son generados por mensajes cursados entre usuarios.</li>
-                    <li>En cuando al servicio de SMS, este se compone de los mensajes cursados entre usuarios y mensajes de texto a través de códigos cortos. El tráfico del primer tipo fue de 1.448,3 millones de mensajes en 2022 y se redujo a tasa anual de 19,2%. En tanto, los segundos fueron 45,019.7 millones de mensajes y creció 8,6% frente al año anterior.</li>
+                    <li>Lo ingresos por mensajería de texto en 2022 fueron 156,1 mil millones, de los cuales el 76,7% son generados por mensajes cursados entre usuarios.</li>
+                    <li>En cuando al servicio de SMS, este se compone de los mensajes cursados entre usuarios y mensajes de texto a través de códigos cortos. El tráfico del primer tipo fue de 1.448,3 millones de mensajes en 2022 y aumentó a tasa anual de 23,7%. En tanto, los segundos fueron 45,019.7 millones de mensajes y disminuyó 7,9% frente al año anterior.</li>
                     </ul>""",unsafe_allow_html=True)
             
             ServiciosMenMovil=st.selectbox('Escoja el ámbito de Mensajería móvil',['Tráfico','Ingresos']) 
@@ -1401,8 +1401,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Internet fijo"):
                     st.markdown(r"""<ul>
-                    <li>En 2022 se alcanzaron 8.8 millones de accesos, de los cuales el 89,7% pertenecen al segemento residencial. Esto corresponde a XXXXX accesos más que en 2021.</li>
-                    <li>En 2022 los PRST alcanzaron 6475.6 miles millones de pesos, que representa un crecimiento de 4.6% respecto al año anterior</li>
+                    <li>En 2022 se alcanzaron 8.9 millones de accesos, de los cuales el 88% pertenecen al segemento residencial. Esto corresponde a 447 mil accesos más que en 2021.</li>
+                    <li>En 2022 los PRST alcanzaron 6475.6 miles millones de pesos, que representa un crecimiento de 12.05% respecto al año anterior</li>
                     </ul>""",unsafe_allow_html=True)
 
             
@@ -1569,7 +1569,7 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de Telefonía fija"):
                     st.markdown(r"""<ul>
-                    <li>Al cierre de 2022 se contabilizaron 7.25 millones de líneas, de las cuales el 88% son líneas residenciales. En comparación con el año 2021, las líneas residenciales disminuyeron en un 6% en 2022, y de igual manera, las líneas corporativas continúan en descenso.</li>
+                    <li>Al cierre de 2022 se contabilizaron 7.58 millones de líneas, de las cuales el 88% son líneas residenciales. En comparación con el año 2021, las líneas residenciales aumentaron en un 1,9% en 2022, y por contrario las líneas corporativas continúan en descenso.</li>
                     <li>Los ingresos por telefonía fija ascendieron a 1.74 billones de pesos, de los cuales el 92% se originó en telefonía fija nacional. El valor total representa una reducción real del 0,9% en comparación con 2021. </li>
                     </ul>""",unsafe_allow_html=True)
 
@@ -1698,8 +1698,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de TV por suscripción"):
                     st.markdown(r"""<ul>
-                    <li>Los ingresos en 2022 fueron de 3421.1 miles de millones de pesos, 13.1 mil millones más que el año anterior</li>    
-                    <li>En materia de suscriptores, al cuarto trimestre de 2022 superó 6.30 millones, 132 mil más que en el mismo periodo de 2021</li>    
+                    <li>Los ingresos en 2022 fueron de 3421.1 miles de millones de pesos, es decir, un crecimiento real del 7,65% frente al año anterior</li>    
+                    <li>En materia de suscriptores, al cuarto trimestre de 2022 superó 6,30 millones, 132,8 mil accesos más que en el mismo periodo de 2021</li>    
                     </ul>""",unsafe_allow_html=True)
 
             ##Suscriptores
@@ -1824,7 +1824,8 @@ if select_seccion =='Telecomunicaciones':
                 st.markdown(r"""<ul>
                 <li>En el cuarto trimestre de 2022, el 91,3% de los hogares con Internet consumieron contenidos audiovisuales a través de plataformas de servicios OTT.</li>
                 <li>Los modelos de negocio de servicios OTT audiovisuales con mayor penetración en los hogares colombianos son: video por demanda gratuito o con publicidad (89%), seguido de servicios de video por demanda con suscripción (79%) y los servicios de TV everywhere (38%).</li>
-                <li>De los hogares con Internet, el 13.58% manifestaron haber renunciado al servicio de TV por suscripción (cord-cutters), de los cuales el 27.8% de los hogares señaló el motivo fue que podía encontrar el mismo contenido por Internet</li>
+                <li>De los hogares con Internet, el 13.58% manifestaron haber renunciado al servicio de TV por suscripción (cord-cutters).</li>
+                <li>Del porcentaje de cord-cutters, el 27.8% de los hogares señaló que el motivo de renuncia fue que podía encontrar el mismo contenido por Internet, y 19,8% lo reemplazó por servicios pagos de contenidos en línea.</li>
                 </ul>""",unsafe_allow_html=True)
         st.markdown(r"""<hr>""",unsafe_allow_html=True) 
         st.markdown('')
@@ -2054,8 +2055,8 @@ if select_seccion =='Telecomunicaciones':
             with col2:             
                 with st.expander("Datos relevantes de TV abierta"):
                     st.markdown(r"""<ul>
-                    <li>Los ingresos por TV abierta alcanzaron 1.78 billones de pesos en 2021, creciendo a una tasa de 41.8% en términos constantes.</li>
-                    <li>Por servicio, la TV abierta privada representa el 66.4% de los ingresos y creció un 40.9%</li>
+                    <li>Los ingresos por TV abierta alcanzaron 2.02 billones de pesos en 2022, presentando una reducción del 0,2% en términos constantes.</li>
+                    <li>Por servicio, la TV abierta privada representa el 65.4% de los ingresos y creció un 1%</li>
                     <li>Los operadores de TV públicos (nacionales, regionales y local sin ánimo de lucro) obtienen ingresos principalmente por transferencias del gobierno nacional y local para su operación.</li>
                     </ul>""",unsafe_allow_html=True)
             st.markdown('') 
@@ -2764,9 +2765,9 @@ if select_seccion =='Postal':
             with col2:             
                 with st.expander("Datos relevantes de Giros"):
                     st.markdown(r"""<ul>
-                    <li>Los operadores de los servicios postales de pago movilizaron un total de 18,3 billones de pesos en 2021 en 106,1 millones de giros. El valor de los giros así como el número de envíos redujeron anualmente a tasas (real) de 19,8% y 16,9% respectivamente</li>
+                    <li>Los operadores de los servicios postales de pago movilizaron un total de 18,3 billones de pesos en 2022 en 106,1 millones de giros. El valor de los giros así como el número de envíos redujeron anualmente a tasas (real) de 19,8% y 5,3% respectivamente</li>
                     <li>Por la prestación de este servicio, los operadores recibieron ingresos de 572,1 mil millones, 27,72% menos que en 2021 en términos reales. Los giros nacionales representaron el 99,3% del total de ingresos.</li>
-                    <li>En 2022, en promedio por cada giro lo operadores tuvieron ingresos de $5.450, siendo menores en 2,8% a los obtenidos en 2020.</li>
+                    <li>En 2022, en promedio por cada giro lo operadores tuvieron ingresos de $5.450, siendo menores en 2,8% a los obtenidos en 2021.</li>
                     </ul>""",unsafe_allow_html=True)
             
             ServiciosGiros=st.selectbox('Escoja el ámbito de Giros',['Ingresos','Número de giros','Ingresos por número de giros'])
