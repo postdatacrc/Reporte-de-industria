@@ -858,7 +858,7 @@ if select_seccion =='Carta editorial':
     st.title("Carta editorial")
     col1,col2=st.columns([0.5,2])
     with col1:
-        st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Nicolas_Silva_Dir.jpg?raw=true', width=250) 
+        st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Nicolas_Silva_Dir.jpg?raw=true') 
         st.markdown("Nicolás Silva Cortés<br><b>Comisionado y Director Ejecutivo</b>",unsafe_allow_html=True)
     with col2:
         st.markdown(CartaEditorialSec1,unsafe_allow_html=True)       
