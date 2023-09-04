@@ -652,7 +652,7 @@ Barra_superior="""
     </div>
     <div class="imagen-flotar" style="height: 80px; left: 300px; padding:2px">
         <a class="imagen-flotar" href="https://www.crcom.gov.co" title="CRC">
-            <img src="https://raw.githubusercontent.com/postdatacrc/Reporte-de-industria/main/2023/Iconos/reporte-de-industria-2023-02.jpg" alt="CRC" style="">
+            <img src="https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Iconos/reporte-de-industria-2023-02.png?raw=true" alt="CRC" style="">
         </a>
     </div>    
 </div>"""
@@ -785,17 +785,68 @@ Finalmente, se presenta una descripción de indicadores para el sector postal, a
 
 
 CartaEditorialSec1=r"""<p style='text-align:justify'>
-Luego de vivir en el año 2020 un periodo complejo y lleno de incertidumbre derivado de la emergencia del COVID 19, en 2021 los servicios prestados por la industria TIC y Postal desempeñaron un rol fundamental para impulsar la reactivación económica. En este nuevo contexto, dichas industrias siguen evolucionando de manera positiva, sentando las bases para la transformación digital del país.</p>
+Con el objetivo de empoderar a los agentes del ecosistema digital a través de la provisión
+de información y análisis relacionados que permitan profundizar en el conocimiento de los
+sectores TIC y Postal, desde 2012, la Comisión de Regulación de Comunicaciones pública
+anualmente el Reporte de Industria de estos sectores, y así proveer un panorama completo
+para nuestros grupos de valor.
 """
 CartaEditorialSec2=r"""<p style='text-align:justify'>
-Mientras apoyaban transversalmente el proceso de recuperación de Colombia, las empresas que hacen parte de estos sectores registraron importantes avances en múltiples aspectos, entre otros, mayores velocidades de las conexiones de Internet, aumento en el despliegue de infraestructura de Internet móvil 4G y fibra óptica, mayor capilaridad y disponibilidad de puntos para giros postales y acciones para soportar un incrementos en el número de envíos del comercio electrónico a través de operadores postales ajustando sus servicios a los nuevos hábitos de consumo de los colombianos y permitiendo la adaptación del resto de actividades económicas.</p>
+Una mayor disponibilidad y acceso a información fortalece la mejora regulatoria al permitir
+conocer cada vez más y mejor los mercados regulados, así como sus dinámicas. También es
+un elemento de transparencia del regulador y a su vez fortalece esquemas de autorregulación
+de los actores. Para ello, la estrategia de datos abiertos de la CRC, junto con la generación
+informes sectoriales y reportes periódicos, han apalancado los objetivos misionales que
+conducen a contar con más oferta de servicios, mejor calidad y proveer un entorno regulatorio
+que fomente el dinamismo de una industria caracterizada por la innovación y capacidad de
+adaptación a entornos cambiantes.
 """
 CartaEditorialSec3=r"""<p style='text-align:justify'> 
-A su vez, en su calidad de autoridad regulatoria, la CRC es cada vez más consciente de la importancia de contar con información y datos de calidad para el conocimiento de los mercados. Es por esta razón que el presente reporte constituye una herramienta que facilita la toma de decisiones por parte los usuarios y demás agentes, y es fundamental para el diseño de regulación colaborativa, inclusiva, simplificada y basada en los datos, que continue impulsando la mejora de los servicios de comunicaciones y postales en el país.
+En 2022, el sector TIC supo entender y adaptarse a un entorno de recuperación económica y
+con ello de más y mejores condiciones de conectividad de hogares y empresas. La provisión
+del servicio de Internet, tanto fijo como móvil, lideró el comportamiento el sector en materia
+de ingresos y de accesos, conduciendo a alcanzar una penetración de 77 por cada 100
+personas en Internet móvil y de 51 por cada 100 hogares en Internet fijo. Así mismo, las
+mejoras en infraestructura se ven reflejadas en un mayor despliegue de sitios con tecnología
+4G, que creció el 10,9% en el último año, lo que ha permitido dar soporte al consumo de datos
+desde terminales móviles cuyo tráfico creció el 62,8%. En materia de Internet fijo, se destaca
+una mayor oferta del servicio a través de fibra óptica, con un incremento de más de 715 mil
+accesos bajo esta tecnología, y el consecuente aumento en las velocidades de descarga.
 
-Teniendo en cuenta lo anterior, y en alineación con su política de mejora regulatoria, la Comisión pone a disposición de sus grupos de interés a nivel nacional e internacional el Reporte de Industria de los sectores TIC y Postal de 2021, el cual expone de manera general y amplia el panorama de estas industrias en el país, con la rigurosidad técnica y la transparencia que caracteriza al regulador.
+Lo anterior se vio acompañado de una reactivación de las inversiones en publicidad asociada
+a los servicios de radiodifusión, y en particular a la radio comercial, servicio que en 2021
+no mostraba una recuperación del freno súbito derivado de la emergencia del COVID-19.
+Respecto de esto último, los cambios en las preferencias de los usuarios se reflejaron
+significativamente en el sector postal, impulsando la adopción del comercio electrónico,
+apalancado en los envíos individuales de la mensajería expresa. En tanto, los envíos masivos,
+como la entrega de facturas, han venido experimentando ajustes a la baja.
 
-El presente informe exhibe los principales datos de relevancia relacionados con los sectores regulados por la entidad, disponiendo por primera vez de una versión interactiva, a través de la cual es posible la profundización del contenido publicado, mediante la exploración de diferentes indicadores analizados</p>
+Aún cuando los resultados son optimistas y la transformación digital se sigue consolidando
+paulatinamente en el país, la industria TIC y el regulador enfrentan retos para impulsar
+aspectos clave como lo son el cierre de la brecha digital, la modernización de las redes móviles,
+la mejora en la asequibilidad de los servicios, y la adaptación a los cambios que enfrenta de
+manera acelerada el sector postal."""
+
+CartaEditorialSec4=r"""<p style='text-align:justify'> 
+Así mismo, desde la política pública se viene impulsando la consolidación de nuevos actores,
+con miras al despliegue de redes en zonas apartadas, y en materia de modernización, en
+2023 se adelanta tanto la renovación de permisos de uso de espectro para servicios móviles
+como la subasta de espectro en bandas IMT, incluidas las asociadas a la futura prestación
+de servicios 5G. Esto último vislumbra posibles escenarios de compartición y cooperación
+entre actores para apalancar nuevas inversiones, y demandará un uso más eficiente de la
+infraestructura y una visión cada vez más innovadora del regulador frente a estas tendencias.
+
+En materia de asequibilidad, aun cuando los precios de los servicios de telecomunicaciones
+no tuvieron variación en 2022, el escenario de estabilidad de podría verse afectado a futuro
+por las presiones inflacionarias del año inmediatamente anterior. Este hecho implicará para
+el regulador continuar sus labores de monitoreo, y a partir de las mismas y en el marco de
+sus funciones, determinar la necesidad de adoptar nuevas medidas, siempre en beneficio de
+los usuarios.
+
+Les extiendo la invitación a conocer con mayor detalle el panorama de las industrias TIC y
+Postal para el año 2022 contenido en el presente reporte, en el que se presentan los datos
+más relevantes de los sectores regulados por la CRC. Esta versión interactiva permite también
+ahondar en el detalle de cada uno de los servicios prestados por la industria.
 """
 
 if select_seccion == 'Portada':
@@ -805,14 +856,15 @@ if select_seccion == 'Portada':
     
 if select_seccion =='Carta editorial':
     st.title("Carta editorial")
-    col1,col2=st.columns([2,1])
+    col1,col2=st.columns([0.5,2])
     with col1:
+        st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Nicolas_Silva_Dir.jpg?raw=true', width=250) 
         st.markdown("Nicolás Silva Cortés<br><b>Comisionado y Director Ejecutivo</b>",unsafe_allow_html=True)
-        #st.markdown(CartaEditorialSec1,unsafe_allow_html=True)
     with col2:
-        st.image('https://github.com/postdatacrc/Reporte-de-industria/blob/main/2023/Imagenes_adicionales/Nicolas_Silva_Dir.jpg?raw=true', width=250)        
-    #st.markdown(CartaEditorialSec2,unsafe_allow_html=True)
-    #st.markdown(CartaEditorialSec3,unsafe_allow_html=True)
+        st.markdown(CartaEditorialSec1,unsafe_allow_html=True)       
+        st.markdown(CartaEditorialSec2,unsafe_allow_html=True)
+    st.markdown(CartaEditorialSec3,unsafe_allow_html=True)
+    st.markdown(CartaEditorialSec4,unsafe_allow_html=True)
 
 if select_seccion =='Introducción':
     st.title("Introducción")
@@ -849,8 +901,8 @@ if select_seccion =='Telecomunicaciones':
             st.markdown("<h2>Accesos por servicio</h2>",unsafe_allow_html=True)
         col2.metric("Internet móvil", "40,11 M", "5,6%")
         col3.metric("Telefonía móvil", "80,81 M", "7,7%")
-        col4.metric("Internet fijo", "8,9M", "5,3%")
-        col5.metric("Telefonía fija", "7,58M", "0,2%")
+        col4.metric("Internet fijo", "8,92M", "5,5%")
+        col5.metric("Telefonía fija", "7,59M", "0,3%")
         col6.metric("TV por suscripción", "6,30M", "2,15%")
         st.markdown("<p style='font-size:12px'><b>Nota:</b> Variación porcentual calculada respecto de los accesos registrados en 2021 </p>",unsafe_allow_html=True)
         st.markdown('')
